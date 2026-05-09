@@ -1,5 +1,9 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.io.Serial;
@@ -12,6 +16,9 @@ import java.io.Serializable;
  *
  * @author Mehdi Rahimi
  */
+@Getter
+@Setter
+@AllArgsConstructor
 public class TrainingsSession implements Serializable, Comparable<TrainingsSession>, Cloneable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -22,43 +29,6 @@ public class TrainingsSession implements Serializable, Comparable<TrainingsSessi
     private int burnedCalories;
     private ActivityType activityType;
     private User user;
-
-    /**
-     * Constructs a new TrainingsSession with the specified parameters.
-     *
-     * @param date             The date the session took place.
-     * @param durationInMinute The duration of the session in minutes.
-     * @param distanceInKm     The distance covered in kilometers.
-     * @param burnedCalories   The total calories burned.
-     * @param activityType     The type of activity performed.
-     * @param user             The user associated with this session.
-     */
-    public TrainingsSession(LocalDate date, int durationInMinute, float distanceInKm, int burnedCalories, ActivityType activityType, User user) {
-        this.date = date;
-        this.durationInMinute = durationInMinute;
-        this.distanceInKm = distanceInKm;
-        this.burnedCalories = burnedCalories;
-        this.activityType = activityType;
-        this.user = user;
-    }
-
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
-
-    public int getDurationInMinute() { return durationInMinute; }
-    public void setDurationInMinute(int durationInMinute) { this.durationInMinute = durationInMinute; }
-
-    public float getDistanceInKm() { return distanceInKm; }
-    public void setDistanceInKm(float distanceInKm) { this.distanceInKm = distanceInKm; }
-
-    public int getBurnedCalories() { return burnedCalories; }
-    public void setBurnedCalories(int burnedCalories) { this.burnedCalories = burnedCalories; }
-
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
 
     /**
      * Compares this session with another to allow sorting by date.

@@ -231,7 +231,7 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      *
      * @param startDate Start date.
      * @param endDate   End date.
-     * @return The most active user by distance.
+     * @return The most active user by distance
      */
     @Override
     public User findMostActiveUserByTotalDistance(LocalDate startDate, LocalDate endDate) {

@@ -1,5 +1,9 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.io.Serial;
@@ -12,6 +16,10 @@ import java.io.Serializable;
  *
  * @author Mehdi Rahimi
  */
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class User implements Serializable, Comparable<User>, Cloneable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,38 +29,6 @@ public class User implements Serializable, Comparable<User>, Cloneable {
     private LocalDate birthDate;
     private float weight;
     private float height;
-
-    /**
-     * Constructs a new User with the specified personal and physical attributes.
-     *
-     * @param firstName The user's first name.
-     * @param lastName  The user's last name.
-     * @param birthDate The user's date of birth.
-     * @param weight    The user's weight in kilograms.
-     * @param height    The user's height in meters.
-     */
-    public User(String firstName, String lastName, LocalDate birthDate, float weight, float height) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.weight = weight;
-        this.height = height;
-    }
-
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-
-    public LocalDate getBirthDate() { return birthDate; }
-    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
-
-    public float getWeight() { return weight; }
-    public void setWeight(float weight) { this.weight = weight; }
-
-    public float getHeight() { return height; }
-    public void setHeight(float height) { this.height = height; }
 
     /**
      * Compares this user with another user for sorting purposes.
