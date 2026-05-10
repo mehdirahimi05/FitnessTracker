@@ -14,10 +14,10 @@
           uses: actions/checkout@v4
 
         # Step 2: Java 19 installieren auf der frischen VM
-        - name: Set up JDK 19
+        - name: Set up JDK 21
           uses: actions/setup-java@v4
           with:
-            java-version: '19'
+            java-version: '21'
             distribution: 'temurin'
 
         # Step 3: Maven Dependencies cachen (spart Zeit beim naechsten Run)
