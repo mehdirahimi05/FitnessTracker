@@ -35,7 +35,15 @@
         - name: Run tests
           run: mvn test
 
-        # Step 6: JAR als Artefakt hochladen
+        # Step 6: JaCoCo Coverage Report hochladen
+        - name: Upload coverage report
+          uses: actions/upload-artifact@v4
+          with:
+            name: jacoco-coverage-report
+            path: target/site/jacoco/
+            retention-days: 7
+
+        # Step 7: JAR als Artefakt hochladen
         - name: Upload JAR artifact
           uses: actions/upload-artifact@v4
           with:
