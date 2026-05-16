@@ -1,9 +1,8 @@
 package de.fherfurt.FitnessTrackerSystem.logic;
 
 import de.fherfurt.FitnessTrackerSystem.logic.filter.TrainingsSessionFilter;
-import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,7 +47,7 @@ public interface IFitnessTrackerSystem {
      * @param endDate   The end of the date range.
      * @return Total duration in minutes.
      */
-    int calculateTotalTrainingTimeInMinutes(User user, LocalDate startDate, LocalDate endDate);
+    int calculateTotalTrainingTimeInMinutes(UserDetails user, LocalDate startDate, LocalDate endDate);
 
     /**
      * Calculates the total distance covered by a user within a specified timeframe.
@@ -58,7 +57,7 @@ public interface IFitnessTrackerSystem {
      * @param endDate   The end of the date range.
      * @return Total distance in kilometers.
      */
-    float calculateTotalDistanceInKm(User user, LocalDate startDate, LocalDate endDate);
+    float calculateTotalDistanceInKm(UserDetails user, LocalDate startDate, LocalDate endDate);
 
     /**
      * Calculates the average speed of a user during a specific period.
@@ -68,7 +67,7 @@ public interface IFitnessTrackerSystem {
      * @param endDate   The end date.
      * @return Average speed in km/h.
      */
-    float calculateAverageSpeedInKmH(User user, LocalDate startDate, LocalDate endDate);
+    float calculateAverageSpeedInKmH(UserDetails user, LocalDate startDate, LocalDate endDate);
 
     /**
      * Finds the user with the highest total training time in a given timeframe.
@@ -77,7 +76,7 @@ public interface IFitnessTrackerSystem {
      * @param endDate   The end date.
      * @return The most active user by time.
      */
-    User findMostActiveUserByTotalTime(LocalDate startDate, LocalDate endDate);
+    UserDetails findMostActiveUserByTotalTime(LocalDate startDate, LocalDate endDate);
 
     /**
      * Finds the user with the highest total distance covered in a given timeframe.
@@ -86,7 +85,7 @@ public interface IFitnessTrackerSystem {
      * @param endDate   The end date.
      * @return The most active user by distance.
      */
-    User findMostActiveUserByTotalDistance(LocalDate startDate, LocalDate endDate);
+    UserDetails findMostActiveUserByTotalDistance(LocalDate startDate, LocalDate endDate);
 
     /**
      * Filters training sessions based on various optional criteria.

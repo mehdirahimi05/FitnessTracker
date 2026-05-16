@@ -3,7 +3,7 @@ package de.fherfurt.FitnessTrackerSystem.logic;
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.logic.filter.TrainingsSessionFilter;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class FitnessTrackerSystemTest {
 
     private FitnessTrackerSystem fitnessTrackerSystem;
-    private User mehdi;
-    private User ammar;
+    private UserDetails mehdi;
+    private UserDetails ammar;
 
     @BeforeEach
     void setUp(){
@@ -174,7 +174,7 @@ class FitnessTrackerSystemTest {
     void testCalculateTotalTrainingTimeSuccess(){
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
-        User user = Constants.getFirstUser();
+        UserDetails user = Constants.getFirstUser();
         LocalDate startDate = LocalDate.of(2026, 3, 20);
         LocalDate endDate = LocalDate.of(2026, 03, 31);
 
@@ -238,7 +238,7 @@ class FitnessTrackerSystemTest {
     @DisplayName("Average Speed:Return 0 on null time")
     void testCalculateAverageSpeedInKmHTimeIsNull(){
         // Arrange
-        User user = Constants.getFirstUser();
+        UserDetails user = Constants.getFirstUser();
         LocalDate startDate = LocalDate.of(2026, 3, 20);
         LocalDate endDate = LocalDate.of(2026, 03, 31);
 
@@ -312,7 +312,7 @@ class FitnessTrackerSystemTest {
         fitnessTrackerSystem.addTrainingsSession(trainingsSession2);
 
         // Act
-        User findWinner = fitnessTrackerSystem.findMostActiveUserByTotalTime(LocalDate.of(2026, 3, 20), LocalDate.of(2026, 3, 31));
+        UserDetails findWinner = fitnessTrackerSystem.findMostActiveUserByTotalTime(LocalDate.of(2026, 3, 20), LocalDate.of(2026, 3, 31));
 
         // Assert
         assertEquals(mehdi, findWinner);
@@ -333,7 +333,7 @@ class FitnessTrackerSystemTest {
         fitnessTrackerSystem.addTrainingsSession(trainingsSession2);
 
         // Act
-        User findWinner = fitnessTrackerSystem.findMostActiveUserByTotalDistance(LocalDate.of(2026, 3, 20), LocalDate.of(2026, 3, 31));
+        UserDetails findWinner = fitnessTrackerSystem.findMostActiveUserByTotalDistance(LocalDate.of(2026, 3, 20), LocalDate.of(2026, 3, 31));
 
         // Assert
         assertEquals(ammar, findWinner);

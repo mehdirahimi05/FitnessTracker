@@ -2,7 +2,7 @@ package de.fherfurt.FitnessTrackerSystem;
 
 import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 import java.time.LocalDate;
 
 /**
@@ -19,14 +19,16 @@ public class Constants {
      */
     public static final String FIRST_USER_FIRST_NAME = "Mehdi";
     public static final String FIRST_USER_LAST_NAME = "Rahimi";
+    public static final String FIRST_USER_EMAIL = "mehdi@icloud.com";
     public static final LocalDate FIRST_USER_BIRTH_DATE = LocalDate.of(2005, 10, 14);
     public static final float FIRST_USER_WEIGHT = 80;
     public static final float FIRST_USER_HIGHT = 180;
 
-    public static User getFirstUser(){
-        return new User(
+    public static UserDetails getFirstUser(){
+        return new UserDetails(
                 FIRST_USER_FIRST_NAME,
                 FIRST_USER_LAST_NAME,
+                FIRST_USER_EMAIL,
                 FIRST_USER_BIRTH_DATE,
                 FIRST_USER_WEIGHT,
                 FIRST_USER_HIGHT
@@ -39,14 +41,16 @@ public class Constants {
      */
     public static final String SECOND_USER_FIRST_NAME = "Ammar";
     public static final String SECOND_USER_LAST_NAME = "Alassi";
+    public static final String SECOND_USER_EMAIL = "ammar@icloud.com";
     public static final LocalDate SECOND_USER_BIRTH_DATE = LocalDate.of(2004, 1, 13);
     public static final float SECOND_USER_WEIGHT = 75;
     public static final float SECOND_USER_HIGHT = 179;
 
-    public static User getSecondUser(){
-        return new User(
+    public static UserDetails getSecondUser(){
+        return new UserDetails(
                 SECOND_USER_FIRST_NAME,
                 SECOND_USER_LAST_NAME,
+                SECOND_USER_EMAIL,
                 SECOND_USER_BIRTH_DATE,
                 SECOND_USER_WEIGHT,
                 SECOND_USER_HIGHT
@@ -73,7 +77,7 @@ public class Constants {
      * @param user The user associated with the session.
      * @return A new TrainingsSession instance.
      */
-    public static TrainingsSession getFirstTrainingsSession(User user) {
+    public static TrainingsSession getFirstTrainingsSession(UserDetails user) {
         return new TrainingsSession(
                 FIRST_DATE,
                 FIRST_DURATION_IN_MINUTE,
@@ -103,7 +107,7 @@ public class Constants {
      * @param user The user associated with the session.
      * @return A new TrainingsSession instance.
      */
-    public static TrainingsSession getSecondTrainingsSession(User user) {
+    public static TrainingsSession getSecondTrainingsSession(UserDetails user) {
         return new TrainingsSession(
                 SECOND_DATE,
                 SECOND_DURATION_IN_MINUTE,

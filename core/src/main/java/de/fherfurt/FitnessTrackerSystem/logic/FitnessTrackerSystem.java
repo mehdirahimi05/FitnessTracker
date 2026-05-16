@@ -3,7 +3,7 @@ package de.fherfurt.FitnessTrackerSystem.logic;
 
 import de.fherfurt.FitnessTrackerSystem.logic.filter.TrainingsSessionFilter;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -88,7 +88,7 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @param endDate   The end of the date range.
      * @return A list of matching training sessions.
      */
-    private List<TrainingsSession> getFilteredSessions(User user, LocalDate startDate, LocalDate endDate) {
+    private List<TrainingsSession> getFilteredSessions(UserDetails user, LocalDate startDate, LocalDate endDate) {
         List<TrainingsSession> filteredTrainingsSession = new ArrayList<>();
         if (user == null || startDate == null || endDate == null || trainingsSessionList == null) {
             return filteredTrainingsSession;
@@ -112,7 +112,7 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @return Total time in minutes.
      */
     @Override
-    public int calculateTotalTrainingTimeInMinutes(User user, LocalDate startDate, LocalDate endDate) {
+    public int calculateTotalTrainingTimeInMinutes(UserDetails user, LocalDate startDate, LocalDate endDate) {
         List<TrainingsSession> filteredTrainingsSession = getFilteredSessions(user, startDate, endDate);
         int totalTimeInMinutes = 0;
         for (TrainingsSession trainingsSession : filteredTrainingsSession) {
@@ -130,7 +130,7 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @return Total distance in kilometers.
      */
     @Override
-    public float calculateTotalDistanceInKm(User user, LocalDate startDate, LocalDate endDate) {
+    public float calculateTotalDistanceInKm(UserDetails user, LocalDate startDate, LocalDate endDate) {
         List<TrainingsSession> filteredTrainingsSession = getFilteredSessions(user, startDate, endDate);
         float totalDistanceInKm = 0;
         for (TrainingsSession trainingsSession : filteredTrainingsSession) {
@@ -148,7 +148,7 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @return Average speed in km/h. Returns 0 if total time is 0.
      */
     @Override
-    public float calculateAverageSpeedInKmH(User user, LocalDate startDate, LocalDate endDate) {
+    public float calculateAverageSpeedInKmH(UserDetails user, LocalDate startDate, LocalDate endDate) {
         int totalTimeInMinutes = calculateTotalTrainingTimeInMinutes(user, startDate, endDate);
         float totalDistanceInKm = calculateTotalDistanceInKm(user, startDate, endDate);
 
@@ -168,8 +168,8 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @param activityCriteria The criterion (Time or Distance).
      * @return A map associating users with their accumulated activity values.
      */
-    private Map<User, Float> aggregatUserActivity(LocalDate startDate, LocalDate endDate, ActivityCriteriesEnum activityCriteria) {
-        Map<User, Float> activityMap = new HashMap<>();
+    private Map<UserDetails, Float> aggregatUserActivity(LocalDate startDate, LocalDate endDate, ActivityCriteriesEnum activityCriteria) {
+        Map<UserDetails, Float> activityMap = new HashMap<>();
 
         if (trainingsSessionList == null || startDate == null || endDate == null) {
             return new HashMap<>();
@@ -177,7 +177,7 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
 
         for (TrainingsSession trainingsSession : trainingsSessionList) {
             if (!trainingsSession.getDate().isBefore(startDate) && !trainingsSession.getDate().isAfter(endDate)) {
-                User user = trainingsSession.getUser();
+                UserDetails user = trainingsSession.getUser();
                 float value = (activityCriteria == ActivityCriteriesEnum.TIME)
                         ? trainingsSession.getDurationInMinute()
                         : trainingsSession.getDistanceInKm();
@@ -194,15 +194,15 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @param activityMap Map of users and their activity values.
      * @return The user with the highest value, or null if the map is empty.
      */
-    private User findWinner(Map<User, Float> activityMap) {
+    private UserDetails findWinner(Map<UserDetails, Float> activityMap) {
         if (activityMap == null || activityMap.isEmpty()) {
             return null;
         }
 
-        User winnerUser = null;
+        UserDetails winnerUser = null;
         float maxValues = -1.0f;
 
-        for (Map.Entry<User, Float> entry : activityMap.entrySet()) {
+        for (Map.Entry<UserDetails, Float> entry : activityMap.entrySet()) {
             if (entry.getValue() > maxValues) {
                 maxValues = entry.getValue();
                 winnerUser = entry.getKey();
@@ -219,8 +219,8 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @return The most active user by time.
      */
     @Override
-    public User findMostActiveUserByTotalTime(LocalDate startDate, LocalDate endDate) {
-        Map<User, Float> activityMap = aggregatUserActivity(startDate, endDate, ActivityCriteriesEnum.TIME);
+    public UserDetails findMostActiveUserByTotalTime(LocalDate startDate, LocalDate endDate) {
+        Map<UserDetails, Float> activityMap = aggregatUserActivity(startDate, endDate, ActivityCriteriesEnum.TIME);
 
         return findWinner(activityMap);
     }
@@ -234,8 +234,8 @@ public class FitnessTrackerSystem implements IFitnessTrackerSystem, Serializable
      * @return The most active user by distance
      */
     @Override
-    public User findMostActiveUserByTotalDistance(LocalDate startDate, LocalDate endDate) {
-        Map<User, Float> activityMap = aggregatUserActivity(startDate, endDate, ActivityCriteriesEnum.DISTANCE);
+    public UserDetails findMostActiveUserByTotalDistance(LocalDate startDate, LocalDate endDate) {
+        Map<UserDetails, Float> activityMap = aggregatUserActivity(startDate, endDate, ActivityCriteriesEnum.DISTANCE);
 
         return findWinner(activityMap);
     }

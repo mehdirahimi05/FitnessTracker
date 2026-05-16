@@ -1,7 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.logic.filter;
 
 import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
-import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,7 @@ public class TrainingsSessionFilterBuilder {
     private LocalDate startDate;
     private LocalDate endDate;
     private ActivityType activityType;
-    private User user;
+    private UserDetails user;
     private int minBurnedCalories;
     private int maxBurnedCalories = Integer.MAX_VALUE;
 
@@ -34,7 +34,7 @@ public class TrainingsSessionFilterBuilder {
         return this;
     }
 
-    public TrainingsSessionFilterBuilder withUser (User user){
+    public TrainingsSessionFilterBuilder withUser (UserDetails user){
         this.user = user;
         return this;
     }

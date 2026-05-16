@@ -2,7 +2,7 @@ package de.fherfurt.FitnessTrackerSystem.logic.filter;
 
 import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
@@ -18,11 +18,11 @@ public class TrainingsSessionFilter implements IFilterObject<TrainingsSession> {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final ActivityType activityType;
-    private final User user;
+    private final UserDetails user;
     private final int minBurnedCalories;
     private final int maxBurnedCalories;
 
-    public TrainingsSessionFilter(LocalDate startDate, LocalDate endDate, ActivityType activityType, User user, int minBurnedCalories, int maxBurnedCalories) {
+    public TrainingsSessionFilter(LocalDate startDate, LocalDate endDate, ActivityType activityType, UserDetails user, int minBurnedCalories, int maxBurnedCalories) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.activityType = activityType;
