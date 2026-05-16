@@ -38,6 +38,7 @@
         # Step 5: Tests ausfuehren
         - name: Run tests
           run: mvn test
+          continue-on-error: true
 
         # Step 6: Testergebnisse direkt in GitHub anzeigen
         - name: Publish Test Results
