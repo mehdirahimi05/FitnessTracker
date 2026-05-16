@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit tests for the {@link FitnessTrackerSystem} class.
  * This class verifies the core logic including session management,
  * statistical calculations, and filtering capabilities.
- *
  * @author Mehdi Rahimi
  */
 class FitnessTrackerSystemTest {
