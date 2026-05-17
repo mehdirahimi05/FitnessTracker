@@ -10,12 +10,12 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="core" />
         <module name="api" />
         <module name="storage" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="core" target="21" />
       <module name="Fitness-Tracker-System" target="21" />
     </bytecodeTargetLevel>
   </component>
