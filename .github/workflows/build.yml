@@ -41,18 +41,22 @@
           run: mvn test
           continue-on-error: true
 
-        # Step 7: JaCoCo Coverage Report hochladen
+        # Step 6: JaCoCo Coverage Report hochladen
         - name: Upload coverage report
           uses: actions/upload-artifact@v4
           with:
             name: jacoco-coverage-report
-            path: target/site/jacoco/
+            path: |
+                  storage/target/site/jacoco/
+                  api/target/site/jacoco/
             retention-days: 7
 
-        # Step 8: JAR als Artefakt hochladen
+        # Step 7: JAR als Artefakt hochladen
         - name: Upload JAR artifact
           uses: actions/upload-artifact@v4
           with:
             name: fitness-tracker-jar
-            path: target/*.jar
+            path: |
+                    storage/target/*.jar
+                    api/target/*.jar
             retention-days: 7
