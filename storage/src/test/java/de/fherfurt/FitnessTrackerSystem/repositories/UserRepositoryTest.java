@@ -1,0 +1,209 @@
+package de.fherfurt.FitnessTrackerSystem.repositories;
+
+import de.fherfurt.FitnessTrackerSystem.Constants;
+import de.fherfurt.FitnessTrackerSystem.models.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unittest for {@link UserRepository} class
+ * @author Mehdi Rahimi
+ */
+public class UserRepositoryTest {
+    private UserRepository userRepository;
+    private User mehdi;
+    private User ammar;
+
+    @BeforeEach
+    void setUp(){
+        userRepository = new UserRepository();
+        mehdi = Constants.getFirstUser();
+        ammar = Constants.getSecondUser();
+    }
+
+    /**
+     * Verifies that the IllegalArgumentException was thrown when null is provided
+     */
+    @Test
+    @DisplayName("Crate User : Ignore null input and maintain empty list")
+    void testCreateUserNull(){
+        assertThrows(IllegalArgumentException.class, () ->{
+            userRepository.createUser(null);
+        });
+    }
+
+    /**
+     * verifies that a user was added to the list
+     */
+    @Test
+    @DisplayName("Crate User : success")
+    void testCreateUserSuccess(){
+        // Arrange
+        User user = Constants.getFirstUser();
+        int expectedSizeOfUsers = 1;
+
+        // Act
+        userRepository.createUser(user);
+        int actualSizeOfUsers = userRepository.getUsers().size();
+
+        // Assert
+        assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
+    }
+
+    /**
+     * verifies that there is no user in the list
+     */
+    @Test
+    @DisplayName("Get null Users")
+    void testGetNullUser(){
+        // Act
+        List<User> users = userRepository.getAllUsers();
+
+        // Assert
+        assertEquals(0, users.size());
+    }
+
+    /**
+     * verifies that there is 1 User in the list
+     */
+    @Test
+    @DisplayName("Get one User")
+    void testGetOneUser(){
+        // Arrange
+        User user1 = mehdi;
+
+        // Act
+        userRepository.createUser(user1);
+
+        List<User> users = userRepository.getAllUsers();
+
+        // Assert
+        assertEquals(1, users.size());
+        assertTrue(users.contains(user1));
+
+    }
+
+    /**
+     * verifies that there is multiple User
+     */
+    @Test
+    @DisplayName("Get all Users")
+    void testGetAllUsers(){
+        // Arrange
+        User user1 = mehdi;
+        User user2 = ammar;
+
+        // Act
+        userRepository.createUser(user1);
+        userRepository.createUser(user2);
+
+        List<User> users = userRepository.getAllUsers();
+
+        // Assert
+        assertEquals(2, users.size());
+        assertTrue(users.contains(user1));
+        assertTrue(users.contains(user2));
+    }
+
+    /**
+     * verifies that there is no User id
+     */
+    @Test
+    @DisplayName("Get User by Id: empty")
+    void testGetUserByIdIsEmpty(){
+        // Act
+        Optional<User> users = userRepository.getUserById(3);
+
+        // Assert
+        assertTrue(users.isEmpty());
+    }
+
+    /**
+     * verifies that there is a User id
+     */
+    @Test
+    @DisplayName("Get User by Id : present")
+    void testGetUserByIdIsPresent(){
+        // Arrange
+        User user1 = mehdi;
+
+        // Act
+        userRepository.createUser(user1);
+        Optional<User> users = userRepository.getUserById(1);
+
+        // Assert
+        assertTrue(users.isPresent());
+    }
+
+    /**
+     * gets the user id
+     */
+    @Test
+    @DisplayName("Get User by Id")
+    void testGetUserById(){
+        // Arrange
+        User user1 = mehdi;
+
+        // Act
+        userRepository.createUser(user1);
+        Optional<User> users = userRepository.getUserById(1);
+
+        // Assert
+        assertEquals(user1, users.get());
+    }
+
+    /**
+     * verifies that there is no User name
+     */
+    @Test
+    @DisplayName("Get User by name: empty")
+    void testGetUserByNameIsEmpty(){
+        // Act
+        Optional<User> users = userRepository.getUserByUserName("Saphia");
+
+        // Assert
+        assertTrue(users.isEmpty());
+    }
+
+    /**
+     * verifies that there is a User name
+     */
+    @Test
+    @DisplayName("Get User by name : present")
+    void testGetUserByNameIsPresent(){
+        // Arrange
+        User user1 = mehdi;
+
+        // Act
+        userRepository.createUser(user1);
+        Optional<User> users = userRepository.getUserByUserName("mehdi");
+
+        // Assert
+        assertTrue(users.isPresent());
+    }
+
+    /**
+     * gets the user name
+     */
+    @Test
+    @DisplayName("Get User by name")
+    void testGetUserByName(){
+        // Arrange
+        User user1 = mehdi;
+
+        // Act
+        userRepository.createUser(user1);
+        Optional<User> users = userRepository.getUserByUserName("mehdi");
+
+        // Assert
+        assertEquals(user1, users.get());
+    }
+
+
+}

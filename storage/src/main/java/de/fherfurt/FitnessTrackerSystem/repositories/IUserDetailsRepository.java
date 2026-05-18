@@ -1,4 +1,4 @@
-package de.fherfurt.FitnessTrackerSystem.repositorys;
+package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 
