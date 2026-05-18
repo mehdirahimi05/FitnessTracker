@@ -1,6 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
+import de.fherfurt.FitnessTrackerSystem.core.UserRole;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -195,15 +196,132 @@ public class UserRepositoryTest {
     @DisplayName("Get User by name")
     void testGetUserByName(){
         // Arrange
-        User user1 = mehdi;
+        User user = mehdi;
 
         // Act
-        userRepository.createUser(user1);
+        userRepository.createUser(user);
         Optional<User> users = userRepository.getUserByUserName("mehdi");
 
         // Assert
-        assertEquals(user1, users.get());
+        assertEquals(user, users.get());
     }
 
+    /**
+     * Verifies that the IllegalArgumentException was thrown when null is provided
+     */
+    @Test
+    @DisplayName("Update User: Ignore null input and maintain empty list")
+    void testUpdateUserNull(){
+        assertThrows(IllegalArgumentException.class, () ->{
+            userRepository.updateUser(null);
+        });
+    }
 
+    /**
+     * verifies that the IllegalStateException was thrown when user list is empty
+     */
+    @Test
+    @DisplayName("Update User: ignore empty list and maintain the list")
+    void testUpdateUserEmpty(){
+        // Arrange
+        User user = mehdi;
+
+        // Assert
+        assertThrows(IllegalStateException.class, () ->{
+            userRepository.updateUser(user);
+        });
+    }
+
+    /**
+     * updates User
+     */
+    @Test
+    @DisplayName("updae User: Succes")
+    void testUpdateUserSuccess(){
+        // Arrange
+        User user = mehdi;                    // userName: "mehdi", password: "password123"
+        userRepository.createUser(user);
+
+        User updatedUser = new User(1, "mehdi", "newPassword", UserRole.USER, null);  // gleiche ID, neues Passwort
+
+        // Act
+        userRepository.updateUser(updatedUser);
+
+        // Assert
+        Optional<User> finalUser = userRepository.getUserByUserName("mehdi");
+        assertEquals("newPassword", finalUser.get().getPassWord());
+    }
+
+    /**
+     * verifies that the IllegalStateException was thrown when user list is empty
+     */
+    @Test
+    @DisplayName("delete User by id: ignore empty list and maintain the list")
+    void testDeleteUserByIdEmpty(){
+        // Arrange
+        int userId = 1;
+
+        // Assert
+        assertThrows(IllegalStateException.class, () ->{
+            userRepository.deleteUserByUserId(userId);
+        });
+    }
+
+    /**
+     * delete user by id
+     */
+    @Test
+    @DisplayName("delete User by id: success")
+    void testDeleteUserByIdSuccess(){
+        // Arrange
+        User user = mehdi;
+        userRepository.createUser(user);
+        int userId = 1;
+        int expectedSizeOfUsers = 0;
+
+        // Act
+        userRepository.deleteUserByUserId(userId);
+        int actualSizeOfUsers = userRepository.getUsers().size();
+
+        // Assert
+        assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
+
+    }
+
+    /**
+     * verifies that the IllegalStateException was thrown when user list is empty
+     */
+    @Test
+    @DisplayName("delete User by naem: ignore empty list and maintain the list")
+    void testDeleteUserByNameEmpty(){
+        // Arrange
+        String userName = "mehdi";
+
+        // Assert
+        assertThrows(IllegalStateException.class, () ->{
+            userRepository.deleteUserByUserName(userName);
+        });
+    }
+
+    /**
+     * delete user by name
+     */
+    @Test
+    @DisplayName("delete User by name: success")
+    void testDeleteUserByNameSuccess(){
+        // Arrange
+        User user = mehdi;
+        userRepository.createUser(user);
+        String userName = "mehdi";
+        int expectedSizeOfUsers = 0;
+
+        // Act
+        userRepository.deleteUserByUserName(userName);
+        int actualSizeOfUsers = userRepository.getUsers().size();
+
+        // Assert
+        assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
+
+    }
 }
+
