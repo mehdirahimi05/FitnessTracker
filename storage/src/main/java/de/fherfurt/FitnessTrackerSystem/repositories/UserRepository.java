@@ -15,27 +15,27 @@ import java.util.Optional;
  */
 public class UserRepository implements IUserRepository{
     @Getter
-    private final List<User> users;
+    private final List<User> usersList;
 
     public UserRepository() {
-        users = new ArrayList<>();
+        usersList = new ArrayList<>();
     }
 
     /**
-     * create and add a new User to the users list
+     * create and add a new User to the usersList list
       * @param user
      */
     @Override
     public void createUser(User user) {
         if (user == null){
-            throw new IllegalArgumentException("users can not be null");
+            throw new IllegalArgumentException("usersList can not be null");
         }
-        users.add(user);
+        usersList.add(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return new ArrayList<>(users);
+        return new ArrayList<>(usersList);
     }
 
     /**
@@ -43,7 +43,7 @@ public class UserRepository implements IUserRepository{
      */
     @Override
     public Optional<User> getUserById(int userId) {
-        return users.stream()
+        return usersList.stream()
                 .filter(user -> user.getUserId() == userId)
                 .findFirst();
     }
@@ -53,7 +53,7 @@ public class UserRepository implements IUserRepository{
      */
     @Override
     public Optional<User> getUserByUserName(String userName) {
-        return users.stream()
+        return usersList.stream()
                 .filter(user -> user.getUserName().equalsIgnoreCase(userName))
                 .findFirst();
     }
@@ -64,13 +64,13 @@ public class UserRepository implements IUserRepository{
     @Override
     public void updateUser(User user) {
         if (user == null){
-            throw new IllegalArgumentException("users can not be null");
+            throw new IllegalArgumentException("user can not be null");
         }
         var existingUser = getUserByUserName(user.getUserName());
         if (existingUser.isEmpty()) {
             throw new IllegalStateException("User not found");
         }
-        users.set(users.indexOf(existingUser.get()), user);
+        usersList.set(usersList.indexOf(existingUser.get()), user);
     }
 
     /**
@@ -80,9 +80,9 @@ public class UserRepository implements IUserRepository{
     public void deleteUserByUserId(int userId) {
         var foundUserId = getUserById(userId);
         if (foundUserId.isEmpty()){
-            throw new IllegalStateException("foundUserId does not exists in users");
+            throw new IllegalStateException("foundUserId does not exists in usersList");
         }
-        users.remove(foundUserId.get());
+        usersList.remove(foundUserId.get());
     }
 
     /**
@@ -92,8 +92,8 @@ public class UserRepository implements IUserRepository{
     public void deleteUserByUserName(String userName) {
         var foundUserName = getUserByUserName(userName);
         if (foundUserName.isEmpty()){
-            throw new IllegalStateException("foundUserName does not exists in users");
+            throw new IllegalStateException("foundUserName does not exists in usersList");
         }
-            users.remove(foundUserName.get());
+            usersList.remove(foundUserName.get());
     }
 }

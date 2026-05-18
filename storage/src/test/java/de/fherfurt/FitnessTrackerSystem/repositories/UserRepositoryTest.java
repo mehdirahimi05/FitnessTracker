@@ -51,7 +51,7 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.createUser(user);
-        int actualSizeOfUsers = userRepository.getUsers().size();
+        int actualSizeOfUsers = userRepository.getUsersList().size();
 
         // Assert
         assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
@@ -64,10 +64,10 @@ public class UserRepositoryTest {
     @DisplayName("Get null Users")
     void testGetNullUser(){
         // Act
-        List<User> users = userRepository.getAllUsers();
+        List<User> userList = userRepository.getAllUsers();
 
         // Assert
-        assertEquals(0, users.size());
+        assertEquals(0, userList.size());
     }
 
     /**
@@ -82,11 +82,11 @@ public class UserRepositoryTest {
         // Act
         userRepository.createUser(user1);
 
-        List<User> users = userRepository.getAllUsers();
+        List<User> userList = userRepository.getAllUsers();
 
         // Assert
-        assertEquals(1, users.size());
-        assertTrue(users.contains(user1));
+        assertEquals(1, userList.size());
+        assertTrue(userList.contains(user1));
 
     }
 
@@ -104,12 +104,12 @@ public class UserRepositoryTest {
         userRepository.createUser(user1);
         userRepository.createUser(user2);
 
-        List<User> users = userRepository.getAllUsers();
+        List<User> userList = userRepository.getAllUsers();
 
         // Assert
-        assertEquals(2, users.size());
-        assertTrue(users.contains(user1));
-        assertTrue(users.contains(user2));
+        assertEquals(2, userList.size());
+        assertTrue(userList.contains(user1));
+        assertTrue(userList.contains(user2));
     }
 
     /**
@@ -119,10 +119,10 @@ public class UserRepositoryTest {
     @DisplayName("Get User by Id: empty")
     void testGetUserByIdIsEmpty(){
         // Act
-        Optional<User> users = userRepository.getUserById(3);
+        Optional<User> userList = userRepository.getUserById(3);
 
         // Assert
-        assertTrue(users.isEmpty());
+        assertTrue(userList.isEmpty());
     }
 
     /**
@@ -136,10 +136,10 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.createUser(user1);
-        Optional<User> users = userRepository.getUserById(1);
+        Optional<User> userList = userRepository.getUserById(1);
 
         // Assert
-        assertTrue(users.isPresent());
+        assertTrue(userList.isPresent());
     }
 
     /**
@@ -153,10 +153,10 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.createUser(user1);
-        Optional<User> users = userRepository.getUserById(1);
+        Optional<User> userList = userRepository.getUserById(1);
 
         // Assert
-        assertEquals(user1, users.get());
+        assertEquals(user1, userList.get());
     }
 
     /**
@@ -166,10 +166,10 @@ public class UserRepositoryTest {
     @DisplayName("Get User by name: empty")
     void testGetUserByNameIsEmpty(){
         // Act
-        Optional<User> users = userRepository.getUserByUserName("Saphia");
+        Optional<User> userList = userRepository.getUserByUserName("Saphia");
 
         // Assert
-        assertTrue(users.isEmpty());
+        assertTrue(userList.isEmpty());
     }
 
     /**
@@ -183,10 +183,10 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.createUser(user1);
-        Optional<User> users = userRepository.getUserByUserName("mehdi");
+        Optional<User> userList = userRepository.getUserByUserName("mehdi");
 
         // Assert
-        assertTrue(users.isPresent());
+        assertTrue(userList.isPresent());
     }
 
     /**
@@ -200,10 +200,10 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.createUser(user);
-        Optional<User> users = userRepository.getUserByUserName("mehdi");
+        Optional<User> userList = userRepository.getUserByUserName("mehdi");
 
         // Assert
-        assertEquals(user, users.get());
+        assertEquals(user, userList.get());
     }
 
     /**
@@ -236,7 +236,7 @@ public class UserRepositoryTest {
      * updates User
      */
     @Test
-    @DisplayName("updae User: Succes")
+    @DisplayName("update User: Success")
     void testUpdateUserSuccess(){
         // Arrange
         User user = mehdi;                    // userName: "mehdi", password: "password123"
@@ -248,8 +248,8 @@ public class UserRepositoryTest {
         userRepository.updateUser(updatedUser);
 
         // Assert
-        Optional<User> finalUser = userRepository.getUserByUserName("mehdi");
-        assertEquals("newPassword", finalUser.get().getPassWord());
+        Optional<User> finalUserList = userRepository.getUserByUserName("mehdi");
+        assertEquals("newPassword", finalUserList.get().getPassWord());
     }
 
     /**
@@ -281,7 +281,7 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.deleteUserByUserId(userId);
-        int actualSizeOfUsers = userRepository.getUsers().size();
+        int actualSizeOfUsers = userRepository.getUsersList().size();
 
         // Assert
         assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
@@ -317,7 +317,7 @@ public class UserRepositoryTest {
 
         // Act
         userRepository.deleteUserByUserName(userName);
-        int actualSizeOfUsers = userRepository.getUsers().size();
+        int actualSizeOfUsers = userRepository.getUsersList().size();
 
         // Assert
         assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
