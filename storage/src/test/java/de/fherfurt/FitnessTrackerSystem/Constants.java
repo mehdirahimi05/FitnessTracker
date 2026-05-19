@@ -50,6 +50,7 @@ public class Constants {
     }
 
     // Training Sessions
+    public static final int FIRST_TRAININGS_SESSION_ID = 1;
     public static final LocalDate FIRST_DATE = LocalDate.of(2026, 3, 20);
     public static final int FIRST_DURATION_IN_MINUTE = 60;
     public static final float FIRST_DISTANCE_IN_KM = 10.0f;
@@ -60,10 +61,19 @@ public class Constants {
         return getFirstTrainingsSession(null);
     }
 
-    public static TrainingsSession getFirstTrainingsSession(UserDetails user) {
-        return new TrainingsSession(FIRST_DATE, FIRST_DURATION_IN_MINUTE, FIRST_DISTANCE_IN_KM, FIRST_BURNED_CALORIES, FIRST_ACTIVITY_TYPE, user);
+    public static TrainingsSession getFirstTrainingsSession(User user) {
+        return new TrainingsSession(
+                FIRST_TRAININGS_SESSION_ID,
+                user,
+                FIRST_DATE,
+                FIRST_DURATION_IN_MINUTE,
+                FIRST_DISTANCE_IN_KM,
+                FIRST_BURNED_CALORIES,
+                FIRST_ACTIVITY_TYPE
+        );
     }
 
+    public static final int SECOND_TRAININGS_SESSION_ID = 2;
     public static final LocalDate SECOND_DATE = LocalDate.of(2026, 3, 21);
     public static final int SECOND_DURATION_IN_MINUTE = 45;
     public static final float SECOND_DISTANCE_IN_KM = 25.0f;
@@ -74,7 +84,15 @@ public class Constants {
         return getSecondTrainingsSession(null);
     }
 
-    public static TrainingsSession getSecondTrainingsSession(UserDetails user) {
-        return new TrainingsSession(SECOND_DATE, SECOND_DURATION_IN_MINUTE, SECOND_DISTANCE_IN_KM, SECOND_BURNED_CALORIES, SECOND_ACTIVITY_TYPE, user);
+    public static TrainingsSession getSecondTrainingsSession(User user) {
+        return new TrainingsSession(
+                SECOND_TRAININGS_SESSION_ID,
+                user,
+                SECOND_DATE,
+                SECOND_DURATION_IN_MINUTE,
+                SECOND_DISTANCE_IN_KM,
+                SECOND_BURNED_CALORIES,
+                SECOND_ACTIVITY_TYPE
+        );
     }
 }

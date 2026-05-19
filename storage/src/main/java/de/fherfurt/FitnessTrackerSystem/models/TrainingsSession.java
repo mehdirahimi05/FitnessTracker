@@ -19,11 +19,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainingsSession{
+    private int trainingsSessionId;
+    private User user;
     private LocalDate date;
     private int durationInMinute;
     private float distanceInKm;
     private int burnedCalories;
     private ActivityType activityType;
-    private UserDetails user;
-
 }

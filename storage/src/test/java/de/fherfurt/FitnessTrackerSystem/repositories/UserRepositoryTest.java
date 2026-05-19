@@ -47,14 +47,14 @@ public class UserRepositoryTest {
     void testCreateUserSuccess(){
         // Arrange
         User user = Constants.getFirstUser();
-        int expectedSizeOfUsers = 1;
+        int expectedSizeOfUserList = 1;
 
         // Act
         userRepository.createUser(user);
-        int actualSizeOfUsers = userRepository.getUsersList().size();
+        int actualSizeOfUserList = userRepository.getUsersList().size();
 
         // Assert
-        assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
+        assertEquals(expectedSizeOfUserList, actualSizeOfUserList);
     }
 
     /**

@@ -1,7 +1,6 @@
 package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
-import de.fherfurt.FitnessTrackerSystem.core.UserRole;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 import org.junit.jupiter.api.BeforeEach;
@@ -152,14 +151,14 @@ public class UserDetailsRepositoryTest {
         UserDetails userDetails = Constants.getFirstUserDetails();
         userDetailsRepository.createUserDetails(userDetails);
         String email = Constants.FIRST_USER_EMAIL;
-        int expectedSizeOfUsers = 0;
+        int expectedSizeOfUserList = 0;
 
         // Act
         userDetailsRepository.deleteUserDetailsByEmail(email);
-        int actualSizeOfUsers = userDetailsRepository.getUserDetailsList().size();
+        int actualSizeOfUserList = userDetailsRepository.getUserDetailsList().size();
 
         // Assert
-        assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
+        assertEquals(expectedSizeOfUserList, actualSizeOfUserList);
 
     }
 }
