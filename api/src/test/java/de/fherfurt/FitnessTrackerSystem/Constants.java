@@ -22,7 +22,7 @@ public class Constants {
     public static final float FIRST_USER_HEIGHT = 180;
 
     public static UserDetails getFirstUserDetails() {
-        return new UserDetails(FIRST_USER_FIRST_NAME, FIRST_USER_LAST_NAME, FIRST_USER_EMAIL, FIRST_USER_BIRTH_DATE, FIRST_USER_WEIGHT, FIRST_USER_HEIGHT);
+        return new UserDetails(FIRST_USER_ID, FIRST_USER_FIRST_NAME, FIRST_USER_LAST_NAME, FIRST_USER_EMAIL, FIRST_USER_BIRTH_DATE, FIRST_USER_WEIGHT, FIRST_USER_HEIGHT);
     }
 
     public static User getFirstUser() {
@@ -42,7 +42,7 @@ public class Constants {
     public static final float SECOND_USER_HEIGHT = 179;
 
     public static UserDetails getSecondUserDetails() {
-        return new UserDetails(SECOND_USER_FIRST_NAME, SECOND_USER_LAST_NAME, SECOND_USER_EMAIL, SECOND_USER_BIRTH_DATE, SECOND_USER_WEIGHT, SECOND_USER_HEIGHT);
+        return new UserDetails(SECOND_USER_ID, SECOND_USER_FIRST_NAME, SECOND_USER_LAST_NAME, SECOND_USER_EMAIL, SECOND_USER_BIRTH_DATE, SECOND_USER_WEIGHT, SECOND_USER_HEIGHT);
     }
 
     public static User getSecondUser() {
@@ -62,15 +62,7 @@ public class Constants {
     }
 
     public static TrainingsSession getFirstTrainingsSession(User user) {
-        return new TrainingsSession(
-                FIRST_TRAININGS_SESSION_ID,
-                user,
-                FIRST_DATE,
-                FIRST_DURATION_IN_MINUTE,
-                FIRST_DISTANCE_IN_KM,
-                FIRST_BURNED_CALORIES,
-                FIRST_ACTIVITY_TYPE
-        );
+        return new TrainingsSession(FIRST_TRAININGS_SESSION_ID, user, FIRST_DATE, FIRST_DURATION_IN_MINUTE, FIRST_DISTANCE_IN_KM, FIRST_BURNED_CALORIES, FIRST_ACTIVITY_TYPE);
     }
 
     public static final int SECOND_TRAININGS_SESSION_ID = 2;
@@ -85,14 +77,6 @@ public class Constants {
     }
 
     public static TrainingsSession getSecondTrainingsSession(User user) {
-        return new TrainingsSession(
-                SECOND_TRAININGS_SESSION_ID,
-                user,
-                SECOND_DATE,
-                SECOND_DURATION_IN_MINUTE,
-                SECOND_DISTANCE_IN_KM,
-                SECOND_BURNED_CALORIES,
-                SECOND_ACTIVITY_TYPE
-        );
+        return new TrainingsSession(SECOND_TRAININGS_SESSION_ID, user, SECOND_DATE, SECOND_DURATION_IN_MINUTE, SECOND_DISTANCE_IN_KM, SECOND_BURNED_CALORIES, SECOND_ACTIVITY_TYPE);
     }
 }

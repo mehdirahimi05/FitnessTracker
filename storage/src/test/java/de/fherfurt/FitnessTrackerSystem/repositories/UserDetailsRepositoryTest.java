@@ -26,31 +26,31 @@ public class UserDetailsRepositoryTest {
     }
 
     /**
-     * verifies that there is no user email
+     * verifies that there is no user id
      */
     @Test
-    @DisplayName("get Userdetails by email: empty")
-    void testGetUserDetailsOfUserByEmailIsEmpty(){
+    @DisplayName("get Userdetails by id: empty")
+    void testGetUserDetailsOfUserByIdIsEmpty(){
         // Act
-        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserByEmail("Saphia@gmail.com");
+        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(5);
 
         // Assert
         assertTrue(userDetailsList.isEmpty());
     }
 
     /**
-     * verifies that there is a user email
+     * verifies that there is a user id
      */
     @Test
-    @DisplayName("get Userdetails by email: present")
-    void testGetUserDetailsOfUserByEmailIsPresent(){
+    @DisplayName("get Userdetails by id: present")
+    void testGetUserDetailsOfUserByIdIsPresent(){
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
-        String email = Constants.FIRST_USER_EMAIL;
+        int userId = Constants.FIRST_USER_ID;
 
         // Act
         userDetailsRepository.createUserDetails(userDetails);
-        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserByEmail(email);
+        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
 
         // Assert
         assertTrue(userDetailsList.isPresent());
@@ -65,14 +65,14 @@ public class UserDetailsRepositoryTest {
     void testGetUserDetailsOfUserByEmailSuccess(){
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
-        String email = Constants.FIRST_USER_EMAIL;
+        int userId = Constants.FIRST_USER_ID;
 
         // Act
         userDetailsRepository.createUserDetails(userDetails);
-        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserByEmail(email);
+        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
 
         // Assert
-        assertEquals(email, userDetailsList.get().getEmail());
+        assertEquals(userId, userDetailsList.get().getUserId());
     }
 
     /**
@@ -109,52 +109,53 @@ public class UserDetailsRepositoryTest {
     void testUpdateUserDetailsSuccess(){
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
-        String email = Constants.FIRST_USER_EMAIL;
+        int userId = Constants.FIRST_USER_ID;
         userDetailsRepository.createUserDetails(userDetails);
 
-        UserDetails updatedUserDetails = new UserDetails("omar", "takla", "mehdi@icloud.com", LocalDate.of(2004, 01, 01), 77, 170);
+        UserDetails updatedUserDetails = new UserDetails(userId,"omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
 
         // Act
         userDetailsRepository.updateUserDetails(updatedUserDetails);
-        Optional<UserDetails> finalUserList = userDetailsRepository.getUserDetailsOfUserByEmail(email);
+        Optional<UserDetails> finalUserDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
 
         // Assert
-        assertEquals("omar", finalUserList.get().getFirstName());
-        assertEquals("takla", finalUserList.get().getLastName());
-        assertEquals(LocalDate.of(2004, 01, 01), finalUserList.get().getBirthDate());
-        assertEquals(77, finalUserList.get().getWeight());
-        assertEquals(170, finalUserList.get().getHeight());
+        assertEquals("omar", finalUserDetailsList.get().getFirstName());
+        assertEquals("takla", finalUserDetailsList.get().getLastName());
+        assertEquals("omar@gmail.com", finalUserDetailsList.get().getEmail());
+        assertEquals(LocalDate.of(2004, 01, 01), finalUserDetailsList.get().getBirthDate());
+        assertEquals(77, finalUserDetailsList.get().getWeight());
+        assertEquals(170, finalUserDetailsList.get().getHeight());
     }
 
     /**
      * verifies that the IllegalStateException was thrown when user list is empty
      */
     @Test
-    @DisplayName("delete User by email: ignore empty list and maintain the list")
-    void testDeleteUserByEmailEmpty(){
+    @DisplayName("delete User by id: ignore empty list and maintain the list")
+    void testDeleteUserByIdEmpty(){
         // Arrange
-        String email = Constants.FIRST_USER_EMAIL;
+        int userId = Constants.FIRST_USER_ID;
 
         // Assert
         assertThrows(IllegalStateException.class, () ->{
-            userDetailsRepository.deleteUserDetailsByEmail(email);
+            userDetailsRepository.deleteUserDetailsById(userId);
         });
     }
 
     /**
-     * delete user by email
+     * delete user by id
      */
     @Test
-    @DisplayName("delete User by email: success")
-    void testDeleteUserByNameSuccess(){
+    @DisplayName("delete User by id: success")
+    void testDeleteUserByIdSuccess(){
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         userDetailsRepository.createUserDetails(userDetails);
-        String email = Constants.FIRST_USER_EMAIL;
+        int userId = Constants.FIRST_USER_ID;
         int expectedSizeOfUserList = 0;
 
         // Act
-        userDetailsRepository.deleteUserDetailsByEmail(email);
+        userDetailsRepository.deleteUserDetailsById(userId);
         int actualSizeOfUserList = userDetailsRepository.getUserDetailsList().size();
 
         // Assert

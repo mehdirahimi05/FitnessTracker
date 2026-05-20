@@ -126,10 +126,10 @@ public class UserServiceTest {
         userRepository.createUser(user);
 
         // Act
-        boolean result = userService.authenticateUser("Saphia", "something");
+        boolean userList = userService.authenticateUser("Saphia", "something");
 
         // Assert
-        assertFalse(result);
+        assertFalse(userList);
     }
 
     /**
@@ -143,17 +143,17 @@ public class UserServiceTest {
         userRepository.createUser(user);
 
         // Act
-        boolean result = userService.authenticateUser(user.getUserName(), "falsches_passwort_123");
+        boolean userList = userService.authenticateUser(user.getUserName(), "falsches_passwort_123");
 
         // Assert
-        assertFalse(result);
+        assertFalse(userList);
     }
 
     /**
      * verifies that the user exists
      */
     @Test
-    @DisplayName("authenticateUser : user does not exists")
+    @DisplayName("authenticateUser : user does exists")
     void testAuthenticateUserSuccess(){
         // Arrange
         User user = Constants.getFirstUser();
