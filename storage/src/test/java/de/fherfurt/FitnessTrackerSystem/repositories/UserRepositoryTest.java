@@ -160,7 +160,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * verifies that there is no User name
+     * verifies that there is no Username
      */
     @Test
     @DisplayName("Get User by name: empty")
@@ -173,7 +173,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * verifies that there is a User name
+     * verifies that there is a Username
      */
     @Test
     @DisplayName("Get User by name : present")
@@ -190,7 +190,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * gets the user name
+     * gets the userName
      */
     @Test
     @DisplayName("Get User by name")
@@ -205,6 +205,7 @@ public class UserRepositoryTest {
         // Assert
         assertEquals(user, userList.get());
     }
+
 
     /**
      * Verifies that the IllegalArgumentException was thrown when null is provided
