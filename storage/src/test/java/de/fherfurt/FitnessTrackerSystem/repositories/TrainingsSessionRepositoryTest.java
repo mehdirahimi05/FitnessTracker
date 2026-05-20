@@ -114,7 +114,7 @@ public class TrainingsSessionRepositoryTest {
     @DisplayName("Get trainingsSession by Id: empty")
     void testGetTrainingsSessionByIdIsEmpty(){
         // Act
-        Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionByTrainingsSessionId(3);
+        Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionById(3);
 
         // Assert
         assertTrue(trainingsSessionList.isEmpty());
@@ -132,7 +132,7 @@ public class TrainingsSessionRepositoryTest {
 
         // Act
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
-        Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionByTrainingsSessionId(trainingsSessionId);
+        Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
 
         // Assert
         assertTrue(trainingsSessionList.isPresent());
@@ -150,7 +150,7 @@ public class TrainingsSessionRepositoryTest {
 
         // Act
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
-        Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionByTrainingsSessionId(trainingsSessionId);
+        Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
 
         // Assert
         assertEquals(trainingsSession, trainingsSessionList.get());
@@ -187,7 +187,7 @@ public class TrainingsSessionRepositoryTest {
 
         // Act
         trainingsSessionRepository.updateTrainingsSession(updatedTrainingsSession);
-        Optional<TrainingsSession> findTrainingsSessionList = trainingsSessionRepository.getTrainingsSessionByTrainingsSessionId(trainingsSessionId);
+        Optional<TrainingsSession> findTrainingsSessionList = trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
 
         // Assert
         assertEquals(user, findTrainingsSessionList.get().getUser());
@@ -209,7 +209,7 @@ public class TrainingsSessionRepositoryTest {
 
         // Assert
         assertThrows(IllegalStateException.class, () ->{
-            trainingsSessionRepository.deleteTrainingsSessionByTrainingsSessionId(trainingsSessionId);
+            trainingsSessionRepository.deleteTrainingsSessionById(trainingsSessionId);
         });
     }
 
@@ -226,7 +226,7 @@ public class TrainingsSessionRepositoryTest {
         int expectedSizeOfTrainingsSessionList = 0;
 
         // Act
-        trainingsSessionRepository.deleteTrainingsSessionByTrainingsSessionId(trainingsSessionId);
+        trainingsSessionRepository.deleteTrainingsSessionById(trainingsSessionId);
         int actualSizeOfTrainingsSessionList = trainingsSessionRepository.getTrainingsSessionList().size();
 
         // Assert

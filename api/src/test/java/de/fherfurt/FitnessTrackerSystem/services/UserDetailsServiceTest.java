@@ -2,7 +2,6 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
-import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
 import de.fherfurt.FitnessTrackerSystem.repositories.UserDetailsRepository;
 import org.junit.jupiter.api.BeforeEach;

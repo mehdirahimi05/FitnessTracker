@@ -1,7 +1,6 @@
 package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class TrainingsSessionRepository implements ITrainingsSessionRepository{
     }
 
     @Override
-    public Optional<TrainingsSession> getTrainingsSessionByTrainingsSessionId(int trainingsSessionId) {
+    public Optional<TrainingsSession> getTrainingsSessionById(int trainingsSessionId) {
         return trainingsSessionList.stream()
                 .filter(trainingsSession -> trainingsSession.getTrainingsSessionId() == trainingsSessionId)
                 .findFirst();
@@ -42,15 +41,15 @@ public class TrainingsSessionRepository implements ITrainingsSessionRepository{
         if (trainingsSession == null){
             throw new IllegalArgumentException("trainingsSessionList can not be null");
         }
-        var existingTrainingsSession = getTrainingsSessionByTrainingsSessionId(trainingsSession.getTrainingsSessionId());
+        var existingTrainingsSession = getTrainingsSessionById(trainingsSession.getTrainingsSessionId());
         if (existingTrainingsSession.isEmpty()){
             throw new IllegalStateException("trainingsSession does not exist");
         }
         trainingsSessionList.set(trainingsSessionList.indexOf(existingTrainingsSession.get()),trainingsSession);
     }
 
-    public void deleteTrainingsSessionByTrainingsSessionId(int trainingsSessionId) {
-        var foundTrainingsSessionId = getTrainingsSessionByTrainingsSessionId((trainingsSessionId));
+    public void deleteTrainingsSessionById(int trainingsSessionId) {
+        var foundTrainingsSessionId = getTrainingsSessionById((trainingsSessionId));
         if (foundTrainingsSessionId.isEmpty()){
             throw new IllegalStateException("foundTrainingsSessionId does not exist");
         }
