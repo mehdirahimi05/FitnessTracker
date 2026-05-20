@@ -5,12 +5,12 @@ import de.fherfurt.FitnessTrackerSystem.models.User;
 import java.util.Optional;
 
 public interface IUserService {
+    Optional<User> signUpUser(User newUser);
     Optional<User> getUserById(int userId);
     Optional<User> getUserByUserName(String userName);
-    boolean checkUserExists(String userName, String passWord);
-    void addUser(User newUser);
+    boolean authenticateUser(String userName, String passWord);
     void updateUser(User updatedUser);
     void deleteUserByUserName(String username);
-    void deleteUserByUserId(int userid);
+    void deleteUserByUserId(int userId);
 }
 
