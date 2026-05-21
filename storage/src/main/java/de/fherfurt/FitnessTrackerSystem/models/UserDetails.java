@@ -18,7 +18,8 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDetails{
+public class UserDetails {
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;

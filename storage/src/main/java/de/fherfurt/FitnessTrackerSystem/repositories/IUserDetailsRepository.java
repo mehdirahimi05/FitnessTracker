@@ -6,7 +6,10 @@ import java.util.Optional;
 
 public interface IUserDetailsRepository {
     void createUserDetails(UserDetails userDetails);
-    Optional<UserDetails> getUserDetailsOfUserByEmail(String email);
+
+    Optional<UserDetails> getUserDetailsOfUserById(int userId);
+
     void updateUserDetails(UserDetails userDetails);
-    void deleteUserDetailsByEmail(String  email);
+
+    void deleteUserDetailsById(int userId);
 }

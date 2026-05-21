@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unittest for {@link UserRepository} class
+ *
  * @author Mehdi Rahimi
  */
 public class UserRepositoryTest {
@@ -22,7 +23,7 @@ public class UserRepositoryTest {
     private User ammar;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         userRepository = new UserRepository();
         mehdi = Constants.getFirstUser();
         ammar = Constants.getSecondUser();
@@ -33,8 +34,8 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Crate User : Ignore null input and maintain empty list")
-    void testCreateUserNull(){
-        assertThrows(IllegalArgumentException.class, () ->{
+    void testCreateUserNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
             userRepository.createUser(null);
         });
     }
@@ -44,7 +45,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Crate User : success")
-    void testCreateUserSuccess(){
+    void testCreateUserSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         int expectedSizeOfUserList = 1;
@@ -62,7 +63,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Get null Users")
-    void testGetNullUser(){
+    void testGetNullUser() {
         // Act
         List<User> userList = userRepository.getAllUsers();
 
@@ -75,7 +76,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Get one User")
-    void testGetOneUser(){
+    void testGetOneUser() {
         // Arrange
         User user1 = mehdi;
 
@@ -95,7 +96,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Get all Users")
-    void testGetAllUsers(){
+    void testGetAllUsers() {
         // Arrange
         User user1 = mehdi;
         User user2 = ammar;
@@ -117,7 +118,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Get User by Id: empty")
-    void testGetUserByIdIsEmpty(){
+    void testGetUserByIdIsEmpty() {
         // Act
         Optional<User> userList = userRepository.getUserById(3);
 
@@ -130,7 +131,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Get User by Id : present")
-    void testGetUserByIdIsPresent(){
+    void testGetUserByIdIsPresent() {
         // Arrange
         User user1 = mehdi;
 
@@ -147,7 +148,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Get User by Id")
-    void testGetUserById(){
+    void testGetUserById() {
         // Arrange
         User user1 = mehdi;
 
@@ -160,11 +161,11 @@ public class UserRepositoryTest {
     }
 
     /**
-     * verifies that there is no User name
+     * verifies that there is no Username
      */
     @Test
     @DisplayName("Get User by name: empty")
-    void testGetUserByNameIsEmpty(){
+    void testGetUserByNameIsEmpty() {
         // Act
         Optional<User> userList = userRepository.getUserByUserName("Saphia");
 
@@ -173,11 +174,11 @@ public class UserRepositoryTest {
     }
 
     /**
-     * verifies that there is a User name
+     * verifies that there is a Username
      */
     @Test
     @DisplayName("Get User by name : present")
-    void testGetUserByNameIsPresent(){
+    void testGetUserByNameIsPresent() {
         // Arrange
         User user1 = mehdi;
 
@@ -190,11 +191,11 @@ public class UserRepositoryTest {
     }
 
     /**
-     * gets the user name
+     * gets the userName
      */
     @Test
     @DisplayName("Get User by name")
-    void testGetUserByName(){
+    void testGetUserByName() {
         // Arrange
         User user = mehdi;
 
@@ -206,13 +207,14 @@ public class UserRepositoryTest {
         assertEquals(user, userList.get());
     }
 
+
     /**
      * Verifies that the IllegalArgumentException was thrown when null is provided
      */
     @Test
     @DisplayName("Update User: Ignore null input and maintain empty list")
-    void testUpdateUserNull(){
-        assertThrows(IllegalArgumentException.class, () ->{
+    void testUpdateUserNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
             userRepository.updateUser(null);
         });
     }
@@ -222,12 +224,12 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("Update User: ignore empty list and maintain the list")
-    void testUpdateUserEmpty(){
+    void testUpdateUserEmpty() {
         // Arrange
         User user = mehdi;
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             userRepository.updateUser(user);
         });
     }
@@ -237,7 +239,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("update User: Success")
-    void testUpdateUserSuccess(){
+    void testUpdateUserSuccess() {
         // Arrange
         User user = mehdi;                    // userName: "mehdi", password: "password123"
         userRepository.createUser(user);
@@ -257,12 +259,12 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("delete User by id: ignore empty list and maintain the list")
-    void testDeleteUserByIdEmpty(){
+    void testDeleteUserByIdEmpty() {
         // Arrange
         int userId = 1;
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             userRepository.deleteUserByUserId(userId);
         });
     }
@@ -272,7 +274,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("delete User by id: success")
-    void testDeleteUserByIdSuccess(){
+    void testDeleteUserByIdSuccess() {
         // Arrange
         User user = mehdi;
         userRepository.createUser(user);
@@ -293,12 +295,12 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("delete User by naem: ignore empty list and maintain the list")
-    void testDeleteUserByNameEmpty(){
+    void testDeleteUserByNameEmpty() {
         // Arrange
         String userName = "mehdi";
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             userRepository.deleteUserByUserName(userName);
         });
     }
@@ -308,7 +310,7 @@ public class UserRepositoryTest {
      */
     @Test
     @DisplayName("delete User by name: success")
-    void testDeleteUserByNameSuccess(){
+    void testDeleteUserByNameSuccess() {
         // Arrange
         User user = mehdi;
         userRepository.createUser(user);

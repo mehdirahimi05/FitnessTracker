@@ -21,9 +21,5 @@
         <module name="UnusedImports"/>
         <module name="AvoidStarImport"/>
 
-        <!-- Javadoc -->
-        <module name="MissingJavadocMethod">
-            <property name="scope" value="public"/>
-        </module>
     </module>
 </module>

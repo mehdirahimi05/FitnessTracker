@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDetailsRepository implements IUserDetailsRepository{
+public class UserDetailsRepository implements IUserDetailsRepository {
     @Getter
     private final List<UserDetails> userDetailsList;
 
@@ -17,27 +17,27 @@ public class UserDetailsRepository implements IUserDetailsRepository{
 
     @Override
     public void createUserDetails(UserDetails userDetails) {
-        if (userDetails == null){
+        if (userDetails == null) {
             throw new IllegalArgumentException("can not be null");
         }
         userDetailsList.add(userDetails);
 
     }
 
-    public Optional<UserDetails> getUserDetailsOfUserByEmail(String email) {
+    public Optional<UserDetails> getUserDetailsOfUserById(int userId) {
         return userDetailsList.stream()
-                .filter(userDetails -> userDetails.getEmail().equalsIgnoreCase(email))
+                .filter(userDetails -> userDetails.getUserId() == userId)
                 .findFirst();
     }
 
 
     @Override
     public void updateUserDetails(UserDetails userDetails) {
-        if (userDetails == null){
+        if (userDetails == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        var existingUserDetails = getUserDetailsOfUserByEmail(userDetails.getEmail());
-        if (existingUserDetails.isEmpty()){
+        var existingUserDetails = getUserDetailsOfUserById(userDetails.getUserId());
+        if (existingUserDetails.isEmpty()) {
             throw new IllegalStateException("user details not found");
         }
         userDetailsList.set(userDetailsList.indexOf(existingUserDetails.get()), userDetails);
@@ -45,9 +45,9 @@ public class UserDetailsRepository implements IUserDetailsRepository{
     }
 
     @Override
-    public void deleteUserDetailsByEmail(String email) {
-        var foundUserEmail = getUserDetailsOfUserByEmail(email);
-        if (foundUserEmail.isEmpty()){
+    public void deleteUserDetailsById(int userId) {
+        var foundUserEmail = getUserDetailsOfUserById(userId);
+        if (foundUserEmail.isEmpty()) {
             throw new IllegalStateException("foundUserEmail does not exist");
         }
         userDetailsList.remove(foundUserEmail.get());
