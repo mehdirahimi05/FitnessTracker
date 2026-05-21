@@ -6,10 +6,10 @@ import de.fherfurt.FitnessTrackerSystem.repositories.ITrainingsSessionRepository
 import java.util.List;
 import java.util.Optional;
 
-public class TrainingsSessionService implements ITrainingsSessionService{
+public class TrainingsSessionService implements ITrainingsSessionService {
     private final ITrainingsSessionRepository trainingsSessionRepository;
 
-    public TrainingsSessionService(ITrainingsSessionRepository trainingsSessionRepository){
+    public TrainingsSessionService(ITrainingsSessionRepository trainingsSessionRepository) {
         this.trainingsSessionRepository = trainingsSessionRepository;
     }
 
@@ -26,7 +26,7 @@ public class TrainingsSessionService implements ITrainingsSessionService{
     @Override
     public boolean checkIsOwnTrainingsSession(int trainingsSessionId) {
         var trainingsSessionToCheck = trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
-        if (trainingsSessionToCheck.isEmpty()){
+        if (trainingsSessionToCheck.isEmpty()) {
             return false;
         }
         return trainingsSessionToCheck.get().getTrainingsSessionId() == trainingsSessionId;

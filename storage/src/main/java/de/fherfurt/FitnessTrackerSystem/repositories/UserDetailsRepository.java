@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDetailsRepository implements IUserDetailsRepository{
+public class UserDetailsRepository implements IUserDetailsRepository {
     @Getter
     private final List<UserDetails> userDetailsList;
 
@@ -17,7 +17,7 @@ public class UserDetailsRepository implements IUserDetailsRepository{
 
     @Override
     public void createUserDetails(UserDetails userDetails) {
-        if (userDetails == null){
+        if (userDetails == null) {
             throw new IllegalArgumentException("can not be null");
         }
         userDetailsList.add(userDetails);
@@ -33,11 +33,11 @@ public class UserDetailsRepository implements IUserDetailsRepository{
 
     @Override
     public void updateUserDetails(UserDetails userDetails) {
-        if (userDetails == null){
+        if (userDetails == null) {
             throw new IllegalArgumentException("can not be null");
         }
         var existingUserDetails = getUserDetailsOfUserById(userDetails.getUserId());
-        if (existingUserDetails.isEmpty()){
+        if (existingUserDetails.isEmpty()) {
             throw new IllegalStateException("user details not found");
         }
         userDetailsList.set(userDetailsList.indexOf(existingUserDetails.get()), userDetails);
@@ -47,7 +47,7 @@ public class UserDetailsRepository implements IUserDetailsRepository{
     @Override
     public void deleteUserDetailsById(int userId) {
         var foundUserEmail = getUserDetailsOfUserById(userId);
-        if (foundUserEmail.isEmpty()){
+        if (foundUserEmail.isEmpty()) {
             throw new IllegalStateException("foundUserEmail does not exist");
         }
         userDetailsList.remove(foundUserEmail.get());

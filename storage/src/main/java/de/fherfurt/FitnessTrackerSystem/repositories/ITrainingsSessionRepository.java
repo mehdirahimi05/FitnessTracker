@@ -7,8 +7,12 @@ import java.util.Optional;
 
 public interface ITrainingsSessionRepository {
     void createTrainingsSession(TrainingsSession trainingsSession);
+
     List<TrainingsSession> getAllTrainingsSessions();
+
     Optional<TrainingsSession> getTrainingsSessionById(int trainingsSessionId);
+
     void updateTrainingsSession(TrainingsSession trainingsSession);
+
     void deleteTrainingsSessionById(int trainingsSessionId);
 }

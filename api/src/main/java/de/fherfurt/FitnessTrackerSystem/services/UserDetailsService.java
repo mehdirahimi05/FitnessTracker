@@ -5,10 +5,10 @@ import de.fherfurt.FitnessTrackerSystem.repositories.IUserDetailsRepository;
 
 import java.util.Optional;
 
-public class UserDetailsService implements IUserDetailsService{
+public class UserDetailsService implements IUserDetailsService {
     private final IUserDetailsRepository userDetailsRepository;
 
-    public UserDetailsService(IUserDetailsRepository userDetailsRepository){
+    public UserDetailsService(IUserDetailsRepository userDetailsRepository) {
         this.userDetailsRepository = userDetailsRepository;
     }
 
@@ -21,7 +21,7 @@ public class UserDetailsService implements IUserDetailsService{
     @Override
     public boolean checkIsOwnUserDetails(int userId) {
         var userDetailsToCheck = userDetailsRepository.getUserDetailsOfUserById(userId);
-        if (userDetailsToCheck.isEmpty()){
+        if (userDetailsToCheck.isEmpty()) {
             return false;
         }
         return userDetailsToCheck.get().getUserId() == userId;

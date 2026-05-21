@@ -5,15 +5,15 @@ import de.fherfurt.FitnessTrackerSystem.repositories.IUserRepository;
 
 import java.util.Optional;
 
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final IUserRepository userRepository;
 
-    public UserService(IUserRepository userRepository){
+    public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public Optional<User> signUpUser(User newUser) {
-        if (newUser == null){
+        if (newUser == null) {
             throw new IllegalArgumentException("Can not be null");
         }
         var existingUser = userRepository.getUserByUserName(newUser.getUserName());
@@ -38,7 +38,7 @@ public class UserService implements IUserService{
     @Override
     public boolean authenticateUser(String userName, String passWord) {
         var foundUser = getUserByUserName(userName);
-        if (foundUser.isEmpty()){
+        if (foundUser.isEmpty()) {
             return false;
         }
         return foundUser.get().getPassWord().equals(passWord);

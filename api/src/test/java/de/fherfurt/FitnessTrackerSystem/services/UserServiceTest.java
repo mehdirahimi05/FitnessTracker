@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unittest for {@link UserService} class
+ *
  * @author Mehdi Rahimi
  */
 
@@ -22,7 +23,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         userRepository = new UserRepository();
         userService = new UserService(userRepository);
     }
@@ -32,9 +33,9 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("SignUp User null: Ignore null input and maintain")
-    void testSignUpUserNull(){
-        assertThrows(IllegalArgumentException.class, () ->{
-                userService.signUpUser(null);
+    void testSignUpUserNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.signUpUser(null);
         });
     }
 
@@ -43,7 +44,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("SignUp User exists: return empty optional")
-    void testSignUpUserExists(){
+    void testSignUpUserExists() {
         // Arrange
         User existingUser = Constants.getFirstUser();
         userRepository.createUser(existingUser);
@@ -60,7 +61,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("SignUp User: success")
-    void testSignUpUserSuccess(){
+    void testSignUpUserSuccess() {
         User user = Constants.getSecondUser();
 
         // Act
@@ -81,7 +82,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("getUserById: success")
-    void testGetUserByIdSuccess(){
+    void testGetUserByIdSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         int userId = Constants.FIRST_USER_ID;
@@ -101,7 +102,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("getUserByUserName: success")
-    void testGetUserByUserNameSuccess(){
+    void testGetUserByUserNameSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         String userName = Constants.FIRST_USER_NAME;
@@ -154,7 +155,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("authenticateUser : user does exists")
-    void testAuthenticateUserSuccess(){
+    void testAuthenticateUserSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
 
@@ -171,7 +172,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("UpdateUser: Success")
-    void testUpdateUseSuccess(){
+    void testUpdateUseSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         userRepository.createUser(user);
@@ -191,7 +192,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("delete User By UserName: Success")
-    void testDeleteUserByUserNameSuccess(){
+    void testDeleteUserByUserNameSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         userRepository.createUser(user);
@@ -211,7 +212,7 @@ public class UserServiceTest {
      */
     @Test
     @DisplayName("delete User By Id: Success")
-    void testDeleteUserByUserIdSuccess(){
+    void testDeleteUserByUserIdSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         userRepository.createUser(user);

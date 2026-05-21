@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainingsSession{
+public class TrainingsSession {
     private int trainingsSessionId;
     private User user;
     private LocalDate date;

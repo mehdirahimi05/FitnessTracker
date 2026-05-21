@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unittest for {@link TrainingsSessionService} class
+ *
  * @author Mehdi Rahimi
  */
 public class TrainingsSessionServiceTest {
@@ -23,7 +24,7 @@ public class TrainingsSessionServiceTest {
     private TrainingsSessionService trainingsSessionService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         trainingsSessionRepository = new TrainingsSessionRepository();
         trainingsSessionService = new TrainingsSessionService(trainingsSessionRepository);
     }
@@ -33,7 +34,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("getAllTrainingsSessions: Success")
-    void testGetAllTrainingsSessionsSuccess(){
+    void testGetAllTrainingsSessionsSuccess() {
         // Arrange
         TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession();
         TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession();
@@ -55,7 +56,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("get TrainingsSession by Id: success")
-    void testGetTrainingsSessionByIdSuccess(){
+    void testGetTrainingsSessionByIdSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
@@ -74,7 +75,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("checkIsOwnTrainingsSession: TrainingsSessionId does not exists")
-    void testCheckIsOwnTrainingsSessionNotFound(){
+    void testCheckIsOwnTrainingsSessionNotFound() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
@@ -91,7 +92,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("checkIsOwnTrainingsSession : TrainingsSessionId does  exists")
-    void testCheckIsOwnTrainingsSessionSuccess(){
+    void testCheckIsOwnTrainingsSessionSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
@@ -108,7 +109,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("TrainingsSession: success")
-    void testAddTrainingsSessionSuccess(){
+    void testAddTrainingsSessionSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int expectedSizeOfTrainingsSession = 1;
@@ -126,7 +127,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("update TrainingsSession : Success")
-    void testUpdateTrainingsSessionSuccess(){
+    void testUpdateTrainingsSessionSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
@@ -153,7 +154,7 @@ public class TrainingsSessionServiceTest {
      */
     @Test
     @DisplayName("delete trainingsSession by id: success")
-    void testDeleteTrainingsSessionByIdSuccess(){
+    void testDeleteTrainingsSessionByIdSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         trainingsSessionRepository.createTrainingsSession(trainingsSession);

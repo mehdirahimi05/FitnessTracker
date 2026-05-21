@@ -9,15 +9,16 @@ import lombok.Setter;
 
 /**
  * Model class representing a user
+ *
+ * @author Mehdi Rahimi
  * @see Cloneable
  * @see Comparable
- * @author Mehdi Rahimi
  */
 @AllArgsConstructor
 @Setter
 @Getter
 @NoArgsConstructor
-public class User{
+public class User {
     private int userId;
     private String userName;
     private String passWord;

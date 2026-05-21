@@ -11,16 +11,18 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Unittest for {@link UserDetailsRepository} class
+ *
  * @author Mehdi Rahimi
  */
 public class UserDetailsRepositoryTest {
-    private UserDetailsRepository userDetailsRepository ;
+    private UserDetailsRepository userDetailsRepository;
     private User mehdi;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         userDetailsRepository = new UserDetailsRepository();
         mehdi = Constants.getFirstUser();
     }
@@ -30,7 +32,7 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("get Userdetails by id: empty")
-    void testGetUserDetailsOfUserByIdIsEmpty(){
+    void testGetUserDetailsOfUserByIdIsEmpty() {
         // Act
         Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(5);
 
@@ -43,7 +45,7 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("get Userdetails by id: present")
-    void testGetUserDetailsOfUserByIdIsPresent(){
+    void testGetUserDetailsOfUserByIdIsPresent() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         int userId = Constants.FIRST_USER_ID;
@@ -62,7 +64,7 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("get Userdetails by email: success")
-    void testGetUserDetailsOfUserByEmailSuccess(){
+    void testGetUserDetailsOfUserByEmailSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         int userId = Constants.FIRST_USER_ID;
@@ -80,8 +82,8 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("Update UserDetails: Ignore null input and maintain empty list")
-    void testUpdateUserDetailsNull(){
-        assertThrows(IllegalArgumentException.class, () ->{
+    void testUpdateUserDetailsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
             userDetailsRepository.updateUserDetails(null);
         });
     }
@@ -91,12 +93,12 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("Update UserDetails: ignore empty list and maintain the list")
-    void testUpdateUserDetailsEmpty(){
+    void testUpdateUserDetailsEmpty() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             userDetailsRepository.updateUserDetails(userDetails);
         });
     }
@@ -106,13 +108,13 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("update UserDetails: Success")
-    void testUpdateUserDetailsSuccess(){
+    void testUpdateUserDetailsSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         int userId = Constants.FIRST_USER_ID;
         userDetailsRepository.createUserDetails(userDetails);
 
-        UserDetails updatedUserDetails = new UserDetails(userId,"omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
+        UserDetails updatedUserDetails = new UserDetails(userId, "omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
 
         // Act
         userDetailsRepository.updateUserDetails(updatedUserDetails);
@@ -132,12 +134,12 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("delete User by id: ignore empty list and maintain the list")
-    void testDeleteUserByIdEmpty(){
+    void testDeleteUserByIdEmpty() {
         // Arrange
         int userId = Constants.FIRST_USER_ID;
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             userDetailsRepository.deleteUserDetailsById(userId);
         });
     }
@@ -147,7 +149,7 @@ public class UserDetailsRepositoryTest {
      */
     @Test
     @DisplayName("delete User by id: success")
-    void testDeleteUserByIdSuccess(){
+    void testDeleteUserByIdSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         userDetailsRepository.createUserDetails(userDetails);

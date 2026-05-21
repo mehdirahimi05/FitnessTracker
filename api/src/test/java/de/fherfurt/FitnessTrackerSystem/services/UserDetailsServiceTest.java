@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unittest for {@link UserDetailsService} class
+ *
  * @author Mehdi Rahimi
  */
 public class UserDetailsServiceTest {
@@ -22,7 +23,7 @@ public class UserDetailsServiceTest {
     private UserDetailsService userDetailsService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         userDetailsRepository = new UserDetailsRepository();
         userDetailsService = new UserDetailsService(userDetailsRepository);
     }
@@ -32,7 +33,7 @@ public class UserDetailsServiceTest {
      */
     @Test
     @DisplayName("get UserDetails by Id: success")
-    void testGetUserDetailsOfUserByIdSuccess(){
+    void testGetUserDetailsOfUserByIdSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         int userId = Constants.FIRST_USER_ID;
@@ -51,7 +52,7 @@ public class UserDetailsServiceTest {
      */
     @Test
     @DisplayName("checkIsOwnUserDetails: userId does not exists")
-    void testCheckIsOwnUserDetailsNotFound(){
+    void testCheckIsOwnUserDetailsNotFound() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         userDetailsRepository.createUserDetails(userDetails);
@@ -68,7 +69,7 @@ public class UserDetailsServiceTest {
      */
     @Test
     @DisplayName("testCheckIsOwnUserDetails : userDetails does  exists")
-    void testCheckIsOwnUserDetailsSuccess(){
+    void testCheckIsOwnUserDetailsSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
 
@@ -85,7 +86,7 @@ public class UserDetailsServiceTest {
      */
     @Test
     @DisplayName("addUserDetails: success")
-    void testAddUserDetailsSuccess(){
+    void testAddUserDetailsSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         int expectedSizeOfUserDetails = 1;
@@ -103,13 +104,13 @@ public class UserDetailsServiceTest {
      */
     @Test
     @DisplayName("updateUserDetails: Success")
-    void testUpdateUserDetailsSuccess(){
+    void testUpdateUserDetailsSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         userDetailsRepository.createUserDetails(userDetails);
         int userId = Constants.FIRST_USER_ID;
 
-        UserDetails updatedUserDetails = new UserDetails(userId,"omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
+        UserDetails updatedUserDetails = new UserDetails(userId, "omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
 
         // Act
         userDetailsService.updateUserDetails(updatedUserDetails);
@@ -129,7 +130,7 @@ public class UserDetailsServiceTest {
      */
     @Test
     @DisplayName("delete UserDetails By Id: Success")
-    void testDeleteUserByUserDetailsIdSuccess(){
+    void testDeleteUserByUserDetailsIdSuccess() {
         // Arrange
         UserDetails userDetails = Constants.getFirstUserDetails();
         userDetailsRepository.createUserDetails(userDetails);

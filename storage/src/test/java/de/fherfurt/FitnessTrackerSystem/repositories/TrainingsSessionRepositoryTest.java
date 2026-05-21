@@ -19,7 +19,7 @@ public class TrainingsSessionRepositoryTest {
 
 
     @BeforeEach
-    void setup(){
+    void setup() {
         trainingsSessionRepository = new TrainingsSessionRepository();
     }
 
@@ -28,8 +28,8 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("create trainingsSession : Ignore null input and maintain empty list")
-    void testCreateTrainingsSessionNull(){
-        assertThrows(IllegalArgumentException.class, () ->{
+    void testCreateTrainingsSessionNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
             trainingsSessionRepository.createTrainingsSession(null);
         });
     }
@@ -39,7 +39,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("create trainingsSession: success")
-    void testCreateTrainingsSessionSuccess(){
+    void testCreateTrainingsSessionSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int expectedSizeOfTrainingsSessionList = 1;
@@ -57,7 +57,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Get null trainingsSessions")
-    void testGetNullTrainingsSession(){
+    void testGetNullTrainingsSession() {
         // Act
         List<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getAllTrainingsSessions();
 
@@ -70,7 +70,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Get one trainingsSessions")
-    void testGetOneTrainingsSession(){
+    void testGetOneTrainingsSession() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
 
@@ -90,7 +90,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Get all trainingsSessions")
-    void testGetAllTrainingsSession(){
+    void testGetAllTrainingsSession() {
         // Arrange
         TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession();
         TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession();
@@ -112,7 +112,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Get trainingsSession by Id: empty")
-    void testGetTrainingsSessionByIdIsEmpty(){
+    void testGetTrainingsSessionByIdIsEmpty() {
         // Act
         Optional<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getTrainingsSessionById(3);
 
@@ -125,7 +125,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Get trainingsSession by Id : present")
-    void testGetTrainingsSessionByIdIsPresent(){
+    void testGetTrainingsSessionByIdIsPresent() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
@@ -143,7 +143,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Get trainingsSession by Id")
-    void testGetTrainingsSessionById(){
+    void testGetTrainingsSessionById() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
@@ -161,12 +161,12 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("Update trainingsSession: ignore empty list and maintain the list")
-    void testUpdateTrainingsSessionEmpty(){
+    void testUpdateTrainingsSessionEmpty() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             trainingsSessionRepository.updateTrainingsSession(trainingsSession);
         });
     }
@@ -176,7 +176,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("update TrainingsSession : Success")
-    void testUpdateTrainingsSessionSuccess(){
+    void testUpdateTrainingsSessionSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
@@ -203,12 +203,12 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("delete TrainingsSession by id: ignore empty list and maintain the list")
-    void testDeleteTrainingsSessionByIdEmpty(){
+    void testDeleteTrainingsSessionByIdEmpty() {
         // Arrange
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
 
         // Assert
-        assertThrows(IllegalStateException.class, () ->{
+        assertThrows(IllegalStateException.class, () -> {
             trainingsSessionRepository.deleteTrainingsSessionById(trainingsSessionId);
         });
     }
@@ -218,7 +218,7 @@ public class TrainingsSessionRepositoryTest {
      */
     @Test
     @DisplayName("delete trainingsSession by id: success")
-    void testDeleteTrainingsSessionByIdSuccess(){
+    void testDeleteTrainingsSessionByIdSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
