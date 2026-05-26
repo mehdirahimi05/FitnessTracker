@@ -244,7 +244,13 @@ public class UserRepositoryTest {
         User user = mehdi;                    // userName: "mehdi", password: "password123"
         userRepository.createUser(user);
 
-        User updatedUser = new User(1, "mehdi", "newPassword", UserRole.USER, null);  // gleiche ID, neues Passwort
+        User updatedUser = new User(
+                   1,
+                "mehdi",
+                "newPassword",
+                          UserRole.USER,
+                null
+        );  // gleiche ID, neues Passwort
 
         // Act
         userRepository.updateUser(updatedUser);

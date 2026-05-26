@@ -183,7 +183,15 @@ public class TrainingsSessionRepositoryTest {
         User user = Constants.getSecondUser();
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
 
-        TrainingsSession updatedTrainingsSession = new TrainingsSession(1, user, Constants.SECOND_DATE, 45, 20, 300, ActivityType.SWIMMING);
+        TrainingsSession updatedTrainingsSession = new TrainingsSession(
+                1,
+                                user,
+                                Constants.SECOND_DATE,
+                  45,
+                    20,
+                   300,
+                                ActivityType.SWIMMING
+        );
 
         // Act
         trainingsSessionRepository.updateTrainingsSession(updatedTrainingsSession);

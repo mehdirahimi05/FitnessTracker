@@ -5,6 +5,8 @@ import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.models.UserDetails;
+import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
+import de.fherfurt.FitnessTrackerSystem.models.MealTyp;
 
 import java.time.LocalDate;
 
@@ -79,5 +81,30 @@ public class Constants {
 
     public static TrainingsSession getSecondTrainingsSession(User user) {
         return new TrainingsSession(SECOND_TRAININGS_SESSION_ID, user, SECOND_DATE, SECOND_DURATION_IN_MINUTE, SECOND_DISTANCE_IN_KM, SECOND_BURNED_CALORIES, SECOND_ACTIVITY_TYPE);
+    }
+
+    // Nutrition Entry
+    public static final int FIRST_NUTRITION_ID = 1;
+    public static final int FIRST_NUTRITION_USER_ID = FIRST_USER_ID;
+    public static final int FIRST_NUTRITION_CALORIES = 500;
+    public static final int FIRST_NUTRITION_PROTEIN = 30;
+    public static final int FIRST_NUTRITION_CARBOHYDRATES = 60;
+    public static final int FIRST_NUTRITION_FAT = 15;
+    public static final MealTyp FIRST_MEAL_TYP = MealTyp.BREAKFAST;
+
+    public static Nutrition getFirstNutrition() {
+        return new Nutrition(FIRST_NUTRITION_ID, FIRST_NUTRITION_USER_ID, FIRST_NUTRITION_CALORIES, FIRST_NUTRITION_PROTEIN, FIRST_NUTRITION_CARBOHYDRATES, FIRST_NUTRITION_FAT, FIRST_MEAL_TYP);
+    }
+
+    public static final int SECOND_NUTRITION_ID = 2;
+    public static final int SECOND_NUTRITION_USER_ID = FIRST_USER_ID;
+    public static final int SECOND_NUTRITION_CALORIES = 700;
+    public static final int SECOND_NUTRITION_PROTEIN = 45;
+    public static final int SECOND_NUTRITION_CARBOHYDRATES = 80;
+    public static final int SECOND_NUTRITION_FAT = 20;
+    public static final MealTyp SECOND_MEAL_TYP = MealTyp.LUNCH;
+
+    public static Nutrition getSecondNutrition() {
+        return new Nutrition(SECOND_NUTRITION_ID, SECOND_NUTRITION_USER_ID, SECOND_NUTRITION_CALORIES, SECOND_NUTRITION_PROTEIN, SECOND_NUTRITION_CARBOHYDRATES, SECOND_NUTRITION_FAT, SECOND_MEAL_TYP);
     }
 }
