@@ -18,5 +18,7 @@ public interface IUserService {
     void deleteUserByUserName(String username);
 
     void deleteUserByUserId(int userId);
+
+    Optional<User> logIn(String userName, String password);
 }
 

@@ -5,10 +5,12 @@ import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.TrainingsSessionRepository;
+import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +25,16 @@ public class TrainingsSessionServiceTest {
     private TrainingsSessionRepository trainingsSessionRepository;
     private TrainingsSessionService trainingsSessionService;
 
+    private User mehdi;
+    private User ammar;
+
     @BeforeEach
     void setUp() {
         trainingsSessionRepository = new TrainingsSessionRepository();
         trainingsSessionService = new TrainingsSessionService(trainingsSessionRepository);
+
+        mehdi = Constants.getFirstUser();
+        ammar = Constants.getSecondUser();
     }
 
     /**
@@ -170,4 +178,152 @@ public class TrainingsSessionServiceTest {
 
     }
 
+    /**
+     * throws a IllegalArgumentException when null variables are provided
+     */
+    @Test
+    @DisplayName("Total Time: Return 0 on null parameters")
+    void testGetTotalTrainingTimeByUserNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            trainingsSessionService.getTotalTrainingTimeByUser(null, null, null);
+        });
+    }
+
+    /**
+     * verifies that the total training time is correctly calculated
+     * for a user in a specific time range
+     */
+    @Test
+    void testGetTotalTrainingTimeByUserSuccess(){
+        // Arrange
+        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
+        LocalDate startDate = LocalDate.of(2026, 3, 20);
+        LocalDate endDate = LocalDate.of(2026, 03, 31);
+
+        // Act
+        trainingsSessionRepository.createTrainingsSession(trainingsSession);
+        int totalTimeInMinutes = trainingsSessionService.getTotalTrainingTimeByUser(mehdi, startDate, endDate);
+
+        // Assert
+        assertEquals(Constants.FIRST_DURATION_IN_MINUTE, totalTimeInMinutes);
+    }
+
+    /**
+     * throws a IllegalArgumentException when null variables are provided
+     */
+    @Test
+    @DisplayName("Total Distance: Return 0 on null parameters")
+    void testGetTotalTrainingDistanceByUserNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            trainingsSessionService.getTotalDistanceByUser(null, null, null);
+        });
+    }
+
+    /**
+     * verifies that the total training distance is correctly calculated
+     * for a user in a specific time range
+     */
+    @Test
+    void testGetTotalTrainingDistanceByUserSuccess(){
+        // Arrange
+        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
+        LocalDate startDate = LocalDate.of(2026, 3, 20);
+        LocalDate endDate = LocalDate.of(2026, 03, 31);
+
+        // Act
+        trainingsSessionRepository.createTrainingsSession(trainingsSession);
+        float totalDistanceInKm = trainingsSessionService.getTotalDistanceByUser(mehdi, startDate, endDate);
+
+        // Assert
+        assertEquals(Constants.FIRST_DISTANCE_IN_KM, totalDistanceInKm);
+    }
+
+    /**
+     * verifies that the most active user by total time was found successfully
+     */
+    @Test
+    void testGetMostActiveUserByTimeSuccess(){
+        // Arrange
+        TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(mehdi);
+        TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(ammar);
+
+        trainingsSessionRepository.createTrainingsSession(trainingsSession1);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession2);
+
+        // Act
+        User findWinner = trainingsSessionService.getMostActiveUserByTime(LocalDate.of(2026, 03, 20), LocalDate.of(2026, 03, 31));
+
+        // Assert
+        assertEquals(mehdi, findWinner);
+    }
+
+    /**
+     * verifies that the most active user by total distance was found successfully
+     */
+    @Test
+    void testGetMostActiveUserByDistanceSuccess(){
+        // Arrange
+        TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(mehdi);
+        TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(ammar);
+
+        trainingsSessionRepository.createTrainingsSession(trainingsSession1);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession2);
+
+        // Act
+        User findWinner = trainingsSessionService.getMostActiveUserByDistance(LocalDate.of(2026, 03, 20), LocalDate.of(2026, 03, 31));
+
+        // Assert
+        assertEquals(ammar, findWinner);
+    }
+
+    /**
+     * verifies that the list filter is null if null parameters are provides
+     */
+    @Test
+    void testFilterTrainingsSession(){
+        // Arrange
+        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
+        trainingsSessionRepository.createTrainingsSession(trainingsSession);
+
+        // Act
+        List<TrainingsSession> trainingsSessionFilter1 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withStartDate(null).build());
+        List<TrainingsSession> trainingsSessionFilter2 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withEndDate(null).build());
+        List<TrainingsSession> trainingsSessionFilter3 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withActivityType(null).build());
+        List<TrainingsSession> trainingsSessionFilter4 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withUser(null).build());
+        List<TrainingsSession> trainingsSessionFilter5 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withMinBurnedCalories(0).build());
+
+        // Assert
+        assertEquals(1, trainingsSessionFilter1.size());
+        assertEquals(1, trainingsSessionFilter2.size());
+        assertEquals(1, trainingsSessionFilter3.size());
+        assertEquals(1, trainingsSessionFilter4.size());
+        assertEquals(1, trainingsSessionFilter5.size());
+    }
+
+    /**
+     * verifies that the list ist filtert successfully
+     */
+    @Test
+    @DisplayName("Filter List: Success")
+    void testFilterTrainingsSessionSuccess(){
+        // Arrange
+        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession);
+
+        // Act
+        List<TrainingsSession> trainingsSessionFilter1 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withStartDate(Constants.FIRST_DATE).build());
+        List<TrainingsSession> trainingsSessionFilter2 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withEndDate(LocalDate.of(2026, 3, 31)).build());
+        List<TrainingsSession> trainingsSessionFilter3 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withActivityType(Constants.FIRST_ACTIVITY_TYPE).build());
+        List<TrainingsSession> trainingsSessionFilter4 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withUser(mehdi).build());
+        List<TrainingsSession> trainingsSessionFilter5 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withMinBurnedCalories(Constants.FIRST_BURNED_CALORIES).build());
+        List<TrainingsSession> trainingsSessionFilter6 =  trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withMaxBurnedCalories(1200).build());
+
+        // Assert
+        assertEquals(1, trainingsSessionFilter1.size());
+        assertEquals(1, trainingsSessionFilter2.size());
+        assertEquals(1, trainingsSessionFilter3.size());
+        assertEquals(1, trainingsSessionFilter4.size());
+        assertEquals(1, trainingsSessionFilter5.size());
+        assertEquals(1, trainingsSessionFilter6.size());
+    }
 }
