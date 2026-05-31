@@ -7,7 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ActivityType {
-    private int activityTypeId;
-    private String name;           // "Running", "Fitness", "Yoga"
+public class WorkoutPlanExercise {
+    private int workoutPlanExerciseId;
+    private Exercise exercise;
+    private int sets;
+    private int repetitions;
 }

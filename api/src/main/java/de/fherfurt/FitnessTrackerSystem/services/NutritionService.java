@@ -2,15 +2,14 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.repositories.INutritionRepository;
-import de.fherfurt.FitnessTrackerSystem.repositories.ITrainingsSessionRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class NutritionService implements INutritionService{
+public class NutritionService implements INutritionService {
     private final INutritionRepository nutritionRepository;
 
-    public NutritionService(INutritionRepository nutritionRepository){
+    public NutritionService(INutritionRepository nutritionRepository) {
         this.nutritionRepository = nutritionRepository;
     }
 
@@ -27,7 +26,7 @@ public class NutritionService implements INutritionService{
     @Override
     public boolean checkIsOwnNutrition(int nutritionId) {
         var nutritionToCheck = nutritionRepository.getNutritionById(nutritionId);
-        if (nutritionToCheck.isEmpty()){
+        if (nutritionToCheck.isEmpty()) {
             return false;
         }
         return nutritionToCheck.get().getNutritionId() == nutritionId;

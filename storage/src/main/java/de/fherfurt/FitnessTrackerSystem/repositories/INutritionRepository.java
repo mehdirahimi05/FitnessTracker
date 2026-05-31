@@ -7,8 +7,12 @@ import java.util.Optional;
 
 public interface INutritionRepository {
     void createNutrition(Nutrition nutrition);
+
     List<Nutrition> getAllNutrition();
+
     Optional<Nutrition> getNutritionById(int nutritionId);
+
     void updateNutrition(Nutrition nutrition);
+
     void deleteNutritionById(int nutritionId);
 }

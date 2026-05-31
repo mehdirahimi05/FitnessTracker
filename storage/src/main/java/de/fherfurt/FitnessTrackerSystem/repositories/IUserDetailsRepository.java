@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface IUserDetailsRepository {
     void createUserDetails(UserDetails userDetails);
 
-    Optional<UserDetails> getUserDetailsOfUserById(int userId);
+    Optional<UserDetails> getUserDetailsOfUserByUserId(int userId);
 
     void updateUserDetails(UserDetails userDetails);
 

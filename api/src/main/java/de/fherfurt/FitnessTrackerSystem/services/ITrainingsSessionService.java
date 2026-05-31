@@ -21,15 +21,7 @@ public interface ITrainingsSessionService {
 
     void deleteTrainingsSessionById(int trainingsSessionId);
 
-    int getTotalTrainingTimeByUser(User user, LocalDate startDate, LocalDate endDate);
-
-    float getTotalDistanceByUser(User user, LocalDate startDate, LocalDate endDate);
-
-    float getAverageSpeed(TrainingsSession trainingsSession);
-
-    User getMostActiveUserByTime(LocalDate startDate, LocalDate endDate);
-
-    User getMostActiveUserByDistance(LocalDate startDate, LocalDate endDate);
+    User getMostActiveUserByAmountOfTrainingsSessions(LocalDate startDate, LocalDate endDate);
 
     List<TrainingsSession> filterTrainingsSession(TrainingsSessionFilter trainingsSessionFilter);
 }

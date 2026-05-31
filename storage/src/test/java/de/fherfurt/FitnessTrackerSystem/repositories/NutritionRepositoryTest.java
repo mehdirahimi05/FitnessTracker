@@ -21,7 +21,7 @@ public class NutritionRepositoryTest {
     private NutritionRepository nutritionRepository;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         nutritionRepository = new NutritionRepository();
     }
 
@@ -30,8 +30,8 @@ public class NutritionRepositoryTest {
      */
     @Test
     @DisplayName("createNutrition: Ignore null input and maintain empty list")
-    void testCreateNutritionNull(){
-        assertThrows(IllegalArgumentException.class, () ->{
+    void testCreateNutritionNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
             nutritionRepository.createNutrition(null);
         });
     }
@@ -41,7 +41,7 @@ public class NutritionRepositoryTest {
      */
     @Test
     @DisplayName("createNutrition: success")
-    void testCreateNutritionSuccess(){
+    void testCreateNutritionSuccess() {
         // Arrange
         Nutrition nutrition = Constants.getFirstNutrition();
         int expectedSizeOfNutritionList = 1;
@@ -187,7 +187,7 @@ public class NutritionRepositoryTest {
      */
     @Test
     @DisplayName("update Nutrition: success")
-    void testUpdateNutritionSuccess(){
+    void testUpdateNutritionSuccess() {
         // Arrange
         Nutrition nutrition = Constants.getFirstNutrition();
         int nutritionId = Constants.FIRST_NUTRITION_ID;
@@ -201,7 +201,8 @@ public class NutritionRepositoryTest {
                 Constants.SECOND_NUTRITION_PROTEIN,
                 Constants.SECOND_NUTRITION_CARBOHYDRATES,
                 Constants.SECOND_NUTRITION_FAT,
-                Constants.SECOND_MEAL_TYP
+                Constants.SECOND_MEAL_TYP,
+                Constants.SECOND_DATE
         );
 
         // Act

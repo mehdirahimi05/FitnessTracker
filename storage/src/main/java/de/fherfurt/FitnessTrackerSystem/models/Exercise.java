@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class ActivityType {
-    private int activityTypeId;
-    private String name;           // "Running", "Fitness", "Yoga"
+public class Exercise {
+    private int exerciseId;
+    private String exerciseName;
+    private List<ActivityType> activityTypes;
 }

@@ -1,46 +1,66 @@
 # Usecases
 
-## TrainingsSessionService
+## User
 
-### 1. getTotalTrainingTimeByUser
+- CRUD
+- signUp
+- login
+- logout *(Placeholder – kommt mit Spring Security)*
 
+## UserDetails
 
-### 2. getTotalDistanceByUser
+*(nur CRUD – über UserRepository via Cascade)*
 
+## TrainingsSession
 
-### 3. getAverageSpeed
+- CRUD
+- getTotalTrainingTimeByUser
+- getTotalCaloriesBurnedByUser
+- getMostActiveUserByAmountOfSessions
+- getPersonalBest
+- getTrainingStreak
+- getImprovement
+- filterSessions
 
+## ActivityType
 
-### 4. getMostActiveUsers
+*(nur CRUD)*
 
+## WorkoutPlan
 
-### 5. filterSessions
+- CRUD
+- addExerciseToWorkoutPlan
+- removeExerciseFromWorkoutPlan
+- getExercisesInPlan
+- getWorkoutPlansByDay
 
----
+## Exercise
 
-## UserService
+*(nur CRUD)*
 
-### 6. registerUser
+## WorkoutPlanExercise
 
+*(nur CRUD – über WorkoutPlanService)*
 
-### 7. loginUser *(nach DB)*
+## Nutrition
 
-### 8. logoutUser *(nach Spring Security)*
+- CRUD
+- setDailyGoal
+- getDailyNutritionSummary
+- hasReachedDailyGoal
+- setReminderTime
+- getReminderTime
 
+## BodyMeasurement
 
----
+- CRUD
+- calculateBMI
+- getLatestMeasurement
+- getMeasurementHistory
+- getWeightProgress
 
-## NutritionService
+## DashboardService
 
-### 9. setDailyGoal
-
-### 10. getDailyNutritionSummary
-
-
-### 11. hasReachedDailyGoal
-
-
-### 12. setReminderTime
-
-
-### 13. getReminderTime
+- getDailyDashboard
+- getWeeklyDashboard
+- getMonthlyDashboard

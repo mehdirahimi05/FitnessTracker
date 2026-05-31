@@ -34,7 +34,7 @@ public class UserDetailsRepositoryTest {
     @DisplayName("get Userdetails by id: empty")
     void testGetUserDetailsOfUserByIdIsEmpty() {
         // Act
-        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(5);
+        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserByUserId(5);
 
         // Assert
         assertTrue(userDetailsList.isEmpty());
@@ -52,7 +52,7 @@ public class UserDetailsRepositoryTest {
 
         // Act
         userDetailsRepository.createUserDetails(userDetails);
-        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
+        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserByUserId(userId);
 
         // Assert
         assertTrue(userDetailsList.isPresent());
@@ -71,7 +71,7 @@ public class UserDetailsRepositoryTest {
 
         // Act
         userDetailsRepository.createUserDetails(userDetails);
-        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
+        Optional<UserDetails> userDetailsList = userDetailsRepository.getUserDetailsOfUserByUserId(userId);
 
         // Assert
         assertEquals(userId, userDetailsList.get().getUserId());
@@ -114,19 +114,23 @@ public class UserDetailsRepositoryTest {
         int userId = Constants.FIRST_USER_ID;
         userDetailsRepository.createUserDetails(userDetails);
 
-        UserDetails updatedUserDetails = new UserDetails(userId, "omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
+        UserDetails updatedUserDetails = new UserDetails(
+                userId,
+                "omar",
+                "takla",
+                "omar@gmail.com",
+                LocalDate.of(2004, 01, 01)
+        );
 
         // Act
         userDetailsRepository.updateUserDetails(updatedUserDetails);
-        Optional<UserDetails> finalUserDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
+        Optional<UserDetails> finalUserDetailsList = userDetailsRepository.getUserDetailsOfUserByUserId(userId);
 
         // Assert
         assertEquals("omar", finalUserDetailsList.get().getFirstName());
         assertEquals("takla", finalUserDetailsList.get().getLastName());
         assertEquals("omar@gmail.com", finalUserDetailsList.get().getEmail());
         assertEquals(LocalDate.of(2004, 01, 01), finalUserDetailsList.get().getBirthDate());
-        assertEquals(77, finalUserDetailsList.get().getWeight());
-        assertEquals(170, finalUserDetailsList.get().getHeight());
     }
 
     /**
