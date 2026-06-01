@@ -1,5 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.services.utils;
 
+import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
+import de.fherfurt.FitnessTrackerSystem.models.Difficulty;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ public class TrainingsSessionFilterBuilder {
     private User user;
     private int minBurnedCalories;
     private int maxBurnedCalories = Integer.MAX_VALUE;
+    private ActivityType activityType;
+    private Difficulty difficulty;
 
 
     public TrainingsSessionFilterBuilder withStartDate(LocalDate startDate) {
@@ -43,13 +47,25 @@ public class TrainingsSessionFilterBuilder {
         return this;
     }
 
+    public TrainingsSessionFilterBuilder withActivityType(ActivityType activityType){
+        this.activityType = activityType;
+        return this;
+    }
+
+    public TrainingsSessionFilterBuilder withDifficulty(Difficulty difficulty){
+        this.difficulty = difficulty;
+        return this;
+    }
+
     public TrainingsSessionFilter build() {
         return new TrainingsSessionFilter(
                 startDate,
                 endDate,
                 user,
                 minBurnedCalories,
-                maxBurnedCalories
+                maxBurnedCalories,
+                activityType,
+                difficulty
         );
     }
 

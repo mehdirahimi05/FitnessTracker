@@ -6,10 +6,7 @@ import de.fherfurt.FitnessTrackerSystem.repositories.ITrainingsSessionRepository
 import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class TrainingsSessionService implements ITrainingsSessionService {
     private final ITrainingsSessionRepository trainingsSessionRepository;
@@ -99,5 +96,34 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         return trainingsSessionList.stream()
                 .filter(trainingsSessionFilter.buildPredicate())
                 .toList();
+    }
+
+    @Override
+    public int getTrainingSessionStreak(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        List<TrainingsSession> filteredTrainingsSession = trainingsSessionRepository.getAllTrainingsSessions().stream()
+                .filter(trainingsSession -> trainingsSession.getUser().equals(user))
+                .sorted(Comparator.comparing(TrainingsSession :: getDate))
+                .toList();
+        if (filteredTrainingsSession.isEmpty()) {
+            throw new IllegalStateException("does not exist");
+        }
+        int currentStreak = 1;
+        int longestStreak = 1;
+        for (int i = 1; i< filteredTrainingsSession.size(); i++){
+            LocalDate currentDate = filteredTrainingsSession.get(i).getDate();
+            LocalDate previousDate = filteredTrainingsSession.get(i - 1).getDate();
+
+            if (currentDate.equals(previousDate.plusDays(1))) {
+                currentStreak++;
+            } else {
+                currentStreak = 1;
+            }
+            longestStreak = Math.max(longestStreak, currentStreak);
+        }
+
+        return longestStreak;
     }
 }

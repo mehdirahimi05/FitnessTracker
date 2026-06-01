@@ -24,4 +24,6 @@ public interface ITrainingsSessionService {
     User getMostActiveUserByAmountOfTrainingsSessions(LocalDate startDate, LocalDate endDate);
 
     List<TrainingsSession> filterTrainingsSession(TrainingsSessionFilter trainingsSessionFilter);
+
+    int getTrainingSessionStreak(User user);
 }

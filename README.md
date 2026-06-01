@@ -15,9 +15,7 @@
 
 - CRUD
 - getMostActiveUserByAmountOfSessions
-- getPersonalBest
 - getTrainingStreak
-- getImprovement
 - filterSessions
 
 ## ActivityType

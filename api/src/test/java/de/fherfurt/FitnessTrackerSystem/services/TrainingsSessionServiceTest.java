@@ -263,4 +263,83 @@ public class TrainingsSessionServiceTest {
         assertEquals(1, trainingsSessionFilter5.size());
         assertEquals(1, trainingsSessionFilter6.size());
     }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
+     */
+    @Test
+    void testGetTrainingsSessionStreakUserNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            trainingsSessionService.getTrainingSessionStreak(null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown when filterSession is Empty
+     */
+    @Test
+    void testGetTrainingsSessionStreakIsEmpty(){
+        // Arrange
+        User user = Constants.getFirstUser();
+
+        // Act
+        assertThrows(IllegalStateException.class, () -> {
+            trainingsSessionService.getTrainingSessionStreak(user);
+        });
+    }
+
+    /**
+     * verifies that the streak is 1
+     */
+    @Test
+    void testGetTrainingsSessionStreakOne(){
+        // Arrange
+        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession);
+
+        // Act
+        int result = trainingsSessionService.getTrainingSessionStreak(mehdi);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+    /**
+     * verifies that the streak is more than 1 without break
+     */
+    @Test
+    void testGetTrainingsSessionStreakWithoutBreak(){
+        // Arrange
+        TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(mehdi);
+        TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(mehdi);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession1);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession2);
+
+        // Act
+        int result = trainingsSessionService.getTrainingSessionStreak(mehdi);
+
+        // Assert
+        assertEquals(2, result);
+    }
+
+    /**
+     * verifies that the streak is more than 1 with brake
+     */
+    @Test
+    void testGetTrainingsSessionStreakWitBreak(){
+        // Arrange
+        TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(mehdi);
+        TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(mehdi);
+        TrainingsSession trainingsSession3 = Constants.getFirstTrainingsSession(mehdi);
+        trainingsSession3.setDate(LocalDate.of(2026, 3, 25));
+        trainingsSessionRepository.createTrainingsSession(trainingsSession1);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession2);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession3);
+
+        // Act
+        int result = trainingsSessionService.getTrainingSessionStreak(mehdi);
+
+        // Assert
+        assertEquals(2, result);
+    }
 }
