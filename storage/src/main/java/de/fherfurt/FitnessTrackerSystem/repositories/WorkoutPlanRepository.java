@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class WorkoutPlanRepository implements IWorkoutPlan {
+public class WorkoutPlanRepository implements IWorkoutPlanRepository {
     @Getter
     private final List<WorkoutPlan> workoutPlanList;
 
-    public WorkoutPlanRepository(){
+    public WorkoutPlanRepository() {
         workoutPlanList = new ArrayList<>();
     }
 
     @Override
     public void createWorkoutPlan(WorkoutPlan workoutPlan) {
-        if (workoutPlan == null){
+        if (workoutPlan == null) {
             throw new IllegalArgumentException("can not be null");
         }
         workoutPlanList.add(workoutPlan);
@@ -37,11 +37,11 @@ public class WorkoutPlanRepository implements IWorkoutPlan {
 
     @Override
     public void updateWorkoutPlan(WorkoutPlan workoutPlan) {
-        if (workoutPlan == null){
+        if (workoutPlan == null) {
             throw new IllegalArgumentException("can not be null");
         }
         var existingWorkoutPlan = getWorkoutPlanById(workoutPlan.getWorkoutPlanId());
-        if (existingWorkoutPlan.isEmpty()){
+        if (existingWorkoutPlan.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
         workoutPlanList.set(workoutPlanList.indexOf(existingWorkoutPlan.get()), workoutPlan);
@@ -50,7 +50,7 @@ public class WorkoutPlanRepository implements IWorkoutPlan {
     @Override
     public void deleteWorkoutPlanById(int workoutPlanId) {
         var foundWorkoutPlanId = getWorkoutPlanById(workoutPlanId);
-        if (foundWorkoutPlanId.isEmpty()){
+        if (foundWorkoutPlanId.isEmpty()) {
             throw new IllegalStateException("does not exits");
         }
         workoutPlanList.remove(foundWorkoutPlanId.get());

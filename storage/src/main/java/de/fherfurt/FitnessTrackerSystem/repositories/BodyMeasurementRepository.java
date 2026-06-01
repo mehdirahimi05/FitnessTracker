@@ -11,13 +11,13 @@ public class BodyMeasurementRepository implements IBodyMeasurementRepository {
     @Getter
     private final List<BodyMeasurement> bodyMeasurementList;
 
-    public BodyMeasurementRepository(){
+    public BodyMeasurementRepository() {
         bodyMeasurementList = new ArrayList<>();
     }
 
     @Override
     public void createBodyMeasurement(BodyMeasurement bodyMeasurement) {
-        if (bodyMeasurement == null){
+        if (bodyMeasurement == null) {
             throw new IllegalArgumentException("can not be null");
         }
         bodyMeasurementList.add(bodyMeasurement);
@@ -37,11 +37,11 @@ public class BodyMeasurementRepository implements IBodyMeasurementRepository {
 
     @Override
     public void updateBodyMeasurement(BodyMeasurement bodyMeasurement) {
-        if (bodyMeasurement == null){
+        if (bodyMeasurement == null) {
             throw new IllegalArgumentException("can not be null");
         }
         var existingBodyMeasurement = getBodyMeasurementById(bodyMeasurement.getBodyMeasurementId());
-        if (existingBodyMeasurement.isEmpty()){
+        if (existingBodyMeasurement.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
         bodyMeasurementList.set(bodyMeasurementList.indexOf(existingBodyMeasurement.get()), bodyMeasurement);
@@ -50,7 +50,7 @@ public class BodyMeasurementRepository implements IBodyMeasurementRepository {
     @Override
     public void deleteBodyMeasurementById(int bodyMeasurementId) {
         var foundBodyMeasurementId = getBodyMeasurementById(bodyMeasurementId);
-        if (foundBodyMeasurementId.isEmpty()){
+        if (foundBodyMeasurementId.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
         bodyMeasurementList.remove(foundBodyMeasurementId.get());

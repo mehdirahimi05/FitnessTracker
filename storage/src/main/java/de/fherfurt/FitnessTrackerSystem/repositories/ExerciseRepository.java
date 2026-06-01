@@ -11,13 +11,13 @@ public class ExerciseRepository implements IExerciseRepository {
     @Getter
     private final List<Exercise> exerciseList;
 
-    public ExerciseRepository(){
+    public ExerciseRepository() {
         exerciseList = new ArrayList<>();
     }
 
     @Override
     public void createExercise(Exercise exercise) {
-        if (exercise == null){
+        if (exercise == null) {
             throw new IllegalArgumentException("can not be null");
         }
         exerciseList.add(exercise);
@@ -37,11 +37,11 @@ public class ExerciseRepository implements IExerciseRepository {
 
     @Override
     public void updateExercise(Exercise exercise) {
-        if (exercise == null){
+        if (exercise == null) {
             throw new IllegalArgumentException("can not be null");
         }
         var existingExercise = getExerciseById(exercise.getExerciseId());
-        if (existingExercise.isEmpty()){
+        if (existingExercise.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
         exerciseList.set(exerciseList.indexOf(existingExercise.get()), exercise);
@@ -50,7 +50,7 @@ public class ExerciseRepository implements IExerciseRepository {
     @Override
     public void deleteExerciseById(int exerciseId) {
         var foundExerciseId = getExerciseById(exerciseId);
-        if (foundExerciseId.isEmpty()){
+        if (foundExerciseId.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
         exerciseList.remove(foundExerciseId.get());
