@@ -23,7 +23,7 @@ public class NutritionServiceTest {
     private NutritionService nutritionService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         nutritionRepository = new NutritionRepository();
         nutritionService = new NutritionService(nutritionRepository);
     }
@@ -140,7 +140,8 @@ public class NutritionServiceTest {
                 Constants.SECOND_NUTRITION_PROTEIN,
                 Constants.SECOND_NUTRITION_CARBOHYDRATES,
                 Constants.SECOND_NUTRITION_FAT,
-                Constants.SECOND_MEAL_TYP
+                Constants.SECOND_MEAL_TYP,
+                Constants.SECOND_DATE
         );
 
         // Act

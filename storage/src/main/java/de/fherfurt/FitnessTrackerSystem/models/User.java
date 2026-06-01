@@ -1,9 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
-import de.fherfurt.FitnessTrackerSystem.core.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -11,13 +9,10 @@ import lombok.Setter;
  * Model class representing a user
  *
  * @author Mehdi Rahimi
- * @see Cloneable
- * @see Comparable
  */
 @AllArgsConstructor
 @Setter
 @Getter
-@NoArgsConstructor
 public class User {
     private int userId;
     private String userName;

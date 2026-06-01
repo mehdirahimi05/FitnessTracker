@@ -59,4 +59,13 @@ public class UserService implements IUserService {
     public void deleteUserByUserId(int userId) {
         userRepository.deleteUserByUserId(userId);
     }
+
+    @Override
+    public Optional<User> logIn(String userName, String password) {
+        //TODO: check if the user exists
+        //TODO: check if the user is already logt in
+        //TODO: compare the userName and password with the hashed userName and password
+        //TODO: create a session
+        return Optional.empty();
+    }
 }

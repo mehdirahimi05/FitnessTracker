@@ -14,13 +14,13 @@ public class UserDetailsService implements IUserDetailsService {
 
     @Override
     public Optional<UserDetails> getUserDetailsOfUserById(int userId) {
-        return userDetailsRepository.getUserDetailsOfUserById(userId);
+        return userDetailsRepository.getUserDetailsOfUserByUserId(userId);
     }
 
 
     @Override
     public boolean checkIsOwnUserDetails(int userId) {
-        var userDetailsToCheck = userDetailsRepository.getUserDetailsOfUserById(userId);
+        var userDetailsToCheck = userDetailsRepository.getUserDetailsOfUserByUserId(userId);
         if (userDetailsToCheck.isEmpty()) {
             return false;
         }

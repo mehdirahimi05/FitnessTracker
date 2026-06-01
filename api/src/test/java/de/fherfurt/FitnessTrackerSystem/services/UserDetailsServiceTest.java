@@ -110,19 +110,17 @@ public class UserDetailsServiceTest {
         userDetailsRepository.createUserDetails(userDetails);
         int userId = Constants.FIRST_USER_ID;
 
-        UserDetails updatedUserDetails = new UserDetails(userId, "omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01), 77, 170);
+        UserDetails updatedUserDetails = new UserDetails(userId, "omar", "takla", "omar@gmail.com", LocalDate.of(2004, 01, 01));
 
         // Act
         userDetailsService.updateUserDetails(updatedUserDetails);
-        Optional<UserDetails> finalUserDetailsList = userDetailsRepository.getUserDetailsOfUserById(userId);
+        Optional<UserDetails> finalUserDetailsList = userDetailsRepository.getUserDetailsOfUserByUserId(userId);
 
         // Assert
         assertEquals("omar", finalUserDetailsList.get().getFirstName());
         assertEquals("takla", finalUserDetailsList.get().getLastName());
         assertEquals("omar@gmail.com", finalUserDetailsList.get().getEmail());
         assertEquals(LocalDate.of(2004, 01, 01), finalUserDetailsList.get().getBirthDate());
-        assertEquals(77, finalUserDetailsList.get().getWeight());
-        assertEquals(170, finalUserDetailsList.get().getHeight());
     }
 
     /**

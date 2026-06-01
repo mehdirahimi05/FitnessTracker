@@ -24,7 +24,7 @@ public class UserDetailsRepository implements IUserDetailsRepository {
 
     }
 
-    public Optional<UserDetails> getUserDetailsOfUserById(int userId) {
+    public Optional<UserDetails> getUserDetailsOfUserByUserId(int userId) {
         return userDetailsList.stream()
                 .filter(userDetails -> userDetails.getUserId() == userId)
                 .findFirst();
@@ -36,7 +36,7 @@ public class UserDetailsRepository implements IUserDetailsRepository {
         if (userDetails == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        var existingUserDetails = getUserDetailsOfUserById(userDetails.getUserId());
+        var existingUserDetails = getUserDetailsOfUserByUserId(userDetails.getUserId());
         if (existingUserDetails.isEmpty()) {
             throw new IllegalStateException("user details not found");
         }
@@ -46,7 +46,7 @@ public class UserDetailsRepository implements IUserDetailsRepository {
 
     @Override
     public void deleteUserDetailsById(int userId) {
-        var foundUserEmail = getUserDetailsOfUserById(userId);
+        var foundUserEmail = getUserDetailsOfUserByUserId(userId);
         if (foundUserEmail.isEmpty()) {
             throw new IllegalStateException("foundUserEmail does not exist");
         }

@@ -23,7 +23,8 @@ public class TrainingsSession {
     private User user;
     private LocalDate date;
     private int durationInMinute;
-    private float distanceInKm;
     private int burnedCalories;
     private ActivityType activityType;
+    private Difficulty difficulty;
+    private WorkoutPlan workoutPlan;
 }

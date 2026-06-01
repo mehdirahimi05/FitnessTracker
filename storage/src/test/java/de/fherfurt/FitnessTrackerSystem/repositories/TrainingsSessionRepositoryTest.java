@@ -5,6 +5,7 @@ import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
 import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainingsSessionRepositoryTest {
     private TrainingsSessionRepository trainingsSessionRepository;
-
 
     @BeforeEach
     void setup() {
@@ -175,22 +175,27 @@ public class TrainingsSessionRepositoryTest {
      * updates trainingsSession
      */
     @Test
-    @DisplayName("update TrainingsSession : Success")
+    @DisplayName("update TrainingsSession: Success")
     void testUpdateTrainingsSessionSuccess() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession();
         int trainingsSessionId = Constants.FIRST_TRAININGS_SESSION_ID;
         User user = Constants.getSecondUser();
+        ActivityType activityType = Constants.getSecondActivityType();
+        WorkoutPlan workoutPlan = Constants.getSecondWorkoutPlan();
+
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
 
         TrainingsSession updatedTrainingsSession = new TrainingsSession(
-                1,
-                                user,
-                                Constants.SECOND_DATE,
-                  45,
-                    20,
-                   300,
-                                ActivityType.SWIMMING
+                trainingsSessionId,
+                user,
+                Constants.SECOND_DATE,
+                Constants.FIRST_DURATION_IN_MINUTE,
+                Constants.FIRST_BURNED_CALORIES,
+                activityType,
+                Constants.FIRST_DIFFICULTY,
+                workoutPlan
+
         );
 
         // Act
@@ -198,12 +203,14 @@ public class TrainingsSessionRepositoryTest {
         Optional<TrainingsSession> findTrainingsSessionList = trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
 
         // Assert
+        assertEquals(trainingsSessionId, findTrainingsSessionList.get().getTrainingsSessionId());
         assertEquals(user, findTrainingsSessionList.get().getUser());
         assertEquals(Constants.SECOND_DATE, findTrainingsSessionList.get().getDate());
-        assertEquals(45, findTrainingsSessionList.get().getDurationInMinute());
-        assertEquals(20, findTrainingsSessionList.get().getDistanceInKm());
-        assertEquals(300, findTrainingsSessionList.get().getBurnedCalories());
-        assertEquals(ActivityType.SWIMMING, findTrainingsSessionList.get().getActivityType());
+        assertEquals(Constants.FIRST_DURATION_IN_MINUTE, findTrainingsSessionList.get().getDurationInMinute());
+        assertEquals(Constants.FIRST_BURNED_CALORIES, findTrainingsSessionList.get().getBurnedCalories());
+        assertEquals(activityType, findTrainingsSessionList.get().getActivityType());
+        assertEquals(Constants.FIRST_DIFFICULTY, findTrainingsSessionList.get().getDifficulty());
+        assertEquals(workoutPlan, findTrainingsSessionList.get().getWorkoutPlan());
     }
 
     /**

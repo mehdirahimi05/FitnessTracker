@@ -1,8 +1,8 @@
 package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
-import de.fherfurt.FitnessTrackerSystem.core.UserRole;
 import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -245,10 +245,10 @@ public class UserRepositoryTest {
         userRepository.createUser(user);
 
         User updatedUser = new User(
-                   1,
+                1,
                 "mehdi",
                 "newPassword",
-                          UserRole.USER,
+                UserRole.USER,
                 null
         );  // gleiche ID, neues Passwort
 
