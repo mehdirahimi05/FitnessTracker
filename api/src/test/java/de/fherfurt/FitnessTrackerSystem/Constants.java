@@ -47,11 +47,11 @@ public class Constants {
     public static final int SECOND_SETS = 3;
     public static final int SECOND_REPETITIONS = 12;
 
-    public static WorkoutPlanExercise getFirstWorkoutPlanExercise(WorkoutPlan workoutPlan) {
+    public static WorkoutPlanExercise getFirstWorkoutPlanExercise() {
         return new WorkoutPlanExercise(FIRST_WORKOUT_PLAN_EXERCISE_ID, getFirstExercise(), FIRST_SETS, FIRST_REPETITIONS);
     }
 
-    public static WorkoutPlanExercise getSecondWorkoutPlanExercise(WorkoutPlan workoutPlan) {
+    public static WorkoutPlanExercise getSecondWorkoutPlanExercise() {
         return new WorkoutPlanExercise(SECOND_WORKOUT_PLAN_EXERCISE_ID, getSecondExercise(), SECOND_SETS, SECOND_REPETITIONS);
     }
 
@@ -66,13 +66,13 @@ public class Constants {
 
     public static WorkoutPlan getFirstWorkoutPlan() {
         WorkoutPlan plan = new WorkoutPlan(FIRST_WORKOUT_PLAN_ID, FIRST_WORKOUT_PLAN_NAME, new java.util.ArrayList<>(), FIRST_TRAINING_DAYS);
-        plan.getExercises().add(getFirstWorkoutPlanExercise(plan));
+        plan.getExercises().add(getFirstWorkoutPlanExercise());
         return plan;
     }
 
     public static WorkoutPlan getSecondWorkoutPlan() {
         WorkoutPlan plan = new WorkoutPlan(SECOND_WORKOUT_PLAN_ID, SECOND_WORKOUT_PLAN_NAME, new java.util.ArrayList<>(), SECOND_TRAINING_DAYS);
-        plan.getExercises().add(getSecondWorkoutPlanExercise(plan));
+        plan.getExercises().add(getSecondWorkoutPlanExercise());
         return plan;
     }
 

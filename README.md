@@ -14,8 +14,6 @@
 ## TrainingsSession
 
 - CRUD
-- getTotalTrainingTimeByUser
-- getTotalCaloriesBurnedByUser
 - getMostActiveUserByAmountOfSessions
 - getPersonalBest
 - getTrainingStreak
