@@ -20,5 +20,7 @@ public interface IUserService {
     void deleteUserByUserId(int userId);
 
     Optional<User> logIn(String userName, String password);
+
+    void logOut(String userName);
 }
 

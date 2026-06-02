@@ -3,7 +3,6 @@ package de.fherfurt.FitnessTrackerSystem.services;
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
-import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.repositories.WorkoutPlanRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
