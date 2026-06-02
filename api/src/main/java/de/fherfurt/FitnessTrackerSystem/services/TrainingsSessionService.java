@@ -1,6 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
+import de.fherfurt.FitnessTrackerSystem.models.TrainingsSessionSummary;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.ITrainingsSessionRepository;
 import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
@@ -125,5 +126,34 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         }
 
         return longestStreak;
+    }
+
+    @Override
+    public TrainingsSessionSummary getDailyTrainingsSessionSummary(User user, LocalDate date) {
+        if (user == null || date == null){
+            throw new IllegalArgumentException("cannot be null");
+        }
+        List<TrainingsSession> filteredTrainingsSessionSummary = trainingsSessionRepository.getAllTrainingsSessions()
+                .stream()
+                .filter(trainingsSession -> trainingsSession.getUser().equals(user))
+                .filter(trainingsSession -> trainingsSession.getDate().equals(date))
+                .toList();
+        if (filteredTrainingsSessionSummary.isEmpty()){
+            throw new IllegalStateException("does not exist");
+        }
+
+        List<TrainingsSession> trainingsSessions = filteredTrainingsSessionSummary;
+        int totalDurationInMinutes = filteredTrainingsSessionSummary.stream()
+                .mapToInt(TrainingsSession::getDurationInMinute)
+                .sum();
+        int totalCaloriesBurned = filteredTrainingsSessionSummary.stream()
+                .mapToInt(TrainingsSession::getBurnedCalories)
+                .sum();
+
+        return new TrainingsSessionSummary(
+                trainingsSessions,
+                totalDurationInMinutes,
+                totalCaloriesBurned
+        );
     }
 }

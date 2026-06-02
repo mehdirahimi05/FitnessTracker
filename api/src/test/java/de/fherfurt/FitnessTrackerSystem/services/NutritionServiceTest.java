@@ -195,7 +195,7 @@ public class NutritionServiceTest {
      * verifies that a IllegalStateException was thrown when filterSession is Empty
      */
     @Test
-    void testGetTrainingsSessionStreakIsEmpty() {
+    void testGetDailyNutritionSummaryIsEmpty() {
         // Arrange
         int userId = Constants.FIRST_USER_ID;
         LocalDate date = Constants.FIRST_DATE;

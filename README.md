@@ -53,5 +53,3 @@
 ## DashboardService
 
 - getDailyDashboard
-- getWeeklyDashboard
-- getMonthlyDashboard

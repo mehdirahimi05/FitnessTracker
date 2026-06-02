@@ -1,10 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
-import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
-import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
-import de.fherfurt.FitnessTrackerSystem.models.User;
-import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
+import de.fherfurt.FitnessTrackerSystem.models.*;
 import de.fherfurt.FitnessTrackerSystem.repositories.TrainingsSessionRepository;
 import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
 import org.junit.jupiter.api.BeforeEach;
@@ -342,4 +339,56 @@ public class TrainingsSessionServiceTest {
         // Assert
         assertEquals(2, result);
     }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
+     */
+    @Test
+    void testGetDailyTrainingsSessionSummaryNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            trainingsSessionService.getDailyTrainingsSessionSummary(null, null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown when filterSession is Empty
+     */
+    @Test
+    void testGetDailyTrainingsSessionSummaryIsEmpty() {
+        // Arrange
+        User user = Constants.getFirstUser();
+        LocalDate date = Constants.FIRST_DATE;
+
+        // Act
+        assertThrows(IllegalStateException.class, () -> {
+            trainingsSessionService.getDailyTrainingsSessionSummary(user, date);
+        });
+    }
+
+    /**
+     * verifies that DailyTrainingsSessionSummary was summed successfully
+     */
+    @Test
+    void testGetDailyTrainingsSessionSummarySuccess(){
+        // Arrange
+        User user = Constants.getFirstUser();
+        LocalDate date = Constants.FIRST_DATE;
+        TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(user);
+        TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(user);
+        trainingsSession2.setDate(Constants.FIRST_DATE); // same date like trainingsSession1
+
+
+        // Act
+        trainingsSessionRepository.createTrainingsSession(trainingsSession1);
+        trainingsSessionRepository.createTrainingsSession(trainingsSession2);
+
+        TrainingsSessionSummary summaryList = trainingsSessionService.getDailyTrainingsSessionSummary(user, date);
+
+        // Assert
+        assertTrue(summaryList.getTrainingsSessions().contains(trainingsSession1));
+        assertTrue(summaryList.getTrainingsSessions().contains(trainingsSession2));
+        assertEquals(Constants.FIRST_DURATION_IN_MINUTE + Constants.SECOND_DURATION_IN_MINUTE, summaryList.getTotalDurationInMinutes());
+        assertEquals(Constants.FIRST_BURNED_CALORIES +Constants.SECOND_BURNED_CALORIES, summaryList.getTotalCaloriesBurned());
+    }
+
 }

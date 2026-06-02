@@ -1,6 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
+import de.fherfurt.FitnessTrackerSystem.models.TrainingsSessionSummary;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
 
@@ -26,4 +27,6 @@ public interface ITrainingsSessionService {
     List<TrainingsSession> filterTrainingsSession(TrainingsSessionFilter trainingsSessionFilter);
 
     int getTrainingSessionStreak(User user);
+
+    TrainingsSessionSummary getDailyTrainingsSessionSummary(User user, LocalDate date);
 }
