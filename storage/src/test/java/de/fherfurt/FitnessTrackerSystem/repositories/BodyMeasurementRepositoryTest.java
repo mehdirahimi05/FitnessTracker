@@ -209,8 +209,8 @@ public class BodyMeasurementRepositoryTest {
 
         // Assert
         assertEquals(Constants.SECOND_USER_ID, result.get().getUserId());
-        assertEquals(Constants.SECOND_WEIGHT, result.get().getWeight());
-        assertEquals(Constants.SECOND_HEIGHT, result.get().getHeight());
+        assertEquals(Constants.SECOND_WEIGHT, result.get().getWeightInKg());
+        assertEquals(Constants.SECOND_HEIGHT, result.get().getHeightInMeter());
         assertEquals(Constants.SECOND_BODY_FAT_PERCENTAGE, result.get().getBodyFatPercentage());
         assertEquals(Constants.SECOND_MEASURED_AT, result.get().getMeasuredAt());
     }

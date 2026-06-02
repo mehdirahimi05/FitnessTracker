@@ -1,6 +1,8 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
+import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
+import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.repositories.IWorkoutPlanRepository;
 
 import java.util.List;
@@ -45,5 +47,28 @@ public class WorkoutPlanService implements IWorkoutPlanService {
     @Override
     public void deleteWorkoutPlan(int workoutPlanId) {
         workoutPlanRepository.deleteWorkoutPlanById(workoutPlanId);
+    }
+
+    @Override
+    public WorkoutPlanExercise addExerciseToWorkoutPlan(WorkoutPlan workoutPlan, Exercise exercise, int sets, int repetitions) {
+        if (workoutPlan == null || exercise == null) {
+            throw new IllegalArgumentException("can not be null");
+        }
+        int id = workoutPlan.getExercises().size() + 1;
+        WorkoutPlanExercise newExercise = new WorkoutPlanExercise(id, exercise, sets, repetitions);
+        workoutPlan.getExercises().add(newExercise);
+        workoutPlanRepository.updateWorkoutPlan(workoutPlan);
+        return newExercise;
+    }
+
+    @Override
+    public void removeExerciseFromWorkoutPlan(WorkoutPlan workoutPlan, int workoutPlanExerciseId) {
+        if (workoutPlan == null) {
+            throw new IllegalArgumentException("can not be null");
+        }
+
+        workoutPlan.getExercises()
+                .removeIf(workoutPlanExercise -> workoutPlanExercise.getWorkoutPlanExerciseId() == workoutPlanExerciseId);
+        workoutPlanRepository.updateWorkoutPlan(workoutPlan);
     }
 }

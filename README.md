@@ -15,9 +15,7 @@
 
 - CRUD
 - getMostActiveUserByAmountOfSessions
-- getPersonalBest
 - getTrainingStreak
-- getImprovement
 - filterSessions
 
 ## ActivityType
@@ -29,8 +27,6 @@
 - CRUD
 - addExerciseToWorkoutPlan
 - removeExerciseFromWorkoutPlan
-- getExercisesInPlan
-- getWorkoutPlansByDay
 
 ## Exercise
 
@@ -43,11 +39,7 @@
 ## Nutrition
 
 - CRUD
-- setDailyGoal
 - getDailyNutritionSummary
-- hasReachedDailyGoal
-- setReminderTime
-- getReminderTime
 
 ## BodyMeasurement
 
@@ -56,9 +48,8 @@
 - getLatestMeasurement
 - getMeasurementHistory
 - getWeightProgress
+- getBodyFatPercentageProgress
 
 ## DashboardService
 
 - getDailyDashboard
-- getWeeklyDashboard
-- getMonthlyDashboard

@@ -3,11 +3,13 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
+import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
 import de.fherfurt.FitnessTrackerSystem.repositories.NutritionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -177,4 +179,55 @@ public class NutritionServiceTest {
         assertEquals(expectedSizeOfNutritionList, actualSizeOfNutritionList);
 
     }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
+     */
+    @Test
+    void testGetDailyNutritionSummaryNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            nutritionService.getDailyNutritionSummary(0, null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown when filterSession is Empty
+     */
+    @Test
+    void testGetDailyNutritionSummaryIsEmpty() {
+        // Arrange
+        int userId = Constants.FIRST_USER_ID;
+        LocalDate date = Constants.FIRST_DATE;
+
+        // Act
+        assertThrows(IllegalStateException.class, () -> {
+            nutritionService.getDailyNutritionSummary(userId, date);
+        });
+    }
+
+    /**
+     * verifies that DailyNutritionSummary was summed successfully
+     */
+    @Test
+    void testGetDailyNutritionSummarySuccess() {
+        // Arrange
+        Nutrition nutrition1 = Constants.getFirstNutrition();
+        Nutrition nutrition2 = Constants.getSecondNutrition();
+
+        int userId = Constants.FIRST_USER_ID;
+        LocalDate date = Constants.FIRST_DATE;
+
+        // Act
+        nutritionRepository.createNutrition(nutrition1);
+        nutritionRepository.createNutrition(nutrition2);
+
+        NutritionSummary summaryList = nutritionService.getDailyNutritionSummary(userId, date);
+
+        // Assert
+        assertEquals(Constants.FIRST_NUTRITION_CALORIES + Constants.SECOND_NUTRITION_CALORIES, summaryList.getTotalCalories());
+        assertEquals(Constants.FIRST_NUTRITION_PROTEIN + Constants.SECOND_NUTRITION_PROTEIN, summaryList.getTotalProteinInGram());
+        assertEquals(Constants.FIRST_NUTRITION_CARBOHYDRATES + Constants.SECOND_NUTRITION_CARBOHYDRATES, summaryList.getTotalCarbohydratesInGram());
+        assertEquals(Constants.FIRST_NUTRITION_FAT + Constants.SECOND_NUTRITION_FAT, summaryList.getTotalFatInGram());
+    }
+
 }

@@ -14,7 +14,7 @@ public class UserService implements IUserService {
 
     public Optional<User> signUpUser(User newUser) {
         if (newUser == null) {
-            throw new IllegalArgumentException("Can not be null");
+            throw new IllegalArgumentException("User can not be null");
         }
         var existingUser = userRepository.getUserByUserName(newUser.getUserName());
         if (existingUser.isPresent()) {
@@ -63,9 +63,22 @@ public class UserService implements IUserService {
     @Override
     public Optional<User> logIn(String userName, String password) {
         //TODO: check if the user exists
-        //TODO: check if the user is already logt in
-        //TODO: compare the userName and password with the hashed userName and password
-        //TODO: create a session
+        if (userName == null || password == null) {
+            throw new IllegalArgumentException("can not be null");
+        }
+        var existingUser = userRepository.getUserByUserName(userName);
+        if (existingUser.isEmpty()) {
+            return Optional.empty();
+        }
+        if (existingUser.get().getPassWord().equals(password)) {
+            return Optional.of(existingUser.get());
+        }
         return Optional.empty();
+        //TODO: check if the user is already logt in->spring
+        //TODO: create a session
+    }
+
+    @Override
+    public void logOut(String userName) {
     }
 }

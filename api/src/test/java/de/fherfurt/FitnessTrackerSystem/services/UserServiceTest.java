@@ -227,4 +227,67 @@ public class UserServiceTest {
         assertEquals(expectedSizeOfUsers, actualSizeOfUsers);
     }
 
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testLogInNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.logIn(null, null);
+        });
+    }
+
+
+    /**
+     * verifies that the user does not exist
+     */
+    @Test
+    void testLogInIsEmpty() {
+        // Arrange
+        String userName = Constants.FIRST_USER_NAME;
+        String passWord = Constants.FIRST_USER_PASSWORD;
+
+        // Act
+        Optional<User> result = userService.logIn(userName, passWord);
+
+        // Assert
+        assertTrue(result.isEmpty());
+    }
+
+    /**
+     * verifies that the password is false
+     */
+    @Test
+    void testLogInPassWordIsFalse() {
+        // Arrange
+        User user = Constants.getFirstUser();
+        String userName = Constants.FIRST_USER_NAME;
+        String passWord = "hallo328";
+
+        // Act
+        userRepository.createUser(user);
+        Optional<User> result = userService.logIn(userName, passWord);
+
+        // Assert
+        assertTrue(result.isEmpty());
+    }
+
+    /**
+     * verifies that the logIn was successfully
+     */
+    @Test
+    void testLogInSuccuss() {
+        // Arrange
+        User user = Constants.getFirstUser();
+        String userName = Constants.FIRST_USER_NAME;
+        String passWord = Constants.FIRST_USER_PASSWORD;
+
+        // Act
+        userRepository.createUser(user);
+        Optional<User> result = userService.logIn(userName, passWord);
+
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(user, result.get());
+    }
 }

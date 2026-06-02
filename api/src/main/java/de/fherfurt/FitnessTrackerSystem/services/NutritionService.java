@@ -1,8 +1,10 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
+import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
 import de.fherfurt.FitnessTrackerSystem.repositories.INutritionRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,5 +47,39 @@ public class NutritionService implements INutritionService {
     @Override
     public void deleteNutritionById(int nutritionId) {
         nutritionRepository.deleteNutritionById(nutritionId);
+    }
+
+    @Override
+    public NutritionSummary getDailyNutritionSummary(int userId, LocalDate date) {
+        if (userId == 0 || date == null) {
+            throw new IllegalArgumentException("cannot be null");
+        }
+        List<Nutrition> filteredNutritionSummary = nutritionRepository.getAllNutrition().stream()
+                .filter(nutrition -> nutrition.getUserId() == userId)
+                .filter(nutrition -> nutrition.getDate().equals(date))
+                .toList();
+        if (filteredNutritionSummary.isEmpty()) {
+            throw new IllegalStateException("does not exist");
+        }
+
+        int totalCalories = filteredNutritionSummary.stream()
+                .mapToInt(Nutrition::getCalories)
+                .sum();
+        int totalProteinInGram = filteredNutritionSummary.stream()
+                .mapToInt(Nutrition::getProteinInGram)
+                .sum();
+        int totalCarbohydratesInGram = filteredNutritionSummary.stream()
+                .mapToInt(Nutrition::getCarbohydratesInGram)
+                .sum();
+        int totalFatInGram = filteredNutritionSummary.stream()
+                .mapToInt(Nutrition::getFatInGram)
+                .sum();
+
+        return new NutritionSummary(
+                totalCalories,
+                totalProteinInGram,
+                totalCarbohydratesInGram,
+                totalFatInGram
+        );
     }
 }
