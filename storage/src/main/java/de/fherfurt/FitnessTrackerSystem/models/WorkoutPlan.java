@@ -14,6 +14,4 @@ public class WorkoutPlan {
     private int workoutPlanId;
     private String name;
     private List<WorkoutPlanExercise> exercises;
-    private List<DayOfWeek> trainingDays;
-
 }

@@ -1,13 +1,14 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
+import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
+import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.repositories.WorkoutPlanRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -136,8 +137,7 @@ public class WorkoutPlanServiceTest {
         WorkoutPlan updatedWorkoutPlan = new WorkoutPlan(
                 workoutPlanId,
                 Constants.SECOND_WORKOUT_PLAN_NAME,
-                new ArrayList<>(),
-                List.of(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY)
+                new ArrayList<>()
         );
 
         // Act
@@ -167,5 +167,68 @@ public class WorkoutPlanServiceTest {
 
         // Assert
         assertEquals(expectedSize, actualSize);
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testAddExerciseToWorkoutPlanNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            workoutPlanService.addExerciseToWorkoutPlan(null, null, 0, 0);
+        });
+    }
+
+    /**
+     * verifies that ab Exercise was added to the WorkoutPlan
+     */
+    @Test
+    void testAddExerciseToWorkoutPlanSuccess(){
+        // Arrange
+        WorkoutPlan workoutPlan = Constants.getFirstWorkoutPlan();
+        Exercise exercise = Constants.getFirstExercise();
+        int sets = Constants.FIRST_SETS;
+        int repetitions = Constants.FIRST_REPETITIONS;
+
+        // Act
+        workoutPlanRepository.createWorkoutPlan(workoutPlan);
+        workoutPlanService.addExerciseToWorkoutPlan(workoutPlan, exercise, sets, repetitions);
+
+        // Assert
+        // 2 because workoutPlan has already a plan in constants
+        assertEquals(2, workoutPlan.getExercises().size());
+
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testRemoveExerciseFromWorkoutPlanNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            workoutPlanService.removeExerciseFromWorkoutPlan(null, 0);
+        });
+    }
+
+    /**
+     * verifies that an Exercise was removed from the WorkoutPlan
+     */
+    @Test
+    void testRemoveExerciseFromWorkoutPlanSuccess(){
+        // Arrange
+        WorkoutPlan workoutPlan = Constants.getFirstWorkoutPlan();
+        int workoutPlanExerciseId = Constants.FIRST_WORKOUT_PLAN_EXERCISE_ID;
+        Exercise exercise = Constants.getFirstExercise();
+        int sets = Constants.FIRST_SETS;
+        int repetitions = Constants.FIRST_REPETITIONS;
+
+        // Act
+        workoutPlanRepository.createWorkoutPlan(workoutPlan);
+        workoutPlanService.addExerciseToWorkoutPlan(workoutPlan, exercise, sets, repetitions);
+        workoutPlanService.removeExerciseFromWorkoutPlan(workoutPlan, workoutPlanExerciseId);
+
+        // Assert
+        // 1 because workoutPlan has already a plan in constants and i removed only 1
+        assertEquals(1, workoutPlan.getExercises().size());
     }
 }

@@ -12,4 +12,5 @@ public class WorkoutPlanExercise {
     private Exercise exercise;
     private int sets;
     private int repetitions;
+
 }

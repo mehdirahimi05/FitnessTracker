@@ -58,20 +58,18 @@ public class Constants {
     // ─── WorkoutPlan ─────────────────────────────────────────
     public static final int FIRST_WORKOUT_PLAN_ID = 1;
     public static final String FIRST_WORKOUT_PLAN_NAME = "Brust Training";
-    public static final List<DayOfWeek> FIRST_TRAINING_DAYS = List.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY);
 
     public static final int SECOND_WORKOUT_PLAN_ID = 2;
     public static final String SECOND_WORKOUT_PLAN_NAME = "Bein Training";
-    public static final List<DayOfWeek> SECOND_TRAINING_DAYS = List.of(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY);
 
     public static WorkoutPlan getFirstWorkoutPlan() {
-        WorkoutPlan plan = new WorkoutPlan(FIRST_WORKOUT_PLAN_ID, FIRST_WORKOUT_PLAN_NAME, new java.util.ArrayList<>(), FIRST_TRAINING_DAYS);
+        WorkoutPlan plan = new WorkoutPlan(FIRST_WORKOUT_PLAN_ID, FIRST_WORKOUT_PLAN_NAME, new java.util.ArrayList<>());
         plan.getExercises().add(getFirstWorkoutPlanExercise());
         return plan;
     }
 
     public static WorkoutPlan getSecondWorkoutPlan() {
-        WorkoutPlan plan = new WorkoutPlan(SECOND_WORKOUT_PLAN_ID, SECOND_WORKOUT_PLAN_NAME, new java.util.ArrayList<>(), SECOND_TRAINING_DAYS);
+        WorkoutPlan plan = new WorkoutPlan(SECOND_WORKOUT_PLAN_ID, SECOND_WORKOUT_PLAN_NAME, new java.util.ArrayList<>());
         plan.getExercises().add(getSecondWorkoutPlanExercise());
         return plan;
     }

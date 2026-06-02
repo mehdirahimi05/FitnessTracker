@@ -27,8 +27,6 @@
 - CRUD
 - addExerciseToWorkoutPlan
 - removeExerciseFromWorkoutPlan
-- getExercisesInPlan
-- getWorkoutPlansByDay
 
 ## Exercise
 

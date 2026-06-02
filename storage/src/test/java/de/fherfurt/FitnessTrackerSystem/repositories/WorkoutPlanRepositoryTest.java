@@ -198,8 +198,7 @@ public class WorkoutPlanRepositoryTest {
         WorkoutPlan updatedWorkoutPlan = new WorkoutPlan(
                 workoutPlanId,
                 Constants.SECOND_WORKOUT_PLAN_NAME,
-                new ArrayList<>(),
-                Constants.SECOND_TRAINING_DAYS
+                new ArrayList<>()
         );
 
         // Act
@@ -208,7 +207,6 @@ public class WorkoutPlanRepositoryTest {
 
         // Assert
         assertEquals(Constants.SECOND_WORKOUT_PLAN_NAME, result.get().getName());
-        assertEquals(Constants.SECOND_TRAINING_DAYS, result.get().getTrainingDays());
     }
 
     /**
