@@ -231,7 +231,7 @@ public class UserServiceTest {
      * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
      */
     @Test
-    void testLogInNull(){
+    void testLogInNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             userService.logIn(null, null);
         });
@@ -242,13 +242,13 @@ public class UserServiceTest {
      * verifies that the user does not exist
      */
     @Test
-    void testLogInIsEmpty(){
+    void testLogInIsEmpty() {
         // Arrange
         String userName = Constants.FIRST_USER_NAME;
         String passWord = Constants.FIRST_USER_PASSWORD;
 
         // Act
-        Optional<User> result =  userService.logIn(userName, passWord);
+        Optional<User> result = userService.logIn(userName, passWord);
 
         // Assert
         assertTrue(result.isEmpty());
@@ -258,7 +258,7 @@ public class UserServiceTest {
      * verifies that the password is false
      */
     @Test
-    void testLogInPassWordIsFalse(){
+    void testLogInPassWordIsFalse() {
         // Arrange
         User user = Constants.getFirstUser();
         String userName = Constants.FIRST_USER_NAME;
@@ -276,7 +276,7 @@ public class UserServiceTest {
      * verifies that the logIn was successfully
      */
     @Test
-    void testLogInSuccuss(){
+    void testLogInSuccuss() {
         // Arrange
         User user = Constants.getFirstUser();
         String userName = Constants.FIRST_USER_NAME;

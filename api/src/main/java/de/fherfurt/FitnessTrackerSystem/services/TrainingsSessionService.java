@@ -130,7 +130,7 @@ public class TrainingsSessionService implements ITrainingsSessionService {
 
     @Override
     public TrainingsSessionSummary getDailyTrainingsSessionSummary(User user, LocalDate date) {
-        if (user == null || date == null){
+        if (user == null || date == null) {
             throw new IllegalArgumentException("cannot be null");
         }
         List<TrainingsSession> filteredTrainingsSessionSummary = trainingsSessionRepository.getAllTrainingsSessions()
@@ -138,7 +138,7 @@ public class TrainingsSessionService implements ITrainingsSessionService {
                 .filter(trainingsSession -> trainingsSession.getUser().equals(user))
                 .filter(trainingsSession -> trainingsSession.getDate().equals(date))
                 .toList();
-        if (filteredTrainingsSessionSummary.isEmpty()){
+        if (filteredTrainingsSessionSummary.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
 

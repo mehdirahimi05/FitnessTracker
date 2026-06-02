@@ -172,7 +172,7 @@ public class WorkoutPlanServiceTest {
      * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
      */
     @Test
-    void testAddExerciseToWorkoutPlanNull(){
+    void testAddExerciseToWorkoutPlanNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             workoutPlanService.addExerciseToWorkoutPlan(null, null, 0, 0);
         });
@@ -182,7 +182,7 @@ public class WorkoutPlanServiceTest {
      * verifies that ab Exercise was added to the WorkoutPlan
      */
     @Test
-    void testAddExerciseToWorkoutPlanSuccess(){
+    void testAddExerciseToWorkoutPlanSuccess() {
         // Arrange
         WorkoutPlan workoutPlan = Constants.getFirstWorkoutPlan();
         Exercise exercise = Constants.getFirstExercise();
@@ -203,7 +203,7 @@ public class WorkoutPlanServiceTest {
      * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
      */
     @Test
-    void testRemoveExerciseFromWorkoutPlanNull(){
+    void testRemoveExerciseFromWorkoutPlanNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             workoutPlanService.removeExerciseFromWorkoutPlan(null, 0);
         });
@@ -213,7 +213,7 @@ public class WorkoutPlanServiceTest {
      * verifies that an Exercise was removed from the WorkoutPlan
      */
     @Test
-    void testRemoveExerciseFromWorkoutPlanSuccess(){
+    void testRemoveExerciseFromWorkoutPlanSuccess() {
         // Arrange
         WorkoutPlan workoutPlan = Constants.getFirstWorkoutPlan();
         int workoutPlanExerciseId = Constants.FIRST_WORKOUT_PLAN_EXERCISE_ID;

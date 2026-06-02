@@ -4,7 +4,6 @@ package de.fherfurt.FitnessTrackerSystem.services;
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
-import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.NutritionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -210,7 +209,7 @@ public class NutritionServiceTest {
      * verifies that DailyNutritionSummary was summed successfully
      */
     @Test
-    void testGetDailyNutritionSummarySuccess(){
+    void testGetDailyNutritionSummarySuccess() {
         // Arrange
         Nutrition nutrition1 = Constants.getFirstNutrition();
         Nutrition nutrition2 = Constants.getSecondNutrition();

@@ -51,7 +51,7 @@ public class WorkoutPlanService implements IWorkoutPlanService {
 
     @Override
     public WorkoutPlanExercise addExerciseToWorkoutPlan(WorkoutPlan workoutPlan, Exercise exercise, int sets, int repetitions) {
-        if (workoutPlan == null || exercise == null){
+        if (workoutPlan == null || exercise == null) {
             throw new IllegalArgumentException("can not be null");
         }
         int id = workoutPlan.getExercises().size() + 1;
@@ -63,7 +63,7 @@ public class WorkoutPlanService implements IWorkoutPlanService {
 
     @Override
     public void removeExerciseFromWorkoutPlan(WorkoutPlan workoutPlan, int workoutPlanExerciseId) {
-        if (workoutPlan == null){
+        if (workoutPlan == null) {
             throw new IllegalArgumentException("can not be null");
         }
 

@@ -2,7 +2,6 @@ package de.fherfurt.FitnessTrackerSystem;
 
 import de.fherfurt.FitnessTrackerSystem.models.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 

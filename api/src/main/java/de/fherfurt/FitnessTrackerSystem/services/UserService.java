@@ -63,14 +63,14 @@ public class UserService implements IUserService {
     @Override
     public Optional<User> logIn(String userName, String password) {
         //TODO: check if the user exists
-        if (userName == null || password == null){
+        if (userName == null || password == null) {
             throw new IllegalArgumentException("can not be null");
         }
         var existingUser = userRepository.getUserByUserName(userName);
-        if (existingUser.isEmpty()){
+        if (existingUser.isEmpty()) {
             return Optional.empty();
         }
-        if (existingUser.get().getPassWord().equals(password)){
+        if (existingUser.get().getPassWord().equals(password)) {
             return Optional.of(existingUser.get());
         }
         return Optional.empty();

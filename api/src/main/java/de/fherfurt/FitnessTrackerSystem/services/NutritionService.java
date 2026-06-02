@@ -51,7 +51,7 @@ public class NutritionService implements INutritionService {
 
     @Override
     public NutritionSummary getDailyNutritionSummary(int userId, LocalDate date) {
-        if (userId == 0 || date == null){
+        if (userId == 0 || date == null) {
             throw new IllegalArgumentException("cannot be null");
         }
         List<Nutrition> filteredNutritionSummary = nutritionRepository.getAllNutrition().stream()
@@ -65,7 +65,7 @@ public class NutritionService implements INutritionService {
         int totalCalories = filteredNutritionSummary.stream()
                 .mapToInt(Nutrition::getCalories)
                 .sum();
-        int totalProteinInGram  = filteredNutritionSummary.stream()
+        int totalProteinInGram = filteredNutritionSummary.stream()
                 .mapToInt(Nutrition::getProteinInGram)
                 .sum();
         int totalCarbohydratesInGram = filteredNutritionSummary.stream()

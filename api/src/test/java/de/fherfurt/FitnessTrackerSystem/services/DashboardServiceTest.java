@@ -12,7 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unittest for {@link DashboardService} class
@@ -49,7 +50,7 @@ public class DashboardServiceTest {
      * verifies that the dashboard summary was successful
      */
     @Test
-    void testGetDailyDashboardSuccess(){
+    void testGetDailyDashboardSuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         LocalDate date = Constants.FIRST_DATE;

@@ -7,7 +7,7 @@ import de.fherfurt.FitnessTrackerSystem.models.User;
 
 import java.time.LocalDate;
 
-public class DashboardService implements IDashboardService{
+public class DashboardService implements IDashboardService {
 
     private final TrainingsSessionService trainingsSessionService;
     private final NutritionService nutritionService;
@@ -20,7 +20,7 @@ public class DashboardService implements IDashboardService{
 
     @Override
     public DailyDashboard getDailyDashboard(User user, LocalDate date) {
-        if (user == null || date == null){
+        if (user == null || date == null) {
             throw new IllegalArgumentException("Can not be null");
         }
         TrainingsSessionSummary trainingsSessionSummary = trainingsSessionService.getDailyTrainingsSessionSummary(user, date);

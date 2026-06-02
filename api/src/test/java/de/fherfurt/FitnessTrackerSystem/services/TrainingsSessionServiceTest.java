@@ -369,7 +369,7 @@ public class TrainingsSessionServiceTest {
      * verifies that DailyTrainingsSessionSummary was summed successfully
      */
     @Test
-    void testGetDailyTrainingsSessionSummarySuccess(){
+    void testGetDailyTrainingsSessionSummarySuccess() {
         // Arrange
         User user = Constants.getFirstUser();
         LocalDate date = Constants.FIRST_DATE;
@@ -388,7 +388,7 @@ public class TrainingsSessionServiceTest {
         assertTrue(summaryList.getTrainingsSessions().contains(trainingsSession1));
         assertTrue(summaryList.getTrainingsSessions().contains(trainingsSession2));
         assertEquals(Constants.FIRST_DURATION_IN_MINUTE + Constants.SECOND_DURATION_IN_MINUTE, summaryList.getTotalDurationInMinutes());
-        assertEquals(Constants.FIRST_BURNED_CALORIES +Constants.SECOND_BURNED_CALORIES, summaryList.getTotalCaloriesBurned());
+        assertEquals(Constants.FIRST_BURNED_CALORIES + Constants.SECOND_BURNED_CALORIES, summaryList.getTotalCaloriesBurned());
     }
 
 }
