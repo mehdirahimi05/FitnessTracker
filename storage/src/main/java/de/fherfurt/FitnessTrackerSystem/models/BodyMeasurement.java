@@ -12,8 +12,8 @@ import java.time.LocalDate;
 public class BodyMeasurement {
     private int bodyMeasurementId;
     private int userId;
-    private float weight;
-    private float height;
+    private float weightInKg;
+    private float heightInMeter;
     private int bodyFatPercentage;
     private LocalDate measuredAt;
 }

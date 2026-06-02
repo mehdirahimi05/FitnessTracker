@@ -54,6 +54,7 @@
 - getLatestMeasurement
 - getMeasurementHistory
 - getWeightProgress
+- getBodyFatPercentageProgress
 
 ## DashboardService
 

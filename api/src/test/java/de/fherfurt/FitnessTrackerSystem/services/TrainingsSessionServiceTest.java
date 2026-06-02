@@ -268,7 +268,7 @@ public class TrainingsSessionServiceTest {
      * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
      */
     @Test
-    void testGetTrainingsSessionStreakUserNull(){
+    void testGetTrainingsSessionStreakUserNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             trainingsSessionService.getTrainingSessionStreak(null);
         });
@@ -278,7 +278,7 @@ public class TrainingsSessionServiceTest {
      * verifies that a IllegalStateException was thrown when filterSession is Empty
      */
     @Test
-    void testGetTrainingsSessionStreakIsEmpty(){
+    void testGetTrainingsSessionStreakIsEmpty() {
         // Arrange
         User user = Constants.getFirstUser();
 
@@ -292,7 +292,7 @@ public class TrainingsSessionServiceTest {
      * verifies that the streak is 1
      */
     @Test
-    void testGetTrainingsSessionStreakOne(){
+    void testGetTrainingsSessionStreakOne() {
         // Arrange
         TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
@@ -308,7 +308,7 @@ public class TrainingsSessionServiceTest {
      * verifies that the streak is more than 1 without break
      */
     @Test
-    void testGetTrainingsSessionStreakWithoutBreak(){
+    void testGetTrainingsSessionStreakWithoutBreak() {
         // Arrange
         TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(mehdi);
         TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(mehdi);
@@ -326,7 +326,7 @@ public class TrainingsSessionServiceTest {
      * verifies that the streak is more than 1 with brake
      */
     @Test
-    void testGetTrainingsSessionStreakWitBreak(){
+    void testGetTrainingsSessionStreakWitBreak() {
         // Arrange
         TrainingsSession trainingsSession1 = Constants.getFirstTrainingsSession(mehdi);
         TrainingsSession trainingsSession2 = Constants.getSecondTrainingsSession(mehdi);

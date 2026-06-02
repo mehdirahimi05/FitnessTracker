@@ -47,12 +47,12 @@ public class TrainingsSessionFilterBuilder {
         return this;
     }
 
-    public TrainingsSessionFilterBuilder withActivityType(ActivityType activityType){
+    public TrainingsSessionFilterBuilder withActivityType(ActivityType activityType) {
         this.activityType = activityType;
         return this;
     }
 
-    public TrainingsSessionFilterBuilder withDifficulty(Difficulty difficulty){
+    public TrainingsSessionFilterBuilder withDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
         return this;
     }

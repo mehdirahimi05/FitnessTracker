@@ -105,14 +105,14 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         }
         List<TrainingsSession> filteredTrainingsSession = trainingsSessionRepository.getAllTrainingsSessions().stream()
                 .filter(trainingsSession -> trainingsSession.getUser().equals(user))
-                .sorted(Comparator.comparing(TrainingsSession :: getDate))
+                .sorted(Comparator.comparing(TrainingsSession::getDate))
                 .toList();
         if (filteredTrainingsSession.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
         int currentStreak = 1;
         int longestStreak = 1;
-        for (int i = 1; i< filteredTrainingsSession.size(); i++){
+        for (int i = 1; i < filteredTrainingsSession.size(); i++) {
             LocalDate currentDate = filteredTrainingsSession.get(i).getDate();
             LocalDate previousDate = filteredTrainingsSession.get(i - 1).getDate();
 

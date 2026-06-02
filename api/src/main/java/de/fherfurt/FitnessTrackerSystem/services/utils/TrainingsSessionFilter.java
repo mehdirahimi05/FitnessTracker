@@ -1,6 +1,9 @@
 package de.fherfurt.FitnessTrackerSystem.services.utils;
 
-import de.fherfurt.FitnessTrackerSystem.models.*;
+import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
+import de.fherfurt.FitnessTrackerSystem.models.Difficulty;
+import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
@@ -60,7 +63,7 @@ public class TrainingsSessionFilter implements IFilterObject<TrainingsSession> {
             boolean matchesActivityType = (activityType == null
                     || trainingsSession.getActivityType().getActivityTypeId() == activityType.getActivityTypeId());
             boolean matchesDifficulty = (difficulty == null
-                    ||trainingsSession.getDifficulty().equals(difficulty));
+                    || trainingsSession.getDifficulty().equals(difficulty));
 
             return matchesStartDate
                     && matchesEndDate
