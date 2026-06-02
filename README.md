@@ -41,11 +41,7 @@
 ## Nutrition
 
 - CRUD
-- setDailyGoal
 - getDailyNutritionSummary
-- hasReachedDailyGoal
-- setReminderTime
-- getReminderTime
 
 ## BodyMeasurement
 
