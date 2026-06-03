@@ -2,10 +2,13 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
     Optional<User> signUpUser(User newUser);
+
+    List<User> getAllUser();
 
     Optional<User> getUserById(int userId);
 
