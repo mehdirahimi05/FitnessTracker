@@ -3,6 +3,7 @@ package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class NutritionRepositoryTest {
     private NutritionRepository nutritionRepository;
+    private User mehdi;
+    private User ammar;
 
     @BeforeEach
     void setUp() {
         nutritionRepository = new NutritionRepository();
+        mehdi = Constants.getFirstUser();
+        ammar = Constants.getSecondUser();
     }
 
     /**
@@ -43,7 +48,7 @@ public class NutritionRepositoryTest {
     @DisplayName("createNutrition: success")
     void testCreateNutritionSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         int expectedSizeOfNutritionList = 1;
 
         // Act
@@ -74,7 +79,7 @@ public class NutritionRepositoryTest {
     @DisplayName("Get one Nutrition")
     void testGetOneNutrition() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
 
         // Act
         nutritionRepository.createNutrition(nutrition);
@@ -94,8 +99,8 @@ public class NutritionRepositoryTest {
     @DisplayName("Get all Nutrition")
     void testGetAllNutrition() {
         // Arrange
-        Nutrition nutrition1 = Constants.getFirstNutrition();
-        Nutrition nutrition2 = Constants.getSecondNutrition();
+        Nutrition nutrition1 = Constants.getFirstNutrition(mehdi);
+        Nutrition nutrition2 = Constants.getSecondNutrition(ammar);
 
         // Act
         nutritionRepository.createNutrition(nutrition1);
@@ -129,7 +134,7 @@ public class NutritionRepositoryTest {
     @DisplayName("Get Nutrition by Id : present")
     void testGetNutritionByIdIsPresent() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
 
         // Act
         nutritionRepository.createNutrition(nutrition);
@@ -146,7 +151,7 @@ public class NutritionRepositoryTest {
     @DisplayName("Get Nutrition by Id")
     void testGetNutritionById() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
 
         // Act
         nutritionRepository.createNutrition(nutrition);
@@ -174,7 +179,7 @@ public class NutritionRepositoryTest {
     @DisplayName("Update Nutrition: ignore empty list and maintain the list")
     void testUpdateNutritionEmpty() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
 
         // Assert
         assertThrows(IllegalStateException.class, () -> {
@@ -189,14 +194,14 @@ public class NutritionRepositoryTest {
     @DisplayName("update Nutrition: success")
     void testUpdateNutritionSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         int nutritionId = Constants.FIRST_NUTRITION_ID;
 
         nutritionRepository.createNutrition(nutrition);
 
         Nutrition updatedNutrition = new Nutrition(
                 nutritionId,
-                Constants.SECOND_USER_ID,
+                mehdi,
                 Constants.SECOND_NUTRITION_CALORIES,
                 Constants.SECOND_NUTRITION_PROTEIN,
                 Constants.SECOND_NUTRITION_CARBOHYDRATES,
@@ -210,7 +215,7 @@ public class NutritionRepositoryTest {
         Optional<Nutrition> finalNutritionList = nutritionRepository.getNutritionById(nutritionId);
 
         // Assert
-        assertEquals(Constants.SECOND_USER_ID, finalNutritionList.get().getUserId());
+        assertEquals(mehdi, finalNutritionList.get().getUser());
         assertEquals(Constants.SECOND_NUTRITION_CALORIES, finalNutritionList.get().getCalories());
         assertEquals(Constants.SECOND_NUTRITION_PROTEIN, finalNutritionList.get().getProteinInGram());
         assertEquals(Constants.SECOND_NUTRITION_CARBOHYDRATES, finalNutritionList.get().getCarbohydratesInGram());
@@ -240,7 +245,7 @@ public class NutritionRepositoryTest {
     @DisplayName("delete nutritionId by id: success")
     void testDeleteNutritionIdByIdSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         nutritionRepository.createNutrition(nutrition);
         int nutritionId = Constants.FIRST_NUTRITION_ID;
         int expectedSizeOfNutritionList = 0;

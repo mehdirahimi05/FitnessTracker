@@ -2,6 +2,7 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,5 +21,5 @@ public interface INutritionService {
 
     void deleteNutritionById(int nutritionId);
 
-    NutritionSummary getDailyNutritionSummary(int userId, LocalDate date);
+    NutritionSummary getDailyNutritionSummary(User user, LocalDate date);
 }

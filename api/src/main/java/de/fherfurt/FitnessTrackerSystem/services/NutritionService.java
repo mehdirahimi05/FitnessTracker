@@ -2,6 +2,7 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.INutritionRepository;
 
 import java.time.LocalDate;
@@ -50,12 +51,12 @@ public class NutritionService implements INutritionService {
     }
 
     @Override
-    public NutritionSummary getDailyNutritionSummary(int userId, LocalDate date) {
-        if (userId == 0 || date == null) {
+    public NutritionSummary getDailyNutritionSummary(User user, LocalDate date) {
+        if (user == null || date == null) {
             throw new IllegalArgumentException("cannot be null");
         }
         List<Nutrition> filteredNutritionSummary = nutritionRepository.getAllNutrition().stream()
-                .filter(nutrition -> nutrition.getUserId() == userId)
+                .filter(nutrition -> nutrition.getUser().equals(user))
                 .filter(nutrition -> nutrition.getDate().equals(date))
                 .toList();
         if (filteredNutritionSummary.isEmpty()) {

@@ -26,6 +26,7 @@ public class DashboardServiceTest {
     private TrainingsSessionService trainingsSessionService;
     private NutritionService nutritionService;
     private DashboardService dashboardService;
+    private User mehdi;
 
     @BeforeEach
     void setUp() {
@@ -34,6 +35,7 @@ public class DashboardServiceTest {
         trainingsSessionService = new TrainingsSessionService(trainingsSessionRepository);
         nutritionService = new NutritionService(nutritionRepository);
         dashboardService = new DashboardService(trainingsSessionService, nutritionService);
+        mehdi = Constants.getFirstUser();
     }
 
     /**
@@ -52,16 +54,15 @@ public class DashboardServiceTest {
     @Test
     void testGetDailyDashboardSuccess() {
         // Arrange
-        User user = Constants.getFirstUser();
         LocalDate date = Constants.FIRST_DATE;
-        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(user);
-        Nutrition nutrition = Constants.getFirstNutrition();
+        TrainingsSession trainingsSession = Constants.getFirstTrainingsSession(mehdi);
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
 
         // Act
         trainingsSessionRepository.createTrainingsSession(trainingsSession);
         nutritionRepository.createNutrition(nutrition);
 
-        DailyDashboard result = dashboardService.getDailyDashboard(user, date);
+        DailyDashboard result = dashboardService.getDailyDashboard(mehdi, date);
 
         // Assert
         assertNotNull(result.getTrainingsSessionSummary());

@@ -2,6 +2,8 @@ package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
+import de.fherfurt.FitnessTrackerSystem.models.User;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BodyMeasurementRepositoryTest {
     private BodyMeasurementRepository bodyMeasurementRepository;
+    private User mehdi;
 
     @BeforeEach
     void setUp() {
         bodyMeasurementRepository = new BodyMeasurementRepository();
+        mehdi = Constants.getFirstUser();
     }
 
     /**
@@ -42,7 +46,7 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("create BodyMeasurement: success")
     void testCreateBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int expectedSizeOfBodyMeasurementList = 1;
 
         // Act
@@ -73,7 +77,7 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("Get one BodyMeasurement")
     void testGetOneBodyMeasurement() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
 
         // Act
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
@@ -92,8 +96,8 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("Get all BodyMeasurements")
     void testGetAllBodyMeasurements() {
         // Arrange
-        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement();
-        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement();
+        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement(mehdi);
+        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement(mehdi);
 
         // Act
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement1);
@@ -127,7 +131,7 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("Get BodyMeasurement by Id: present")
     void testGetBodyMeasurementByIdIsPresent() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
 
         // Act
@@ -145,7 +149,7 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("Get BodyMeasurement by Id")
     void testGetBodyMeasurementById() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
 
         // Act
@@ -174,7 +178,7 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("Update BodyMeasurement: ignore empty list and maintain the list")
     void testUpdateBodyMeasurementEmpty() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
 
         // Assert
         assertThrows(IllegalStateException.class, () -> {
@@ -189,14 +193,14 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("update BodyMeasurement: success")
     void testUpdateBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
 
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
 
         BodyMeasurement updatedBodyMeasurement = new BodyMeasurement(
                 bodyMeasurementId,
-                Constants.SECOND_USER_ID,
+                mehdi,
                 Constants.SECOND_WEIGHT,
                 Constants.SECOND_HEIGHT,
                 Constants.SECOND_BODY_FAT_PERCENTAGE,
@@ -208,7 +212,7 @@ public class BodyMeasurementRepositoryTest {
         Optional<BodyMeasurement> result = bodyMeasurementRepository.getBodyMeasurementById(bodyMeasurementId);
 
         // Assert
-        assertEquals(Constants.SECOND_USER_ID, result.get().getUserId());
+        assertEquals(mehdi, result.get().getUser());
         assertEquals(Constants.SECOND_WEIGHT, result.get().getWeightInKg());
         assertEquals(Constants.SECOND_HEIGHT, result.get().getHeightInMeter());
         assertEquals(Constants.SECOND_BODY_FAT_PERCENTAGE, result.get().getBodyFatPercentage());
@@ -237,7 +241,7 @@ public class BodyMeasurementRepositoryTest {
     @DisplayName("delete BodyMeasurement by id: success")
     void testDeleteBodyMeasurementByIdSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
         int expectedSizeOfBodyMeasurementList = 0;

@@ -1,8 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 
 /**
@@ -13,11 +12,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+    @Column(unique = true, nullable = false)
     private String userName;
     private String passWord;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }) // one from me belong to one
     private UserDetails userDetails;
 
 }

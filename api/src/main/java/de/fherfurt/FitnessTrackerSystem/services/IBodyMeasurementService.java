@@ -1,6 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,11 +22,11 @@ public interface IBodyMeasurementService {
 
     float calculateBmi(float weightInKg, float heightInMeter);
 
-    Optional<BodyMeasurement> getLatestBodyMeasurement(int userId);
+    Optional<BodyMeasurement> getLatestBodyMeasurement(User user);
 
-    List<BodyMeasurement> getBodyMeasurementHistory(int userId, LocalDate startDate, LocalDate endDate);
+    List<BodyMeasurement> getBodyMeasurementHistory(User user, LocalDate startDate, LocalDate endDate);
 
-    List<Float> getWeightProgress(int userId, LocalDate startDate, LocalDate endDate);
+    List<Float> getWeightProgress(User user, LocalDate startDate, LocalDate endDate);
 
-    List<Integer> getBodyFatPercentageProgress(int userId, LocalDate startDate, LocalDate endDate);
+    List<Integer> getBodyFatPercentageProgress(User user, LocalDate startDate, LocalDate endDate);
 }
