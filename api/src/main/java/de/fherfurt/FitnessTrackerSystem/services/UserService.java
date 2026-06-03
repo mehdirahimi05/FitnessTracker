@@ -2,9 +2,11 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.IUserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
 
@@ -16,22 +18,22 @@ public class UserService implements IUserService {
         if (newUser == null) {
             throw new IllegalArgumentException("User can not be null");
         }
-        var existingUser = userRepository.getUserByUserName(newUser.getUserName());
+        var existingUser = userRepository.findByUserName(newUser.getUserName());
         if (existingUser.isPresent()) {
             return Optional.empty();
         }
-        userRepository.createUser(newUser);
+        userRepository.save(newUser);
         return Optional.of(newUser);
     }
 
     @Override
     public Optional<User> getUserById(int userId) {
-        return userRepository.getUserById(userId);
+        return userRepository.findById(userId);
     }
 
     @Override
     public Optional<User> getUserByUserName(String userName) {
-        return userRepository.getUserByUserName(userName);
+        return userRepository.findByUserName(userName);
     }
 
 
@@ -47,17 +49,17 @@ public class UserService implements IUserService {
 
     @Override
     public void updateUser(User updatedUser) {
-        userRepository.updateUser(updatedUser);
+        userRepository.save(updatedUser);
     }
 
     @Override
     public void deleteUserByUserName(String username) {
-        userRepository.deleteUserByUserName(username);
+        userRepository.deleteByUserName(username);
     }
 
     @Override
     public void deleteUserByUserId(int userId) {
-        userRepository.deleteUserByUserId(userId);
+        userRepository.deleteById(userId);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class UserService implements IUserService {
         if (userName == null || password == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        var existingUser = userRepository.getUserByUserName(userName);
+        var existingUser = userRepository.findByUserName(userName);
         if (existingUser.isEmpty()) {
             return Optional.empty();
         }

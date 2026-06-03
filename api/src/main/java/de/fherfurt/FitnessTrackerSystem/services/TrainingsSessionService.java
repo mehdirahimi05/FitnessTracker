@@ -5,10 +5,12 @@ import de.fherfurt.FitnessTrackerSystem.models.TrainingsSessionSummary;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.ITrainingsSessionRepository;
 import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@Service
 public class TrainingsSessionService implements ITrainingsSessionService {
     private final ITrainingsSessionRepository trainingsSessionRepository;
 
@@ -18,17 +20,17 @@ public class TrainingsSessionService implements ITrainingsSessionService {
 
     @Override
     public List<TrainingsSession> getAllTrainingsSessions() {
-        return trainingsSessionRepository.getAllTrainingsSessions();
+        return trainingsSessionRepository.findAll();
     }
 
     @Override
     public Optional<TrainingsSession> getTrainingsSessionById(int trainingsSessionId) {
-        return trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
+        return trainingsSessionRepository.findById(trainingsSessionId);
     }
 
     @Override
     public boolean checkIsOwnTrainingsSession(int trainingsSessionId) {
-        var trainingsSessionToCheck = trainingsSessionRepository.getTrainingsSessionById(trainingsSessionId);
+        var trainingsSessionToCheck = trainingsSessionRepository.findById(trainingsSessionId);
         if (trainingsSessionToCheck.isEmpty()) {
             return false;
         }
@@ -37,22 +39,22 @@ public class TrainingsSessionService implements ITrainingsSessionService {
 
     @Override
     public void addTrainingsSession(TrainingsSession newTrainingsSession) {
-        trainingsSessionRepository.createTrainingsSession(newTrainingsSession);
+        trainingsSessionRepository.save(newTrainingsSession);
     }
 
     @Override
     public void updateTrainingsSession(TrainingsSession updatedTrainingsSession) {
-        trainingsSessionRepository.updateTrainingsSession(updatedTrainingsSession);
+        trainingsSessionRepository.save(updatedTrainingsSession);
     }
 
     @Override
     public void deleteTrainingsSessionById(int trainingsSessionId) {
-        trainingsSessionRepository.deleteTrainingsSessionById(trainingsSessionId);
+        trainingsSessionRepository.deleteById(trainingsSessionId);
     }
 
     private Map<User, Long> aggregatUserTrainingsSessions(LocalDate startDate, LocalDate endDate) {
         Map<User, Long> trainingsSessionMap = new HashMap<>();
-        List<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getAllTrainingsSessions();
+        List<TrainingsSession> trainingsSessionList = trainingsSessionRepository.findAll();
 
         if (trainingsSessionList == null || startDate == null || endDate == null) {
             return new HashMap<>();
@@ -93,7 +95,7 @@ public class TrainingsSessionService implements ITrainingsSessionService {
 
     @Override
     public List<TrainingsSession> filterTrainingsSession(TrainingsSessionFilter trainingsSessionFilter) {
-        List<TrainingsSession> trainingsSessionList = trainingsSessionRepository.getAllTrainingsSessions();
+        List<TrainingsSession> trainingsSessionList = trainingsSessionRepository.findAll();
         return trainingsSessionList.stream()
                 .filter(trainingsSessionFilter.buildPredicate())
                 .toList();
@@ -104,7 +106,7 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-        List<TrainingsSession> filteredTrainingsSession = trainingsSessionRepository.getAllTrainingsSessions().stream()
+        List<TrainingsSession> filteredTrainingsSession = trainingsSessionRepository.findAll().stream()
                 .filter(trainingsSession -> trainingsSession.getUser().equals(user))
                 .sorted(Comparator.comparing(TrainingsSession::getDate))
                 .toList();
@@ -133,7 +135,7 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         if (user == null || date == null) {
             throw new IllegalArgumentException("cannot be null");
         }
-        List<TrainingsSession> filteredTrainingsSessionSummary = trainingsSessionRepository.getAllTrainingsSessions()
+        List<TrainingsSession> filteredTrainingsSessionSummary = trainingsSessionRepository.findAll()
                 .stream()
                 .filter(trainingsSession -> trainingsSession.getUser().equals(user))
                 .filter(trainingsSession -> trainingsSession.getDate().equals(date))

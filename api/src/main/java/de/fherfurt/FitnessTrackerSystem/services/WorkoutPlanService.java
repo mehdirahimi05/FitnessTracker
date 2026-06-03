@@ -4,10 +4,12 @@ import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.repositories.IWorkoutPlanRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class WorkoutPlanService implements IWorkoutPlanService {
     private final IWorkoutPlanRepository workoutPlanRepository;
 
@@ -17,17 +19,17 @@ public class WorkoutPlanService implements IWorkoutPlanService {
 
     @Override
     public List<WorkoutPlan> getAllWorkoutPlan() {
-        return workoutPlanRepository.getAllWorkoutPlan();
+        return workoutPlanRepository.findAll();
     }
 
     @Override
     public Optional<WorkoutPlan> getWorkoutPlanById(int workoutPlanId) {
-        return workoutPlanRepository.getWorkoutPlanById(workoutPlanId);
+        return workoutPlanRepository.findById(workoutPlanId);
     }
 
     @Override
     public boolean checkIsOwnWorkoutPlan(int workoutPlanId) {
-        var workoutPlanToCheck = workoutPlanRepository.getWorkoutPlanById(workoutPlanId);
+        var workoutPlanToCheck = workoutPlanRepository.findById(workoutPlanId);
         if (workoutPlanToCheck.isEmpty()) {
             return false;
         }
@@ -36,17 +38,17 @@ public class WorkoutPlanService implements IWorkoutPlanService {
 
     @Override
     public void addWorkoutPlan(WorkoutPlan workoutPlan) {
-        workoutPlanRepository.createWorkoutPlan(workoutPlan);
+        workoutPlanRepository.save(workoutPlan);
     }
 
     @Override
     public void updateWorkoutPlan(WorkoutPlan workoutPlan) {
-        workoutPlanRepository.updateWorkoutPlan(workoutPlan);
+        workoutPlanRepository.save(workoutPlan);
     }
 
     @Override
     public void deleteWorkoutPlan(int workoutPlanId) {
-        workoutPlanRepository.deleteWorkoutPlanById(workoutPlanId);
+        workoutPlanRepository.deleteById(workoutPlanId);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class WorkoutPlanService implements IWorkoutPlanService {
         int id = workoutPlan.getExercises().size() + 1;
         WorkoutPlanExercise newExercise = new WorkoutPlanExercise(id, exercise, sets, repetitions);
         workoutPlan.getExercises().add(newExercise);
-        workoutPlanRepository.updateWorkoutPlan(workoutPlan);
+        workoutPlanRepository.save(workoutPlan);
         return newExercise;
     }
 
@@ -69,6 +71,6 @@ public class WorkoutPlanService implements IWorkoutPlanService {
 
         workoutPlan.getExercises()
                 .removeIf(workoutPlanExercise -> workoutPlanExercise.getWorkoutPlanExerciseId() == workoutPlanExerciseId);
-        workoutPlanRepository.updateWorkoutPlan(workoutPlan);
+        workoutPlanRepository.save(workoutPlan);
     }
 }

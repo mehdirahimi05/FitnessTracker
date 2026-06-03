@@ -4,11 +4,13 @@ import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.INutritionRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class NutritionService implements INutritionService {
     private final INutritionRepository nutritionRepository;
 
@@ -18,17 +20,17 @@ public class NutritionService implements INutritionService {
 
     @Override
     public List<Nutrition> getAllNutrition() {
-        return nutritionRepository.getAllNutrition();
+        return nutritionRepository.findAll();
     }
 
     @Override
     public Optional<Nutrition> getNutritionById(int nutritionId) {
-        return nutritionRepository.getNutritionById(nutritionId);
+        return nutritionRepository.findById(nutritionId);
     }
 
     @Override
     public boolean checkIsOwnNutrition(int nutritionId) {
-        var nutritionToCheck = nutritionRepository.getNutritionById(nutritionId);
+        var nutritionToCheck = nutritionRepository.findById(nutritionId);
         if (nutritionToCheck.isEmpty()) {
             return false;
         }
@@ -37,17 +39,17 @@ public class NutritionService implements INutritionService {
 
     @Override
     public void addNutrition(Nutrition newNutrition) {
-        nutritionRepository.createNutrition(newNutrition);
+        nutritionRepository.save(newNutrition);
     }
 
     @Override
     public void updateNutrition(Nutrition updatedNutrition) {
-        nutritionRepository.updateNutrition(updatedNutrition);
+        nutritionRepository.save(updatedNutrition);
     }
 
     @Override
     public void deleteNutritionById(int nutritionId) {
-        nutritionRepository.deleteNutritionById(nutritionId);
+        nutritionRepository.deleteById(nutritionId);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class NutritionService implements INutritionService {
         if (user == null || date == null) {
             throw new IllegalArgumentException("cannot be null");
         }
-        List<Nutrition> filteredNutritionSummary = nutritionRepository.getAllNutrition().stream()
+        List<Nutrition> filteredNutritionSummary = nutritionRepository.findAll().stream()
                 .filter(nutrition -> nutrition.getUser().equals(user))
                 .filter(nutrition -> nutrition.getDate().equals(date))
                 .toList();
