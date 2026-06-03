@@ -24,7 +24,7 @@ public class User {
     private String passWord;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }) // one from me belong to one
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) // one from me belong to one
     private UserDetails userDetails;
 
 }

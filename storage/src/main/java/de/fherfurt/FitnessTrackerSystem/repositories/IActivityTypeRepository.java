@@ -4,5 +4,5 @@ import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface IActivityTypeRepository extends JpaRepository<ActivityType, Integer>{
+public interface IActivityTypeRepository extends JpaRepository<ActivityType, Integer> {
 }
