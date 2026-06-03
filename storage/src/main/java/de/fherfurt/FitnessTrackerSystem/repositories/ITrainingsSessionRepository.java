@@ -1,18 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.repositories;
 
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSession;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface ITrainingsSessionRepository {
-    void createTrainingsSession(TrainingsSession trainingsSession);
-
-    List<TrainingsSession> getAllTrainingsSessions();
-
-    Optional<TrainingsSession> getTrainingsSessionById(int trainingsSessionId);
-
-    void updateTrainingsSession(TrainingsSession trainingsSession);
-
-    void deleteTrainingsSessionById(int trainingsSessionId);
+public interface ITrainingsSessionRepository extends JpaRepository<TrainingsSession, Integer> {
 }

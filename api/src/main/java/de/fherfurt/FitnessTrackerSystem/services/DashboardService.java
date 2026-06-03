@@ -4,9 +4,11 @@ import de.fherfurt.FitnessTrackerSystem.models.DailyDashboard;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
 import de.fherfurt.FitnessTrackerSystem.models.TrainingsSessionSummary;
 import de.fherfurt.FitnessTrackerSystem.models.User;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+@Service
 public class DashboardService implements IDashboardService {
 
     private final TrainingsSessionService trainingsSessionService;

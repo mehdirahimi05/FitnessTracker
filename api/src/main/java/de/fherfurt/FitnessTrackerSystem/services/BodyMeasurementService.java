@@ -3,12 +3,14 @@ package de.fherfurt.FitnessTrackerSystem.services;
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.IBodyMeasurementRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class BodyMeasurementService implements IBodyMeasurementService {
     private final IBodyMeasurementRepository bodyMeasurementRepository;
 
@@ -18,17 +20,17 @@ public class BodyMeasurementService implements IBodyMeasurementService {
 
     @Override
     public List<BodyMeasurement> getAllBodyMeasurement() {
-        return bodyMeasurementRepository.getAllBodyMeasurement();
+        return bodyMeasurementRepository.findAll();
     }
 
     @Override
     public Optional<BodyMeasurement> getBodyMeasurementById(int bodyMeasurementId) {
-        return bodyMeasurementRepository.getBodyMeasurementById(bodyMeasurementId);
+        return bodyMeasurementRepository.findById(bodyMeasurementId);
     }
 
     @Override
     public boolean checkIsOwnBodyMeasurement(int bodyMeasurementId) {
-        var bodyMeasurementToCheck = bodyMeasurementRepository.getBodyMeasurementById(bodyMeasurementId);
+        var bodyMeasurementToCheck = bodyMeasurementRepository.findById(bodyMeasurementId);
         if (bodyMeasurementToCheck.isEmpty()) {
             return false;
         }
@@ -37,17 +39,17 @@ public class BodyMeasurementService implements IBodyMeasurementService {
 
     @Override
     public void addBodyMeasurement(BodyMeasurement bodyMeasurement) {
-        bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
+        bodyMeasurementRepository.save(bodyMeasurement);
     }
 
     @Override
     public void updateBodyMeasurement(BodyMeasurement bodyMeasurement) {
-        bodyMeasurementRepository.updateBodyMeasurement(bodyMeasurement);
+        bodyMeasurementRepository.save(bodyMeasurement);
     }
 
     @Override
     public void deleteBodyMeasurement(int bodyMeasurementId) {
-        bodyMeasurementRepository.deleteBodyMeasurementById(bodyMeasurementId);
+        bodyMeasurementRepository.deleteById(bodyMeasurementId);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class BodyMeasurementService implements IBodyMeasurementService {
         if (user == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        List<BodyMeasurement> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
+        List<BodyMeasurement> filterBodyMeasurement = bodyMeasurementRepository.findAll().stream()
                 .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .sorted(Comparator.comparing(BodyMeasurement::getMeasuredAt).reversed())
                 .toList();
@@ -78,7 +80,7 @@ public class BodyMeasurementService implements IBodyMeasurementService {
         if (user == null || startDate == null || endDate == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        List<BodyMeasurement> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
+        List<BodyMeasurement> filterBodyMeasurement = bodyMeasurementRepository.findAll().stream()
                 .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isBefore(startDate))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isAfter(endDate))
@@ -94,7 +96,7 @@ public class BodyMeasurementService implements IBodyMeasurementService {
         if (user == null || startDate == null || endDate == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        List<Float> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
+        List<Float> filterBodyMeasurement = bodyMeasurementRepository.findAll().stream()
                 .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isBefore(startDate))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isAfter(endDate))
@@ -111,7 +113,7 @@ public class BodyMeasurementService implements IBodyMeasurementService {
         if (user == null || startDate == null || endDate == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        List<Integer> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
+        List<Integer> filterBodyMeasurement = bodyMeasurementRepository.findAll().stream()
                 .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isBefore(startDate))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isAfter(endDate))
