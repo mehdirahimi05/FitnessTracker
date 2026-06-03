@@ -1,9 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -17,14 +15,22 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "trainings_session")
 public class TrainingsSession {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int trainingsSessionId;
+    @ManyToOne // many from me belong to one
     private User user;
     private LocalDate date;
     private int durationInMinute;
     private int burnedCalories;
+    @ManyToOne // many from me belong to one
     private ActivityType activityType;
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+    @ManyToOne // many from me belong to one
     private WorkoutPlan workoutPlan;
 }

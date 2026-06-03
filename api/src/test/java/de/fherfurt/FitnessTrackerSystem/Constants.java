@@ -157,12 +157,12 @@ public class Constants {
     public static final MealTyp SECOND_MEAL_TYP = MealTyp.LUNCH;
     public static final LocalDate SECOND_NUTRITION_DATE = LocalDate.of(2026, 3, 20);
 
-    public static Nutrition getFirstNutrition() {
-        return new Nutrition(FIRST_NUTRITION_ID, FIRST_USER_ID, FIRST_NUTRITION_CALORIES, FIRST_NUTRITION_PROTEIN, FIRST_NUTRITION_CARBOHYDRATES, FIRST_NUTRITION_FAT, FIRST_MEAL_TYP, FIRST_NUTRITION_DATE);
+    public static Nutrition getFirstNutrition(User user) {
+        return new Nutrition(FIRST_NUTRITION_ID, user, FIRST_NUTRITION_CALORIES, FIRST_NUTRITION_PROTEIN, FIRST_NUTRITION_CARBOHYDRATES, FIRST_NUTRITION_FAT, FIRST_MEAL_TYP, FIRST_NUTRITION_DATE);
     }
 
-    public static Nutrition getSecondNutrition() {
-        return new Nutrition(SECOND_NUTRITION_ID, FIRST_USER_ID, SECOND_NUTRITION_CALORIES, SECOND_NUTRITION_PROTEIN, SECOND_NUTRITION_CARBOHYDRATES, SECOND_NUTRITION_FAT, SECOND_MEAL_TYP, SECOND_NUTRITION_DATE);
+    public static Nutrition getSecondNutrition(User user) {
+        return new Nutrition(SECOND_NUTRITION_ID, user, SECOND_NUTRITION_CALORIES, SECOND_NUTRITION_PROTEIN, SECOND_NUTRITION_CARBOHYDRATES, SECOND_NUTRITION_FAT, SECOND_MEAL_TYP, SECOND_NUTRITION_DATE);
     }
 
     // ─── BodyMeasurement ─────────────────────────────────────
@@ -178,11 +178,11 @@ public class Constants {
     public static final int SECOND_BODY_FAT_PERCENTAGE = 14;
     public static final LocalDate SECOND_MEASURED_AT = LocalDate.of(2026, 4, 20);
 
-    public static BodyMeasurement getFirstBodyMeasurement() {
-        return new BodyMeasurement(FIRST_BODY_MEASUREMENT_ID, FIRST_USER_ID, FIRST_WEIGHT, FIRST_HEIGHT, FIRST_BODY_FAT_PERCENTAGE, FIRST_MEASURED_AT);
+    public static BodyMeasurement getFirstBodyMeasurement(User user) {
+        return new BodyMeasurement(FIRST_BODY_MEASUREMENT_ID, user, FIRST_WEIGHT, FIRST_HEIGHT, FIRST_BODY_FAT_PERCENTAGE, FIRST_MEASURED_AT);
     }
 
-    public static BodyMeasurement getSecondBodyMeasurement() {
-        return new BodyMeasurement(SECOND_BODY_MEASUREMENT_ID, FIRST_USER_ID, SECOND_WEIGHT, SECOND_HEIGHT, SECOND_BODY_FAT_PERCENTAGE, SECOND_MEASURED_AT);
+    public static BodyMeasurement getSecondBodyMeasurement(User user) {
+        return new BodyMeasurement(SECOND_BODY_MEASUREMENT_ID, user, SECOND_WEIGHT, SECOND_HEIGHT, SECOND_BODY_FAT_PERCENTAGE, SECOND_MEASURED_AT);
     }
 }

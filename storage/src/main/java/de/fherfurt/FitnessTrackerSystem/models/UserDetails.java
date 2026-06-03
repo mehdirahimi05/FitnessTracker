@@ -1,8 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -16,10 +15,16 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "user_details")
 public class UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     private String firstName;
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String email;
     private LocalDate birthDate;
 }

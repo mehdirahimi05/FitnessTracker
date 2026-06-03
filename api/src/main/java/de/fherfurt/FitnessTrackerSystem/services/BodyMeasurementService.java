@@ -1,6 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.IBodyMeasurementRepository;
 
 import java.time.LocalDate;
@@ -58,12 +59,12 @@ public class BodyMeasurementService implements IBodyMeasurementService {
     }
 
     @Override
-    public Optional<BodyMeasurement> getLatestBodyMeasurement(int userId) {
-        if (userId == 0) {
+    public Optional<BodyMeasurement> getLatestBodyMeasurement(User user) {
+        if (user == null) {
             throw new IllegalArgumentException("can not be null");
         }
         List<BodyMeasurement> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
-                .filter(bodyMeasurement -> bodyMeasurement.getUserId() == userId)
+                .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .sorted(Comparator.comparing(BodyMeasurement::getMeasuredAt).reversed())
                 .toList();
         if (filterBodyMeasurement.isEmpty()) {
@@ -73,12 +74,12 @@ public class BodyMeasurementService implements IBodyMeasurementService {
     }
 
     @Override
-    public List<BodyMeasurement> getBodyMeasurementHistory(int userId, LocalDate startDate, LocalDate endDate) {
-        if (userId == 0 || startDate == null || endDate == null) {
+    public List<BodyMeasurement> getBodyMeasurementHistory(User user, LocalDate startDate, LocalDate endDate) {
+        if (user == null || startDate == null || endDate == null) {
             throw new IllegalArgumentException("can not be null");
         }
         List<BodyMeasurement> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
-                .filter(bodyMeasurement -> bodyMeasurement.getUserId() == userId)
+                .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isBefore(startDate))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isAfter(endDate))
                 .toList();
@@ -89,12 +90,12 @@ public class BodyMeasurementService implements IBodyMeasurementService {
     }
 
     @Override
-    public List<Float> getWeightProgress(int userId, LocalDate startDate, LocalDate endDate) {
-        if (userId == 0 || startDate == null || endDate == null) {
+    public List<Float> getWeightProgress(User user, LocalDate startDate, LocalDate endDate) {
+        if (user == null || startDate == null || endDate == null) {
             throw new IllegalArgumentException("can not be null");
         }
         List<Float> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
-                .filter(bodyMeasurement -> bodyMeasurement.getUserId() == userId)
+                .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isBefore(startDate))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isAfter(endDate))
                 .map(BodyMeasurement::getWeightInKg)
@@ -106,12 +107,12 @@ public class BodyMeasurementService implements IBodyMeasurementService {
     }
 
     @Override
-    public List<Integer> getBodyFatPercentageProgress(int userId, LocalDate startDate, LocalDate endDate) {
-        if (userId == 0 || startDate == null || endDate == null) {
+    public List<Integer> getBodyFatPercentageProgress(User user, LocalDate startDate, LocalDate endDate) {
+        if (user == null || startDate == null || endDate == null) {
             throw new IllegalArgumentException("can not be null");
         }
         List<Integer> filterBodyMeasurement = bodyMeasurementRepository.getAllBodyMeasurement().stream()
-                .filter(bodyMeasurement -> bodyMeasurement.getUserId() == userId)
+                .filter(bodyMeasurement -> bodyMeasurement.getUser().equals(user))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isBefore(startDate))
                 .filter(bodyMeasurement -> !bodyMeasurement.getMeasuredAt().isAfter(endDate))
                 .map(BodyMeasurement::getBodyFatPercentage)

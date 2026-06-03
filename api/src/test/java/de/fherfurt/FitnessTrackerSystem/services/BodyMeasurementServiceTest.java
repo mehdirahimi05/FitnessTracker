@@ -2,6 +2,7 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.BodyMeasurementRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +23,14 @@ public class BodyMeasurementServiceTest {
     private BodyMeasurementRepository bodyMeasurementRepository;
     private BodyMeasurementService bodyMeasurementService;
 
+    private User mehdi;
+
     @BeforeEach
     void setUp() {
         bodyMeasurementRepository = new BodyMeasurementRepository();
         bodyMeasurementService = new BodyMeasurementService(bodyMeasurementRepository);
+
+        mehdi = Constants.getFirstUser();
     }
 
     /**
@@ -35,8 +40,8 @@ public class BodyMeasurementServiceTest {
     @DisplayName("getAllBodyMeasurement: Success")
     void testGetAllBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement();
-        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement();
+        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement(mehdi);
+        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement(mehdi);
 
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement1);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement2);
@@ -57,7 +62,7 @@ public class BodyMeasurementServiceTest {
     @DisplayName("get BodyMeasurement by Id: success")
     void testGetBodyMeasurementByIdSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
 
@@ -76,7 +81,7 @@ public class BodyMeasurementServiceTest {
     @DisplayName("checkIsOwnBodyMeasurement: BodyMeasurementId does not exist")
     void testCheckIsOwnBodyMeasurementNotFound() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
 
         // Act
@@ -93,7 +98,7 @@ public class BodyMeasurementServiceTest {
     @DisplayName("checkIsOwnBodyMeasurement: BodyMeasurementId does exist")
     void testCheckIsOwnBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
 
         // Act
@@ -110,7 +115,7 @@ public class BodyMeasurementServiceTest {
     @DisplayName("addBodyMeasurement: success")
     void testAddBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int expectedSize = 1;
 
         // Act
@@ -128,13 +133,13 @@ public class BodyMeasurementServiceTest {
     @DisplayName("update BodyMeasurement: Success")
     void testUpdateBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
 
         BodyMeasurement updatedBodyMeasurement = new BodyMeasurement(
                 bodyMeasurementId,
-                Constants.SECOND_USER_ID,
+                Constants.getFirstUser(),
                 Constants.SECOND_WEIGHT,
                 Constants.SECOND_HEIGHT,
                 Constants.SECOND_BODY_FAT_PERCENTAGE,
@@ -159,7 +164,7 @@ public class BodyMeasurementServiceTest {
     @DisplayName("delete BodyMeasurement by id: success")
     void testDeleteBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement();
+        BodyMeasurement bodyMeasurement = Constants.getFirstBodyMeasurement(mehdi);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement);
         int bodyMeasurementId = Constants.FIRST_BODY_MEASUREMENT_ID;
         int expectedSize = 0;
@@ -205,7 +210,7 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetLatestBodyMeasurementNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            bodyMeasurementService.getLatestBodyMeasurement(0);
+            bodyMeasurementService.getLatestBodyMeasurement(null);
         });
     }
 
@@ -215,10 +220,10 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetLatestBodyMeasurementIsEmpty() {
         // Arrange
-        int userId = Constants.FIRST_USER_ID;
+        User user = Constants.getFirstUser();
 
         assertThrows(IllegalStateException.class, () -> {
-            bodyMeasurementService.getLatestBodyMeasurement(userId);
+            bodyMeasurementService.getLatestBodyMeasurement(user);
         });
     }
 
@@ -228,19 +233,16 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetLatestBodyMeasurementSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement();
-        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement();
-
-        int userId = Constants.FIRST_USER_ID;
+        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement(mehdi);
+        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement(mehdi);
 
         LocalDate measuredAt2 = Constants.SECOND_MEASURED_AT;
 
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement1);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement2);
 
-
         // Act
-        Optional<BodyMeasurement> result = bodyMeasurementService.getLatestBodyMeasurement(userId);
+        Optional<BodyMeasurement> result = bodyMeasurementService.getLatestBodyMeasurement(mehdi);
 
         // Assert
         assertEquals(measuredAt2, result.get().getMeasuredAt());
@@ -252,7 +254,7 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetBodyMeasurementHistoryNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            bodyMeasurementService.getBodyMeasurementHistory(0, null, Constants.FIRST_DATE);
+            bodyMeasurementService.getBodyMeasurementHistory(null, null, Constants.FIRST_DATE);
         });
     }
 
@@ -262,13 +264,13 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetBodyMeasurementHistoryIsEmpty() {
         // Arrange
-        int userId = Constants.FIRST_USER_ID;
+        User user = Constants.getFirstUser();
         LocalDate startDate = Constants.FIRST_DATE;
         LocalDate endDate = LocalDate.of(2026, 04, 30);
 
         // Assert
         assertThrows(IllegalStateException.class, () -> {
-            bodyMeasurementService.getBodyMeasurementHistory(userId, startDate, endDate);
+            bodyMeasurementService.getBodyMeasurementHistory(user, startDate, endDate);
         });
     }
 
@@ -278,10 +280,9 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetBodyMeasurementHistorySuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement();
-        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement();
+        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement(mehdi);
+        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement(mehdi);
 
-        int userId = Constants.FIRST_USER_ID;
         LocalDate startDate = Constants.FIRST_DATE;
         LocalDate endDate = LocalDate.of(2026, 04, 30);
 
@@ -289,7 +290,7 @@ public class BodyMeasurementServiceTest {
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement1);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement2);
 
-        List<BodyMeasurement> bodyMeasurementList = bodyMeasurementService.getBodyMeasurementHistory(userId, startDate, endDate);
+        List<BodyMeasurement> bodyMeasurementList = bodyMeasurementService.getBodyMeasurementHistory(mehdi, startDate, endDate);
 
         // Assert
         assertEquals(2, bodyMeasurementList.size());
@@ -303,7 +304,7 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetWeightProgressNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            bodyMeasurementService.getWeightProgress(0, null, Constants.FIRST_DATE);
+            bodyMeasurementService.getWeightProgress(null, null, Constants.FIRST_DATE);
         });
     }
 
@@ -313,13 +314,13 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetWeightProgressIsEmpty() {
         // Arrange
-        int userId = Constants.FIRST_USER_ID;
+        User user = Constants.getFirstUser();
         LocalDate startDate = Constants.FIRST_DATE;
         LocalDate endDate = LocalDate.of(2026, 04, 30);
 
         // Assert
         assertThrows(IllegalStateException.class, () -> {
-            bodyMeasurementService.getWeightProgress(userId, startDate, endDate);
+            bodyMeasurementService.getWeightProgress(user, startDate, endDate);
         });
     }
 
@@ -329,10 +330,9 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetWeightProgressSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement();
-        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement();
+        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement(mehdi);
+        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement(mehdi);
 
-        int userId = Constants.FIRST_USER_ID;
         LocalDate startDate = Constants.FIRST_DATE;
         LocalDate endDate = LocalDate.of(2026, 04, 30);
 
@@ -343,7 +343,7 @@ public class BodyMeasurementServiceTest {
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement1);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement2);
 
-        List<Float> bodyMeasurementList = bodyMeasurementService.getWeightProgress(userId, startDate, endDate);
+        List<Float> bodyMeasurementList = bodyMeasurementService.getWeightProgress(mehdi, startDate, endDate);
 
 
         // Assert
@@ -359,7 +359,7 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetBodyFatPercentageProgressNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            bodyMeasurementService.getBodyFatPercentageProgress(0, null, Constants.FIRST_DATE);
+            bodyMeasurementService.getBodyFatPercentageProgress(null, null, Constants.FIRST_DATE);
         });
     }
 
@@ -369,13 +369,13 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetBodyFatPercentageProgressIsEmpty() {
         // Arrange
-        int userId = Constants.FIRST_USER_ID;
+        User user = Constants.getFirstUser();
         LocalDate startDate = Constants.FIRST_DATE;
         LocalDate endDate = LocalDate.of(2026, 04, 30);
 
         // Assert
         assertThrows(IllegalStateException.class, () -> {
-            bodyMeasurementService.getBodyFatPercentageProgress(userId, startDate, endDate);
+            bodyMeasurementService.getBodyFatPercentageProgress(user, startDate, endDate);
         });
     }
 
@@ -385,10 +385,9 @@ public class BodyMeasurementServiceTest {
     @Test
     void testGetBodyFatPercentageProgressSuccess() {
         // Arrange
-        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement();
-        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement();
+        BodyMeasurement bodyMeasurement1 = Constants.getFirstBodyMeasurement(mehdi);
+        BodyMeasurement bodyMeasurement2 = Constants.getSecondBodyMeasurement(mehdi);
 
-        int userId = Constants.FIRST_USER_ID;
         LocalDate startDate = Constants.FIRST_DATE;
         LocalDate endDate = LocalDate.of(2026, 04, 30);
 
@@ -399,7 +398,7 @@ public class BodyMeasurementServiceTest {
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement1);
         bodyMeasurementRepository.createBodyMeasurement(bodyMeasurement2);
 
-        List<Integer> bodyMeasurementList = bodyMeasurementService.getBodyFatPercentageProgress(userId, startDate, endDate);
+        List<Integer> bodyMeasurementList = bodyMeasurementService.getBodyFatPercentageProgress(mehdi, startDate, endDate);
 
 
         // Assert

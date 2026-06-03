@@ -4,6 +4,7 @@ package de.fherfurt.FitnessTrackerSystem.services;
 import de.fherfurt.FitnessTrackerSystem.Constants;
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
+import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.NutritionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,11 +24,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class NutritionServiceTest {
     private NutritionRepository nutritionRepository;
     private NutritionService nutritionService;
+    private User mehdi;
+    private User ammar;
 
     @BeforeEach
     void setUp() {
         nutritionRepository = new NutritionRepository();
         nutritionService = new NutritionService(nutritionRepository);
+
+        mehdi = Constants.getFirstUser();
+        ammar = Constants.getSecondUser();
     }
 
     /**
@@ -37,8 +43,8 @@ public class NutritionServiceTest {
     @DisplayName("getAllNutrition: Success")
     void testGetAllNutritionSuccess() {
         // Arrange
-        Nutrition nutrition1 = Constants.getFirstNutrition();
-        Nutrition nutrition2 = Constants.getSecondNutrition();
+        Nutrition nutrition1 = Constants.getFirstNutrition(mehdi);
+        Nutrition nutrition2 = Constants.getSecondNutrition(ammar);
 
         nutritionRepository.createNutrition(nutrition1);
         nutritionRepository.createNutrition(nutrition2);
@@ -59,7 +65,7 @@ public class NutritionServiceTest {
     @DisplayName("get Nutrition by Id: success")
     void testGetNutritionByIdSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         int nutritionId = Constants.FIRST_NUTRITION_ID;
         nutritionRepository.createNutrition(nutrition);
 
@@ -78,7 +84,7 @@ public class NutritionServiceTest {
     @DisplayName("checkIsOwnNutrition: NutritionId does not exists")
     void testCheckIsOwnNutritionNotFound() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         nutritionRepository.createNutrition(nutrition);
 
         // Act
@@ -95,7 +101,7 @@ public class NutritionServiceTest {
     @DisplayName("checkIsOwnNutrition : NutritionId does  exists")
     void testCheckIsOwnNutritionSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         nutritionRepository.createNutrition(nutrition);
 
         // Act
@@ -112,7 +118,7 @@ public class NutritionServiceTest {
     @DisplayName("Nutrition: success")
     void testAddNutritionSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         int expectedSizeOfNutrition = 1;
 
         // Act
@@ -130,14 +136,14 @@ public class NutritionServiceTest {
     @DisplayName("update Nutrition : Success")
     void testUpdateNutritionSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         int nutritionId = Constants.FIRST_NUTRITION_ID;
 
         nutritionRepository.createNutrition(nutrition);
 
         Nutrition updatedNutrition = new Nutrition(
                 nutritionId,
-                Constants.SECOND_USER_ID,
+                mehdi,
                 Constants.SECOND_NUTRITION_CALORIES,
                 Constants.SECOND_NUTRITION_PROTEIN,
                 Constants.SECOND_NUTRITION_CARBOHYDRATES,
@@ -151,7 +157,7 @@ public class NutritionServiceTest {
         Optional<Nutrition> findNutritionList = nutritionRepository.getNutritionById(nutritionId);
 
         // Assert
-        assertEquals(Constants.SECOND_USER_ID, findNutritionList.get().getUserId());
+        assertEquals(mehdi, findNutritionList.get().getUser());
         assertEquals(Constants.SECOND_NUTRITION_CALORIES, findNutritionList.get().getCalories());
         assertEquals(Constants.SECOND_NUTRITION_PROTEIN, findNutritionList.get().getProteinInGram());
         assertEquals(Constants.SECOND_NUTRITION_CARBOHYDRATES, findNutritionList.get().getCarbohydratesInGram());
@@ -166,7 +172,7 @@ public class NutritionServiceTest {
     @DisplayName("delete Nutrition by id: success")
     void testDeleteNutritionByIdSuccess() {
         // Arrange
-        Nutrition nutrition = Constants.getFirstNutrition();
+        Nutrition nutrition = Constants.getFirstNutrition(mehdi);
         nutritionRepository.createNutrition(nutrition);
         int nutritionId = Constants.FIRST_NUTRITION_ID;
         int expectedSizeOfNutritionList = 0;
@@ -186,7 +192,7 @@ public class NutritionServiceTest {
     @Test
     void testGetDailyNutritionSummaryNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            nutritionService.getDailyNutritionSummary(0, null);
+            nutritionService.getDailyNutritionSummary(null, null);
         });
     }
 
@@ -196,12 +202,12 @@ public class NutritionServiceTest {
     @Test
     void testGetDailyNutritionSummaryIsEmpty() {
         // Arrange
-        int userId = Constants.FIRST_USER_ID;
+        User user = Constants.getFirstUser();
         LocalDate date = Constants.FIRST_DATE;
 
         // Act
         assertThrows(IllegalStateException.class, () -> {
-            nutritionService.getDailyNutritionSummary(userId, date);
+            nutritionService.getDailyNutritionSummary(user, date);
         });
     }
 
@@ -211,17 +217,16 @@ public class NutritionServiceTest {
     @Test
     void testGetDailyNutritionSummarySuccess() {
         // Arrange
-        Nutrition nutrition1 = Constants.getFirstNutrition();
-        Nutrition nutrition2 = Constants.getSecondNutrition();
+        Nutrition nutrition1 = Constants.getFirstNutrition(mehdi);
+        Nutrition nutrition2 = Constants.getSecondNutrition(mehdi);
 
-        int userId = Constants.FIRST_USER_ID;
         LocalDate date = Constants.FIRST_DATE;
 
         // Act
         nutritionRepository.createNutrition(nutrition1);
         nutritionRepository.createNutrition(nutrition2);
 
-        NutritionSummary summaryList = nutritionService.getDailyNutritionSummary(userId, date);
+        NutritionSummary summaryList = nutritionService.getDailyNutritionSummary(mehdi, date);
 
         // Assert
         assertEquals(Constants.FIRST_NUTRITION_CALORIES + Constants.SECOND_NUTRITION_CALORIES, summaryList.getTotalCalories());

@@ -24,7 +24,7 @@ public class DashboardService implements IDashboardService {
             throw new IllegalArgumentException("Can not be null");
         }
         TrainingsSessionSummary trainingsSessionSummary = trainingsSessionService.getDailyTrainingsSessionSummary(user, date);
-        NutritionSummary nutritionSummary = nutritionService.getDailyNutritionSummary(user.getUserId(), date);
+        NutritionSummary nutritionSummary = nutritionService.getDailyNutritionSummary(user, date);
 
         return new DailyDashboard(trainingsSessionSummary, nutritionSummary);
     }
