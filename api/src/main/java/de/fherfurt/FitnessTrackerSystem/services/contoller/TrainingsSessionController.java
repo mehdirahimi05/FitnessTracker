@@ -90,7 +90,7 @@ public class TrainingsSessionController {
         return ResponseEntity.ok(trainingsSessionService.getTrainingSessionStreak(user));
     }
 
-    @GetMapping("/summary")
+    @GetMapping("/trainings_session_summary")
     public ResponseEntity<TrainingsSessionSummary> getDailyTrainingsSessionSummary(
             @RequestParam int userId,
             @RequestParam LocalDate date) {
