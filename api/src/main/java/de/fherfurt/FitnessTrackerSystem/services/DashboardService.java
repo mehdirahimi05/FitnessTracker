@@ -14,8 +14,7 @@ public class DashboardService implements IDashboardService {
     private final TrainingsSessionService trainingsSessionService;
     private final NutritionService nutritionService;
 
-    public DashboardService(TrainingsSessionService trainingsSessionService,
-                            NutritionService nutritionService) {
+    public DashboardService(TrainingsSessionService trainingsSessionService, NutritionService nutritionService) {
         this.trainingsSessionService = trainingsSessionService;
         this.nutritionService = nutritionService;
     }
