@@ -1,6 +1,5 @@
 package de.fherfurt.FitnessTrackerSystem.services.contoller;
 
-import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.services.WorkoutPlanService;
@@ -15,7 +14,7 @@ import java.util.List;
 public class WorkoutPlanController {
     private final WorkoutPlanService workoutPlanService;
 
-    public WorkoutPlanController(WorkoutPlanService workoutPlanService){
+    public WorkoutPlanController(WorkoutPlanService workoutPlanService) {
         this.workoutPlanService = workoutPlanService;
     }
 

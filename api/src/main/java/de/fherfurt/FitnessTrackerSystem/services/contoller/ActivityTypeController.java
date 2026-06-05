@@ -13,7 +13,7 @@ import java.util.List;
 public class ActivityTypeController {
     private final ActivityTypeService activityTypeService;
 
-    public ActivityTypeController(ActivityTypeService activityTypeService){
+    public ActivityTypeController(ActivityTypeService activityTypeService) {
         this.activityTypeService = activityTypeService;
     }
 
