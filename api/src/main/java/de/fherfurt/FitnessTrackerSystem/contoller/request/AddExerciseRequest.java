@@ -1,4 +1,4 @@
-package de.fherfurt.FitnessTrackerSystem.services.contoller.request;
+package de.fherfurt.FitnessTrackerSystem.contoller.request;
 
 
 import de.fherfurt.FitnessTrackerSystem.models.Exercise;

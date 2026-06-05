@@ -1,4 +1,4 @@
-package de.fherfurt.FitnessTrackerSystem.services.contoller;
+package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
 import de.fherfurt.FitnessTrackerSystem.models.NutritionSummary;
@@ -17,25 +17,25 @@ public class NutritionController {
     private final NutritionService nutritionService;
     private final UserService userService;
 
-    public NutritionController(NutritionService nutritionService, UserService userService) {
+    public NutritionController(NutritionService nutritionService, UserService userService){
         this.nutritionService = nutritionService;
         this.userService = userService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Nutrition>> getAllNutrition() {
+    public ResponseEntity<List<Nutrition>> getAllNutrition(){
         return ResponseEntity.ok(nutritionService.getAllNutrition());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Nutrition> getNutritionById(@PathVariable("id") int id) {
+    public ResponseEntity<Nutrition> getNutritionById(@PathVariable("id") int id){
         return nutritionService.getNutritionById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Void> addNutrition(@RequestBody Nutrition nutrition) {
+    public ResponseEntity<Void> addNutrition(@RequestBody Nutrition nutrition){
         nutritionService.addNutrition(nutrition);
         return ResponseEntity.noContent().build();
     }

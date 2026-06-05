@@ -1,4 +1,4 @@
-package de.fherfurt.FitnessTrackerSystem.services.contoller;
+package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
 import de.fherfurt.FitnessTrackerSystem.models.User;
@@ -16,7 +16,7 @@ public class BodyMeasurementController {
     private final BodyMeasurementService bodyMeasurementService;
     private final UserService userService;
 
-    public BodyMeasurementController(BodyMeasurementService bodyMeasurementService, UserService userService) {
+    public BodyMeasurementController(BodyMeasurementService bodyMeasurementService, UserService userService){
         this.bodyMeasurementService = bodyMeasurementService;
         this.userService = userService;
     }

@@ -1,9 +1,9 @@
-package de.fherfurt.FitnessTrackerSystem.services.contoller;
+package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.services.WorkoutPlanService;
-import de.fherfurt.FitnessTrackerSystem.services.contoller.request.AddExerciseRequest;
+import de.fherfurt.FitnessTrackerSystem.contoller.request.AddExerciseRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class WorkoutPlanController {
     private final WorkoutPlanService workoutPlanService;
 
-    public WorkoutPlanController(WorkoutPlanService workoutPlanService) {
+    public WorkoutPlanController(WorkoutPlanService workoutPlanService){
         this.workoutPlanService = workoutPlanService;
     }
 

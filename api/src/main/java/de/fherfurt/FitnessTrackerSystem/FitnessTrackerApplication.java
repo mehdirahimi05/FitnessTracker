@@ -1,4 +1,4 @@
-package de.fherfurt.FitnessTrackerSystem.services;
+package de.fherfurt.FitnessTrackerSystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

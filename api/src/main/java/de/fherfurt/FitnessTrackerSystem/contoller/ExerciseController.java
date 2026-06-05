@@ -1,4 +1,4 @@
-package de.fherfurt.FitnessTrackerSystem.services.contoller;
+package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.services.ExerciseService;
@@ -12,7 +12,7 @@ import java.util.List;
 public class ExerciseController {
     private final ExerciseService exerciseService;
 
-    public ExerciseController(ExerciseService exerciseService) {
+    public ExerciseController(ExerciseService exerciseService){
         this.exerciseService = exerciseService;
     }
 
