@@ -27,6 +27,6 @@ public class DashboardService implements IDashboardService {
         TrainingsSessionSummary trainingsSessionSummary = trainingsSessionService.getDailyTrainingsSessionSummary(user, date);
         NutritionSummary nutritionSummary = nutritionService.getDailyNutritionSummary(user, date);
 
-        return new DailyDashboard(trainingsSessionSummary, nutritionSummary);
+        return new DailyDashboard(date, trainingsSessionSummary, nutritionSummary);
     }
 }

@@ -1,6 +1,7 @@
 package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.security.JwtService;
 import de.fherfurt.FitnessTrackerSystem.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +13,16 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUser());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/register")
@@ -37,10 +33,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> logInUser(@RequestBody User user) {
+    public ResponseEntity<String> logInUser(@RequestBody User user) {
         return userService.logIn(user.getUserName(), user.getPassWord())
-                .map(ResponseEntity::ok)
+                .map(u -> ResponseEntity.ok(jwtService.generateToken(u.getUserName())))
                 .orElse(ResponseEntity.status(401).build());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping

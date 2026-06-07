@@ -16,7 +16,7 @@ public class BodyMeasurementController {
     private final BodyMeasurementService bodyMeasurementService;
     private final UserService userService;
 
-    public BodyMeasurementController(BodyMeasurementService bodyMeasurementService, UserService userService){
+    public BodyMeasurementController(BodyMeasurementService bodyMeasurementService, UserService userService) {
         this.bodyMeasurementService = bodyMeasurementService;
         this.userService = userService;
     }

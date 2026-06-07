@@ -2,6 +2,7 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.repositories.IUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,12 +10,21 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
-    private final IUserRepository userRepository;
 
-    public UserService(IUserRepository userRepository) {
+    private final IUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    public List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public Optional<User> signUpUser(User newUser) {
         if (newUser == null) {
             throw new IllegalArgumentException("User can not be null");
@@ -23,13 +33,10 @@ public class UserService implements IUserService {
         if (existingUser.isPresent()) {
             return Optional.empty();
         }
+        // Passwort hashen bevor es gespeichert wird
+        newUser.setPassWord(passwordEncoder.encode(newUser.getPassWord()));
         userRepository.save(newUser);
         return Optional.of(newUser);
-    }
-
-    @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
     }
 
     @Override
@@ -42,16 +49,14 @@ public class UserService implements IUserService {
         return userRepository.findByUserName(userName);
     }
 
-
     @Override
     public boolean authenticateUser(String userName, String passWord) {
         var foundUser = getUserByUserName(userName);
         if (foundUser.isEmpty()) {
             return false;
         }
-        return foundUser.get().getPassWord().equals(passWord);
+        return passwordEncoder.matches(passWord, foundUser.get().getPassWord());
     }
-
 
     @Override
     public void updateUser(User updatedUser) {
@@ -70,7 +75,6 @@ public class UserService implements IUserService {
 
     @Override
     public Optional<User> logIn(String userName, String password) {
-        //TODO: check if the user exists
         if (userName == null || password == null) {
             throw new IllegalArgumentException("can not be null");
         }
@@ -78,15 +82,15 @@ public class UserService implements IUserService {
         if (existingUser.isEmpty()) {
             return Optional.empty();
         }
-        if (existingUser.get().getPassWord().equals(password)) {
+        // BCrypt password compare
+        if (passwordEncoder.matches(password, existingUser.get().getPassWord())) {
             return Optional.of(existingUser.get());
         }
         return Optional.empty();
-        //TODO: check if the user is already logt in->spring
-        //TODO: create a session
     }
 
     @Override
     public void logOut(String userName) {
+        // Spring Security handled logout
     }
 }

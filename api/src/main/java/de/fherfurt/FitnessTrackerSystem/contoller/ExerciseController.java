@@ -12,7 +12,7 @@ import java.util.List;
 public class ExerciseController {
     private final ExerciseService exerciseService;
 
-    public ExerciseController(ExerciseService exerciseService){
+    public ExerciseController(ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
     }
 
