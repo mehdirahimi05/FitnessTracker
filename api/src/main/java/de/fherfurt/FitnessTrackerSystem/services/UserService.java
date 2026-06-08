@@ -33,7 +33,7 @@ public class UserService implements IUserService {
         if (existingUser.isPresent()) {
             return Optional.empty();
         }
-        // Passwort hashen bevor es gespeichert wird
+        // Password hashed before save it
         newUser.setPassWord(passwordEncoder.encode(newUser.getPassWord()));
         userRepository.save(newUser);
         return Optional.of(newUser);
