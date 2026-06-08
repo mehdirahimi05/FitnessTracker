@@ -50,15 +50,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean authenticateUser(String userName, String passWord) {
-        var foundUser = getUserByUserName(userName);
-        if (foundUser.isEmpty()) {
-            return false;
-        }
-        return passwordEncoder.matches(passWord, foundUser.get().getPassWord());
-    }
-
-    @Override
     public void updateUser(User updatedUser) {
         userRepository.save(updatedUser);
     }
@@ -87,6 +78,11 @@ public class UserService implements IUserService {
             return Optional.of(existingUser.get());
         }
         return Optional.empty();
+    }
+
+    @Override
+    public boolean authenticateUser(String userName, String passWord) {
+        return logIn(userName, passWord).isPresent();
     }
 
     @Override

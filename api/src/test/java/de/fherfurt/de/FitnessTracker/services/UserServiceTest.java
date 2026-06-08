@@ -150,52 +150,6 @@ public class UserServiceTest {
     }
 
     /**
-     * Verifies that false is returned when the username does not exist
-     */
-    @Test
-    void testAuthenticateUserNotFound(){
-        // Arrange
-        when(userRepository.findByUserName("Ali")).thenReturn(Optional.empty());
-
-        // Act
-        boolean result = userService.authenticateUser("Ali", "password2376");
-
-        // Assert
-        assertFalse(result);
-    }
-
-    /**
-     * Verifies that false is returned when the user exists but the password is wrong
-     */
-    @Test
-    void testAuthenticateUserWrongPassword(){
-        // Arrange
-        when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
-
-        // Act
-        boolean result = userService.authenticateUser("mehdi", "pass234");
-
-        // Assert
-        assertFalse(result);
-    }
-
-    /**
-     * verifies that the user exists
-     */
-    @Test
-    void testAuthenticateUserSuccess(){
-        // Arrange
-        when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
-
-        // Act
-        boolean result = userService.authenticateUser(mehdi.getUserName(), mehdi.getPassWord());
-
-        // Assert
-        assertTrue(result);
-    }
-
-    /**
      * verifies that update user was successful
      */
     @Test
@@ -234,4 +188,77 @@ public class UserServiceTest {
         verify(userRepository).deleteById(mehdi.getUserId());
     }
 
+    /**
+     * Verifies that the IllegalArgumentException was thrown when null is provided
+     */
+    @Test
+    void testLogInNull(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.logIn(null, null);
+        });
+    }
+
+    /**
+     * Verifies that false is returned when the username does not exist
+     */
+    @Test
+    void testLogInUserNotFound(){
+        // Arrange
+        when(userRepository.findByUserName("Ali")).thenReturn(Optional.empty());
+
+        // Act
+        Optional<User> result = userService.logIn("Ali", "password2376");
+
+        // Assert
+        assertFalse(result.isPresent());
+    }
+
+    /**
+     * Verifies that false is returned when the user exists but the password is wrong
+     */
+    @Test
+    void testLogInWrongPassword(){
+        // Arrange
+        when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
+
+        // Act
+        Optional<User> result = userService.logIn("mehdi", "pass234");
+
+        // Assert
+        assertFalse(result.isPresent());
+    }
+
+    /**
+     * verifies that the user exists
+     */
+    @Test
+    void testLogInSuccess(){
+        // Arrange
+        when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+
+        // Act
+        Optional<User> result = userService.logIn(mehdi.getUserName(), mehdi.getPassWord());
+
+        // Assert
+        assertTrue(result.isPresent());
+    }
+
+    /**
+     * verifies that the authentification was successful
+     */
+    @Test
+    void tesAuthenticateUserSuccess(){
+        // Arrange
+        when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+
+        // Act
+        boolean result = userService.authenticateUser(mehdi.getUserName(), mehdi.getPassWord());
+
+        // Assert
+        assertTrue(result);
+
+    }
 }

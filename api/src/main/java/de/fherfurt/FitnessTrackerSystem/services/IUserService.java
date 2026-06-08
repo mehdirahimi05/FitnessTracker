@@ -14,8 +14,6 @@ public interface IUserService {
 
     Optional<User> getUserByUserName(String userName);
 
-    boolean authenticateUser(String userName, String passWord);
-
     void updateUser(User updatedUser);
 
     void deleteUserByUserName(String username);
@@ -23,6 +21,8 @@ public interface IUserService {
     void deleteUserByUserId(int userId);
 
     Optional<User> logIn(String userName, String password);
+
+    boolean authenticateUser(String userName, String passWord);
 
     void logOut(String userName);
 }
