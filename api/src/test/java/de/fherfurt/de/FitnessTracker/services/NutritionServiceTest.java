@@ -1,9 +1,6 @@
 package de.fherfurt.de.FitnessTracker.services;
 
-import de.fherfurt.FitnessTrackerSystem.models.MealType;
-import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
-import de.fherfurt.FitnessTrackerSystem.models.User;
-import de.fherfurt.FitnessTrackerSystem.models.UserRole;
+import de.fherfurt.FitnessTrackerSystem.models.*;
 import de.fherfurt.FitnessTrackerSystem.repositories.INutritionRepository;
 import de.fherfurt.FitnessTrackerSystem.services.NutritionService;
 import org.junit.jupiter.api.Test;
@@ -159,4 +156,43 @@ public class NutritionServiceTest {
         // Assert -> verify if deleteById() was called
         verify(nutritionRepository).deleteById(nutrition1.getNutritionId());
     }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
+     */
+    @Test
+    void testGetDailyNutritionSummaryNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            nutritionService.getDailyNutritionSummary(null, null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown when filterSession is Empty
+     */
+    @Test
+    void testGetDailyNutritionSummaryIsEmpty() {
+        // Act
+        assertThrows(IllegalStateException.class, () -> {
+            nutritionService.getDailyNutritionSummary(mehdi, nutrition1.getDate());
+        });
+    }
+
+    /**
+     * verifies that DailyNutritionSummary was summed successfully
+     */
+    @Test
+    void testGetDailyNutritionSummarySuccess(){
+            // Arrange
+            when(nutritionRepository.findAll()).thenReturn(List.of(nutrition1, nutrition2));
+
+            // Act
+            NutritionSummary summaryList = nutritionService.getDailyNutritionSummary(mehdi, nutrition1.getDate());
+
+            // Assert
+            assertEquals(nutrition1.getCalories() + nutrition2.getCalories(), summaryList.getTotalCalories());
+            assertEquals(nutrition1.getProteinInGram() + nutrition2.getProteinInGram(), summaryList.getTotalProteinInGram());
+            assertEquals(nutrition1.getCarbohydratesInGram() + nutrition2.getCarbohydratesInGram(), summaryList.getTotalCarbohydratesInGram());
+            assertEquals(nutrition1.getFatInGram() + nutrition2.getFatInGram(), summaryList.getTotalFatInGram());
+        }
 }
