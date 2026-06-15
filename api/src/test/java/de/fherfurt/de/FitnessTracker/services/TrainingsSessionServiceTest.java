@@ -3,6 +3,7 @@ package de.fherfurt.de.FitnessTracker.services;
 import de.fherfurt.FitnessTrackerSystem.models.*;
 import de.fherfurt.FitnessTrackerSystem.repositories.ITrainingsSessionRepository;
 import de.fherfurt.FitnessTrackerSystem.services.TrainingsSessionService;
+import de.fherfurt.FitnessTrackerSystem.services.utils.TrainingsSessionFilter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,6 +43,17 @@ public class TrainingsSessionServiceTest {
             2,
             mehdi,
             LocalDate.of(2026, 3, 21),
+            45,
+            400,
+            new ActivityType(1, "Krafttraining"),
+            Difficulty.EASY,
+            new WorkoutPlan(1, "Brust Training", new ArrayList<>())
+    );
+
+    private TrainingsSession trainingsSession3 = new TrainingsSession(
+            3,
+            mehdi,
+            LocalDate.of(2026, 3, 27),
             45,
             400,
             new ActivityType(1, "Krafttraining"),
@@ -158,5 +170,170 @@ public class TrainingsSessionServiceTest {
         verify(trainingsSessionRepository).deleteById(trainingsSession1.getTrainingsSessionId());
     }
 
+    /**
+     * verifies that the most active user by total time was found successfully
+     */
+    @Test
+    void testGetMostActiveUserByAmountOfTrainingsSessionsSuccess() {
+        // Arrange
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1, trainingsSession2));
+
+        // Act
+        User findWinner = trainingsSessionService.getMostActiveUserByAmountOfTrainingsSessions(LocalDate.of(2026, 03, 20), LocalDate.of(2026, 03, 31));
+
+        // Assert
+        assertEquals(mehdi, findWinner);
+    }
+
+    /**
+     * verifies that the list filter is null if null parameters are provides
+     */
+    @Test
+    void testFilterTrainingsSession() {
+        // Arrange
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1));
+
+        // Act
+        List<TrainingsSession> trainingsSessionFilter1 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withStartDate(null).build());
+        List<TrainingsSession> trainingsSessionFilter2 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withEndDate(null).build());
+        List<TrainingsSession> trainingsSessionFilter4 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withUser(null).build());
+        List<TrainingsSession> trainingsSessionFilter5 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withMinBurnedCalories(0).build());
+
+        // Assert
+        assertEquals(1, trainingsSessionFilter1.size());
+        assertEquals(1, trainingsSessionFilter2.size());
+        assertEquals(1, trainingsSessionFilter4.size());
+        assertEquals(1, trainingsSessionFilter5.size());
+    }
+
+    /**
+     * verifies that the list ist filtert successfully
+     */
+    @Test
+    void testFilterTrainingsSessionSuccess() {
+        // Arrange
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1));
+
+        // Act
+        List<TrainingsSession> trainingsSessionFilter1 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withStartDate(LocalDate.of(2026, 3, 20)).build());
+        List<TrainingsSession> trainingsSessionFilter2 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withEndDate(LocalDate.of(2026, 3, 21)).build());
+        List<TrainingsSession> trainingsSessionFilter4 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withUser(mehdi).build());
+        List<TrainingsSession> trainingsSessionFilter5 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withMinBurnedCalories(500).build());
+        List<TrainingsSession> trainingsSessionFilter6 = trainingsSessionService.filterTrainingsSession(TrainingsSessionFilter.builder().withMaxBurnedCalories(1200).build());
+
+        // Assert
+        assertEquals(1, trainingsSessionFilter1.size());
+        assertEquals(1, trainingsSessionFilter2.size());
+        assertEquals(1, trainingsSessionFilter4.size());
+        assertEquals(1, trainingsSessionFilter5.size());
+        assertEquals(1, trainingsSessionFilter6.size());
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
+     */
+    @Test
+    void testGetTrainingsSessionStreakUserNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            trainingsSessionService.getTrainingSessionStreak(null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown when filterSession is Empty
+     */
+    @Test
+    void testGetTrainingsSessionStreakIsEmpty() {
+        // Act
+        assertThrows(IllegalStateException.class, () -> {
+            trainingsSessionService.getTrainingSessionStreak(mehdi);
+        });
+    }
+
+    /**
+     * verifies that the streak is 1
+     */
+    @Test
+    void testGetTrainingsSessionStreakOne() {
+        // Arrange
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1));
+
+        // Act
+        int result = trainingsSessionService.getTrainingSessionStreak(mehdi);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+    /**
+     * verifies that the streak is more than 1 without break
+     */
+    @Test
+    void testGetTrainingsSessionStreakWithoutBreak() {
+        // Arrange
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1, trainingsSession2, trainingsSession3));
+
+        // Act
+        int result = trainingsSessionService.getTrainingSessionStreak(mehdi);
+
+        // Assert
+        assertEquals(2, result);
+    }
+
+    /**
+     * verifies that the streak is more than 1 with brake
+     */
+    @Test
+    void testGetTrainingsSessionStreakWitBreak() {
+        // Arrange
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1, trainingsSession2, trainingsSession3));
+
+        // Act
+        int result = trainingsSessionService.getTrainingSessionStreak(mehdi);
+
+        // Assert
+        assertEquals(2, result);
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown when 0 parameters are provided
+     */
+    @Test
+    void testGetDailyTrainingsSessionSummaryNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            trainingsSessionService.getDailyTrainingsSessionSummary(null, null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown when filterSession is Empty
+     */
+    @Test
+    void testGetDailyTrainingsSessionSummaryIsEmpty() {
+        // Act
+        assertThrows(IllegalStateException.class, () -> {
+            trainingsSessionService.getDailyTrainingsSessionSummary(mehdi, trainingsSession1.getDate());
+        });
+    }
+
+    /**
+     * verifies that DailyTrainingsSessionSummary was summed successfully
+     */
+    @Test
+    void testGetDailyTrainingsSessionSummarySuccess() {
+        // Arrange
+        // I changed the date of trainingsSession2 to be the same like trainingsSession1
+        trainingsSession2.setDate(LocalDate.of(2026, 03, 20));
+        when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1, trainingsSession2));
+
+        // Act
+        TrainingsSessionSummary summaryList = trainingsSessionService.getDailyTrainingsSessionSummary(mehdi, trainingsSession1.getDate());
+
+        // Assert
+        assertTrue(summaryList.getTrainingsSessions().contains(trainingsSession1));
+        assertTrue(summaryList.getTrainingsSessions().contains(trainingsSession2));
+        assertEquals(trainingsSession1.getDurationInMinute() + trainingsSession2.getDurationInMinute(), summaryList.getTotalDurationInMinutes());
+        assertEquals(trainingsSession1.getBurnedCalories() + trainingsSession2.getBurnedCalories(), summaryList.getTotalCaloriesBurned());
+    }
 
 }
