@@ -143,7 +143,6 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         if (filteredTrainingsSessionSummary.isEmpty()) {
             throw new IllegalStateException("does not exist");
         }
-
         List<TrainingsSession> trainingsSessions = filteredTrainingsSessionSummary;
         int totalDurationInMinutes = filteredTrainingsSessionSummary.stream()
                 .mapToInt(TrainingsSession::getDurationInMinute)
@@ -151,7 +150,6 @@ public class TrainingsSessionService implements ITrainingsSessionService {
         int totalCaloriesBurned = filteredTrainingsSessionSummary.stream()
                 .mapToInt(TrainingsSession::getBurnedCalories)
                 .sum();
-
         return new TrainingsSessionSummary(
                 trainingsSessions,
                 totalDurationInMinutes,

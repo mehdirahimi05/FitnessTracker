@@ -16,8 +16,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -155,9 +154,6 @@ public class UserServiceTest {
     @Test
     void testUpdateUserSuccess(){
         // Arrange
-        when(userRepository.save(any(User.class))).thenReturn(mehdi);
-
-        // Act
         userService.updateUser(mehdi);
 
         // Assert - verify if save() was called
