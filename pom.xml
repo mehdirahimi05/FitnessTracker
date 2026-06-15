@@ -4,16 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Project Identity -->
     <groupId>de.fherfurt</groupId>
     <artifactId>Fitness_Tracker_System</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <!-- Submodules -->
     <modules>
         <module>storage</module>
         <module>api</module>
     </modules>
 
+    <!-- Global Properties -->
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -21,6 +24,7 @@
         <junit.version>5.11.3</junit.version>
         <lombok.version>1.18.36</lombok.version>
 
+        <!-- SonarQube -->
         <sonar.projectKey>devops-gitlab-lehre6</sonar.projectKey>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.basedir}/storage/target/site/jacoco/jacoco.xml,
@@ -32,18 +36,21 @@
         <pluginManagement>
             <plugins>
 
+                <!-- Spring Boot -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>3.4.0</version>
                 </plugin>
 
+                <!-- Surefire -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.5.5</version>
                 </plugin>
 
+                <!-- JaCoCo -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -65,12 +72,14 @@
                     </executions>
                 </plugin>
 
+                <!-- JavaDoc -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.12.0</version>
                 </plugin>
 
+                <!-- Compiler -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -79,6 +88,7 @@
                         <compilerArgs>
                             <arg>-parameters</arg>
                         </compilerArgs>
+                        <!-- Lombok Annotation Processor -->
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
@@ -89,13 +99,14 @@
                     </configuration>
                 </plugin>
 
+                <!-- JAR -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.5.0</version>
                 </plugin>
 
-                <!-- Checkstyle Plugin -->
+                <!-- Checkstyle -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -123,6 +134,7 @@
     <dependencyManagement>
         <dependencies>
 
+            <!-- Spring Boot BOM -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -131,18 +143,19 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Internal Modules -->
             <dependency>
                 <groupId>de.fherfurt</groupId>
                 <artifactId>storage</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
-
             <dependency>
                 <groupId>de.fherfurt</groupId>
                 <artifactId>api</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
+            <!-- JUnit -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
@@ -150,6 +163,7 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- JUnit Params -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
@@ -157,13 +171,13 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- Lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>

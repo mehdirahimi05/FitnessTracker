@@ -1,5 +1,6 @@
 package de.fherfurt.de.FitnessTracker.services;
 
+import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
 import de.fherfurt.FitnessTrackerSystem.repositories.IWorkoutPlanRepository;
 import de.fherfurt.FitnessTrackerSystem.services.WorkoutPlanService;
@@ -13,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class WorkoutPlanServiceTest {
@@ -24,8 +27,11 @@ public class WorkoutPlanServiceTest {
     @InjectMocks
     WorkoutPlanService workoutPlanService;
 
-    private WorkoutPlan workoutPlan1 = new WorkoutPlan(1, "Brust Training", new ArrayList<>());
-    private WorkoutPlan workoutPlan2 = new WorkoutPlan(2, "Rücken Training", new ArrayList<>());
+    private final WorkoutPlan workoutPlan1 = new WorkoutPlan(1, "Brust Training", new ArrayList<>());
+    private final WorkoutPlan workoutPlan2 = new WorkoutPlan(2, "Rücken Training", new ArrayList<>());
+
+    private final Exercise exercise1 = new Exercise(1, "Bankdrücken", new ArrayList<>());
+    private final Exercise exercise2 = new Exercise(2, "Klimmzüge", new ArrayList<>());
 
     /**
      * verifies that no WorkoutPlan was found
@@ -134,5 +140,56 @@ public class WorkoutPlanServiceTest {
 
         // Assert -> verify if deleteById() was called
         verify(workoutPlanRepository).deleteById(workoutPlan1.getWorkoutPlanId());
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testAddExerciseToWorkoutPlanNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            workoutPlanService.addExerciseToWorkoutPlan(null, null, 0, 0);
+        });
+    }
+
+    /**
+     * verifies that an Exercise was added to the WorkoutPlan
+     */
+    @Test
+    void testAddExerciseToWorkoutPlanSuccess() {
+        // Arrange
+        when(workoutPlanRepository.save(any(WorkoutPlan.class))).thenReturn(workoutPlan1);
+
+        // Act
+        workoutPlanService.addExerciseToWorkoutPlan(workoutPlan1, exercise1, 3, 6);
+
+        // Assert
+        assertEquals(1, workoutPlan1.getExercises().size());
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testRemoveExerciseFromWorkoutPlanNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            workoutPlanService.removeExerciseFromWorkoutPlan(null, 0);
+        });
+    }
+
+    /**
+     * verifies that an Exercise was removed from the WorkoutPlan
+     */
+    @Test
+    void testRemoveExerciseFromWorkoutPlanSuccess() {
+        // Arrange
+        when(workoutPlanRepository.save(any(WorkoutPlan.class))).thenReturn(workoutPlan1);
+
+        // Act
+        workoutPlanService.addExerciseToWorkoutPlan(workoutPlan1, exercise1, 3, 6);
+        workoutPlanService.removeExerciseFromWorkoutPlan(workoutPlan1, 1);
+
+        // Assert
+        assertEquals(0, workoutPlan1.getExercises().size());
     }
 }
