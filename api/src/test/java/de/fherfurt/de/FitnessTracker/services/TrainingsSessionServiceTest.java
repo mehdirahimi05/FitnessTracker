@@ -133,7 +133,7 @@ public class TrainingsSessionServiceTest {
 
     @Test
     void testAddTrainingsSessionSuccess(){
-        // Arrange
+        // Act
         trainingsSessionService.addTrainingsSession(trainingsSession1);
 
         // Assert -> verify if save() was called
@@ -142,7 +142,16 @@ public class TrainingsSessionServiceTest {
 
     @Test
     void testUpdateTrainingsSessionSuccess(){
-        // Arrange
+        // Act
+        trainingsSessionService.updateTrainingsSession(trainingsSession1);
+
+        // Assert -> verify if save() was called
+        verify(trainingsSessionRepository).save(trainingsSession1);
+    }
+
+    @Test
+    void testDeleteTrainingsSessionById(){
+        // Act
         trainingsSessionService.deleteTrainingsSessionById(trainingsSession1.getTrainingsSessionId());
 
         // Assert -> verify if deleteById() was called
