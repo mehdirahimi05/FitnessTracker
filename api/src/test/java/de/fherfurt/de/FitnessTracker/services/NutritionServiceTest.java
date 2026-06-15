@@ -1,0 +1,162 @@
+package de.fherfurt.de.FitnessTracker.services;
+
+import de.fherfurt.FitnessTrackerSystem.models.MealType;
+import de.fherfurt.FitnessTrackerSystem.models.Nutrition;
+import de.fherfurt.FitnessTrackerSystem.models.User;
+import de.fherfurt.FitnessTrackerSystem.models.UserRole;
+import de.fherfurt.FitnessTrackerSystem.repositories.INutritionRepository;
+import de.fherfurt.FitnessTrackerSystem.services.NutritionService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class NutritionServiceTest {
+    @Mock
+    INutritionRepository nutritionRepository;
+
+    @InjectMocks
+    NutritionService nutritionService;
+
+    private User mehdi = new User(1, "mehdi", "pass", UserRole.USER, null);
+
+    private Nutrition nutrition1 = new Nutrition(
+            1,
+            mehdi,
+            600,
+            40,
+            80,
+            20,
+            MealType.BREAKFAST,
+            LocalDate.of(2026, 3, 20)
+    );
+
+    private Nutrition nutrition2 = new Nutrition(
+            2,
+            mehdi,
+            800,
+            50,
+            100,
+            25,
+            MealType.LUNCH,
+            LocalDate.of(2026, 3, 20)
+    );
+
+    /**
+     * verifies that no Nutrition was found
+     */
+    @Test
+    void testGetAllNutritionNull() {
+        // Arrange
+        when(nutritionRepository.findAll()).thenReturn(List.of());
+
+        // Act
+        List<Nutrition> result = nutritionService.getAllNutrition();
+
+        // Assert
+        assertTrue(result.isEmpty());
+    }
+
+    /**
+     * verifies that one Nutrition was found
+     */
+    @Test
+    void testGetAllNutritionOne() {
+        // Arrange
+        when(nutritionRepository.findAll()).thenReturn(List.of(nutrition1));
+
+        // Act
+        List<Nutrition> result = nutritionService.getAllNutrition();
+
+        // Assert
+        assertEquals(1, result.size());
+    }
+
+    /**
+     * verifies that more than one Nutrition was found
+     */
+    @Test
+    void testGetAllNutrition() {
+        // Arrange
+        when(nutritionRepository.findAll()).thenReturn(List.of(nutrition1, nutrition2));
+
+        // Act
+        List<Nutrition> result = nutritionService.getAllNutrition();
+
+        // Assert
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testGetNutritionByIdSuccess() {
+        // Arrange
+        when(nutritionRepository.findById(1)).thenReturn(Optional.of(nutrition1));
+
+        // Act
+        Optional<Nutrition> result = nutritionService.getNutritionById(nutrition1.getNutritionId());
+
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(nutrition1, result.get());
+    }
+
+    @Test
+    void testCheckIsOwnNutritionNotFound() {
+        // Arrange
+        when(nutritionRepository.findById(5)).thenReturn(Optional.empty());
+
+        // Act
+        boolean result = nutritionService.checkIsOwnNutrition(5);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    void testCheckIsOwnNutritionSuccess() {
+        // Arrange
+        when(nutritionRepository.findById(1)).thenReturn(Optional.of(nutrition1));
+
+        // Act
+        boolean result = nutritionService.checkIsOwnNutrition(nutrition1.getNutritionId());
+
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    void testAddNutritionSuccess() {
+        // Act
+        nutritionService.addNutrition(nutrition1);
+
+        // Assert -> verify if save() was called
+        verify(nutritionRepository).save(nutrition1);
+    }
+
+    @Test
+    void testUpdateNutritionSuccess() {
+        // Act
+        nutritionService.updateNutrition(nutrition1);
+
+        // Assert -> verify if save() was called
+        verify(nutritionRepository).save(nutrition1);
+    }
+
+    @Test
+    void testDeleteNutritionById() {
+        // Act
+        nutritionService.deleteNutritionById(nutrition1.getNutritionId());
+
+        // Assert -> verify if deleteById() was called
+        verify(nutritionRepository).deleteById(nutrition1.getNutritionId());
+    }
+}
