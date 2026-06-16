@@ -155,4 +155,211 @@ public class BodyMeasurementServiceTest {
         // Assert -> verify if deleteById() was called
         verify(bodyMeasurementRepository).deleteById(bodyMeasurement1.getBodyMeasurementId());
     }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testCalculateBmiNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            bodyMeasurementService.calculateBmi(0, 0);
+        });
+    }
+
+    /**
+     * calculates BMI successfully
+     */
+    @Test
+    void testCalculateBmiSuccess() {
+        // Arrange
+        float weightInKg = 80;
+        float heightInMeters = 1.80f;
+        float expectedBmi = 24.69f;
+
+        // Act
+        float actualBmi = bodyMeasurementService.calculateBmi(weightInKg, heightInMeters);
+
+        // Assert
+        assertEquals(expectedBmi, actualBmi, 0.01f);
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if userId is 0
+     */
+    @Test
+    void testGetLatestBodyMeasurementNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            bodyMeasurementService.getLatestBodyMeasurement(null);
+        });
+    }
+
+    /**
+     * verifies that a IllegalStateException was thrown if the filter is empty
+     */
+    @Test
+    void testGetLatestBodyMeasurementIsEmpty() {
+        assertThrows(IllegalStateException.class, () -> {
+            bodyMeasurementService.getLatestBodyMeasurement(mehdi);
+        });
+    }
+
+    /**
+     * verifies that the LatestBodyMeasurement was filtered successfully
+     */
+    @Test
+    void testGetLatestBodyMeasurementSuccess() {
+        // Arrange
+        when(bodyMeasurementRepository.findAll()).thenReturn(List.of(bodyMeasurement1, bodyMeasurement2));
+
+        LocalDate measuredAt2 = LocalDate.of(2026, 1, 14);
+
+        // Act
+        Optional<BodyMeasurement> result = bodyMeasurementService.getLatestBodyMeasurement(mehdi);
+
+        // Assert
+        assertEquals(measuredAt2, result.get().getMeasuredAt());
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testGetBodyMeasurementHistoryNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            bodyMeasurementService.getBodyMeasurementHistory(null, null, null);
+        });
+    }
+
+    /**
+     * verifies that IllegalStateException was thrown when filter is empty
+     */
+    @Test
+    void testGetBodyMeasurementHistoryIsEmpty() {
+        // Arrange
+        LocalDate startDate = LocalDate.of(2026, 01, 1);
+        LocalDate endDate = LocalDate.of(2026, 01, 14);
+
+        // Assert
+        assertThrows(IllegalStateException.class, () -> {
+            bodyMeasurementService.getBodyMeasurementHistory(mehdi, startDate, endDate);
+        });
+    }
+
+    /**
+     * verifies that the BodyMeasurementHistory was filtered successfully
+     */
+    @Test
+    void testGetBodyMeasurementHistorySuccess() {
+        // Arrange
+        when(bodyMeasurementRepository.findAll()).thenReturn(List.of(bodyMeasurement1, bodyMeasurement2));
+
+        LocalDate startDate = LocalDate.of(2026, 01, 1);
+        LocalDate endDate = LocalDate.of(2026, 01, 14);
+
+        // Act
+        List<BodyMeasurement> bodyMeasurementList = bodyMeasurementService.getBodyMeasurementHistory(mehdi, startDate, endDate);
+
+        // Assert
+        assertEquals(2, bodyMeasurementList.size());
+        assertTrue(bodyMeasurementList.contains(bodyMeasurement1));
+        assertTrue(bodyMeasurementList.contains(bodyMeasurement2));
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testGetWeightProgressNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            bodyMeasurementService.getWeightProgress(null, null, null);
+        });
+    }
+
+    /**
+     * verifies that IllegalStateException was thrown when filter is empty
+     */
+    @Test
+    void testGetWeightProgressIsEmpty() {
+        // Arrange
+        LocalDate startDate = LocalDate.of(2026, 01, 1);
+        LocalDate endDate = LocalDate.of(2026, 01, 14);
+
+        // Assert
+        assertThrows(IllegalStateException.class, () -> {
+            bodyMeasurementService.getWeightProgress(mehdi, startDate, endDate);
+        });
+    }
+
+    /**
+     * verifies that WeightProgress was filters successfully
+     */
+    @Test
+    void testGetWeightProgressSuccess() {
+        // Arrange
+        when(bodyMeasurementRepository.findAll()).thenReturn(List.of(bodyMeasurement1, bodyMeasurement2));
+
+        LocalDate startDate = LocalDate.of(2026, 01, 1);
+        LocalDate endDate = LocalDate.of(2026, 01, 14);
+
+        float weight1 = 80;
+        float weight2 = 78;
+
+        // Act
+        List<Float> bodyMeasurementList = bodyMeasurementService.getWeightProgress(mehdi, startDate, endDate);
+
+        // Assert
+        assertEquals(2, bodyMeasurementList.size());
+        assertTrue(bodyMeasurementList.contains(weight1));
+        assertTrue(bodyMeasurementList.contains(weight2));
+    }
+
+    /**
+     * verifies that a IllegalArgumentException was thrown if 0 parameters are provided
+     */
+    @Test
+    void testGetBodyFatPercentageProgressNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            bodyMeasurementService.getBodyFatPercentageProgress(null, null, null);
+        });
+    }
+
+    /**
+     * verifies that IllegalStateException was thrown when filter is empty
+     */
+    @Test
+    void testGetBodyFatPercentageProgressIsEmpty() {
+        // Arrange
+        LocalDate startDate = LocalDate.of(2026, 01, 1);
+        LocalDate endDate = LocalDate.of(2026, 01, 14);
+
+        // Assert
+        assertThrows(IllegalStateException.class, () -> {
+            bodyMeasurementService.getBodyFatPercentageProgress(mehdi, startDate, endDate);
+        });
+    }
+
+    /**
+     * verifies that BodyFatPercentageProgress was filters successfully
+     */
+    @Test
+    void testGetBodyFatPercentageProgressSuccess() {
+        // Arrange
+        when(bodyMeasurementRepository.findAll()).thenReturn(List.of(bodyMeasurement1, bodyMeasurement2));
+
+        LocalDate startDate = LocalDate.of(2026, 01, 1);
+        LocalDate endDate = LocalDate.of(2026, 01, 14);
+
+        int bodyFatPercentage1 = 23;
+        int bodyFatPercentage2 = 22;
+
+        // Act
+        List<Integer> bodyMeasurementList = bodyMeasurementService.getBodyFatPercentageProgress(mehdi, startDate, endDate);
+
+        // Assert
+        assertEquals(2, bodyMeasurementList.size());
+        assertTrue(bodyMeasurementList.contains(bodyFatPercentage1));
+        assertTrue(bodyMeasurementList.contains(bodyFatPercentage2));
+
+    }
+
 }
