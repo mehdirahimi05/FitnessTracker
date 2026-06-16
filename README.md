@@ -30,18 +30,18 @@ Track your workouts, nutrition, body measurements and training plans in one plac
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Language | Java 21 |
-| Framework | Spring Boot 3.4 |
-| ORM | Spring Data JPA / Hibernate |
-| Database | PostgreSQL |
-| Security | Spring Security + JWT (JJWT 0.12) |
-| Build | Maven (Multi-Module) |
-| Testing | JUnit, Mockito, Spring Tests |
-| Quality | JaCoCo, SonarQube, Checkstyle |
-| CI/CD | GitHub Actions |
-| Container | Docker |
+| Layer     | Technology                        |
+|-----------|-----------------------------------|
+| Language  | Java 21                           |
+| Framework | Spring Boot 3.4                   |
+| ORM       | Spring Data JPA / Hibernate       |
+| Database  | PostgreSQL                        |
+| Security  | Spring Security + JWT (JJWT 0.12) |
+| Build     | Maven (Multi-Module)              |
+| Testing   | JUnit, Mockito, Spring Tests      |
+| Quality   | JaCoCo, SonarQube, Checkstyle     |
+| CI/CD     | GitHub Actions                    |
+| Container | Docker                            |
 
 ---
 

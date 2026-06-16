@@ -13,8 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ActivityTypeServiceTest {
@@ -35,7 +36,7 @@ public class ActivityTypeServiceTest {
     );
 
     @Test
-    void testGetAllActivityTypeNull(){
+    void testGetAllActivityTypeNull() {
         // Arrange
         when(activityTypeRepository.findAll()).thenReturn(List.of());
 
@@ -47,7 +48,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testGetActivityTypeOne(){
+    void testGetActivityTypeOne() {
         // Arrange
         when(activityTypeRepository.findAll()).thenReturn(List.of(activityType1));
 
@@ -59,7 +60,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testGetActivityType(){
+    void testGetActivityType() {
         // Arrange
         when(activityTypeRepository.findAll()).thenReturn(List.of(activityType1, activityType2));
 
@@ -71,7 +72,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testGetActivityTypeByIdSuccess(){
+    void testGetActivityTypeByIdSuccess() {
         // Arrange
         when(activityTypeRepository.findById(1)).thenReturn(Optional.of(activityType1));
 
@@ -84,7 +85,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testCheckIsOwnActivityTypeNotFound(){
+    void testCheckIsOwnActivityTypeNotFound() {
         // Arrange
         when(activityTypeRepository.findById(5)).thenReturn(Optional.empty());
 
@@ -96,7 +97,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testCheckIsOwnActivityTypeSuccess(){
+    void testCheckIsOwnActivityTypeSuccess() {
         // Arrange
         when(activityTypeRepository.findById(1)).thenReturn(Optional.of(activityType1));
 
@@ -108,7 +109,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testAddActivityTypeSuccess(){
+    void testAddActivityTypeSuccess() {
         // Act
         activityTypeService.addActivityType(activityType1);
 
@@ -117,7 +118,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testUpdateActivityTypeSuccess(){
+    void testUpdateActivityTypeSuccess() {
         // Act
         activityTypeService.updateActivityType(activityType1);
 
@@ -126,7 +127,7 @@ public class ActivityTypeServiceTest {
     }
 
     @Test
-    void testDeleteActivityTypeById(){
+    void testDeleteActivityTypeById() {
         // Act
         activityTypeService.deleteActivityTypeById(activityType1.getActivityTypeId());
 

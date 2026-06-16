@@ -14,10 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -37,7 +38,7 @@ public class UserServiceTest {
      * verifies that no User was found
      */
     @Test
-    void testGetAllUserNull(){
+    void testGetAllUserNull() {
         // Arrange
         when(userRepository.findAll()).thenReturn(List.of());
 
@@ -52,7 +53,7 @@ public class UserServiceTest {
      * verifies that one user was found
      */
     @Test
-    void testGetAllUsersOne(){
+    void testGetAllUsersOne() {
         // Arrange
         when(userRepository.findAll()).thenReturn(List.of(mehdi));
 
@@ -67,7 +68,7 @@ public class UserServiceTest {
      * verifies that more than one user was found
      */
     @Test
-    void testGetAllUser(){
+    void testGetAllUser() {
         // Arrange
         when(userRepository.findAll()).thenReturn(List.of(mehdi, ammar));
 
@@ -92,7 +93,7 @@ public class UserServiceTest {
      * verifies that the user already exists
      */
     @Test
-    void testSignUpUserExists(){
+    void testSignUpUserExists() {
         // Arrange
         when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
 
@@ -107,7 +108,7 @@ public class UserServiceTest {
      * verifies that the user was singed up successfully
      */
     @Test
-    void testSignUpUserSuccess(){
+    void testSignUpUserSuccess() {
         // Arrange
         when(userRepository.findByUserName("mehdi")).thenReturn(Optional.empty());
         when(passwordEncoder.encode(anyString())).thenReturn("hashedPassword");
@@ -123,7 +124,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void testGetUserByIdSuccess(){
+    void testGetUserByIdSuccess() {
         // Arrange
         when(userRepository.findById(1)).thenReturn(Optional.of(mehdi));
 
@@ -136,7 +137,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void testGetUserByUserNameSuccess(){
+    void testGetUserByUserNameSuccess() {
         // Arrange
         when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
 
@@ -152,7 +153,7 @@ public class UserServiceTest {
      * verifies that update user was successful
      */
     @Test
-    void testUpdateUserSuccess(){
+    void testUpdateUserSuccess() {
         // Arrange
         userService.updateUser(mehdi);
 
@@ -164,7 +165,7 @@ public class UserServiceTest {
      * verifies that the user was deleted by UserName successfully
      */
     @Test
-    void testDeleteUserByUserNameSuccess(){
+    void testDeleteUserByUserNameSuccess() {
         // Act
         userService.deleteUserByUserName(mehdi.getUserName());
 
@@ -176,7 +177,7 @@ public class UserServiceTest {
      * verifies that the user was deleted by UserId successfully
      */
     @Test
-    void testDeleteUserByUserIdSuccess(){
+    void testDeleteUserByUserIdSuccess() {
         // Act
         userService.deleteUserByUserId(mehdi.getUserId());
 
@@ -188,7 +189,7 @@ public class UserServiceTest {
      * Verifies that the IllegalArgumentException was thrown when null is provided
      */
     @Test
-    void testLogInNull(){
+    void testLogInNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             userService.logIn(null, null);
         });
@@ -198,7 +199,7 @@ public class UserServiceTest {
      * Verifies that false is returned when the username does not exist
      */
     @Test
-    void testLogInUserNotFound(){
+    void testLogInUserNotFound() {
         // Arrange
         when(userRepository.findByUserName("Ali")).thenReturn(Optional.empty());
 
@@ -213,7 +214,7 @@ public class UserServiceTest {
      * Verifies that false is returned when the user exists but the password is wrong
      */
     @Test
-    void testLogInWrongPassword(){
+    void testLogInWrongPassword() {
         // Arrange
         when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
@@ -229,7 +230,7 @@ public class UserServiceTest {
      * verifies that the user exists
      */
     @Test
-    void testLogInSuccess(){
+    void testLogInSuccess() {
         // Arrange
         when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
@@ -245,7 +246,7 @@ public class UserServiceTest {
      * verifies that the authentification was successful
      */
     @Test
-    void tesAuthenticateUserSuccess(){
+    void tesAuthenticateUserSuccess() {
         // Arrange
         when(userRepository.findByUserName("mehdi")).thenReturn(Optional.of(mehdi));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);

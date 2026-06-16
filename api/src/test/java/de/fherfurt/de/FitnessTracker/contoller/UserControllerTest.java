@@ -10,8 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = FitnessTrackerApplication.class)
@@ -40,15 +41,15 @@ public class UserControllerTest {
     }
 
     @Test
-    void testLogInSuccess() throws Exception{
+    void testLogInSuccess() throws Exception {
         // first SignUp
         mockMvc.perform(post("/api/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userName\":\"mehdi\",\"passWord\":\"password123\",\"role\":\"USER\"}"));
 
         mockMvc.perform(post("/api/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"userName\":\"mehdi\",\"passWord\":\"password123\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"userName\":\"mehdi\",\"passWord\":\"password123\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.emptyString())));
 

@@ -13,8 +13,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class NutritionServiceTest {
@@ -182,17 +183,17 @@ public class NutritionServiceTest {
      * verifies that DailyNutritionSummary was summed successfully
      */
     @Test
-    void testGetDailyNutritionSummarySuccess(){
-            // Arrange
-            when(nutritionRepository.findAll()).thenReturn(List.of(nutrition1, nutrition2));
+    void testGetDailyNutritionSummarySuccess() {
+        // Arrange
+        when(nutritionRepository.findAll()).thenReturn(List.of(nutrition1, nutrition2));
 
-            // Act
-            NutritionSummary summaryList = nutritionService.getDailyNutritionSummary(mehdi, nutrition1.getDate());
+        // Act
+        NutritionSummary summaryList = nutritionService.getDailyNutritionSummary(mehdi, nutrition1.getDate());
 
-            // Assert
-            assertEquals(nutrition1.getCalories() + nutrition2.getCalories(), summaryList.getTotalCalories());
-            assertEquals(nutrition1.getProteinInGram() + nutrition2.getProteinInGram(), summaryList.getTotalProteinInGram());
-            assertEquals(nutrition1.getCarbohydratesInGram() + nutrition2.getCarbohydratesInGram(), summaryList.getTotalCarbohydratesInGram());
-            assertEquals(nutrition1.getFatInGram() + nutrition2.getFatInGram(), summaryList.getTotalFatInGram());
-        }
+        // Assert
+        assertEquals(nutrition1.getCalories() + nutrition2.getCalories(), summaryList.getTotalCalories());
+        assertEquals(nutrition1.getProteinInGram() + nutrition2.getProteinInGram(), summaryList.getTotalProteinInGram());
+        assertEquals(nutrition1.getCarbohydratesInGram() + nutrition2.getCarbohydratesInGram(), summaryList.getTotalCarbohydratesInGram());
+        assertEquals(nutrition1.getFatInGram() + nutrition2.getFatInGram(), summaryList.getTotalFatInGram());
+    }
 }

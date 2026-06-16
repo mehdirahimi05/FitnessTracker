@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TrainingsSessionServiceTest {
@@ -65,7 +66,7 @@ public class TrainingsSessionServiceTest {
      * verifies that no TrainingsSession was found
      */
     @Test
-    void testGetAllTrainingsSessionNull(){
+    void testGetAllTrainingsSessionNull() {
         // Arrange
         when(trainingsSessionRepository.findAll()).thenReturn(List.of());
 
@@ -80,7 +81,7 @@ public class TrainingsSessionServiceTest {
      * verifies that one trainingsSession was found
      */
     @Test
-    void testGetAllTrainingsSessionOne(){
+    void testGetAllTrainingsSessionOne() {
         // Arrange
         when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1));
 
@@ -95,7 +96,7 @@ public class TrainingsSessionServiceTest {
      * verifies that more than one trainingsSession was found
      */
     @Test
-    void testGetAllTrainingsSession(){
+    void testGetAllTrainingsSession() {
         // Arrange
         when(trainingsSessionRepository.findAll()).thenReturn(List.of(trainingsSession1, trainingsSession2));
 
@@ -107,7 +108,7 @@ public class TrainingsSessionServiceTest {
     }
 
     @Test
-    void testGetTrainingsSessionByIdSuccess(){
+    void testGetTrainingsSessionByIdSuccess() {
         // Arrange
         when(trainingsSessionRepository.findById(1)).thenReturn(Optional.of(trainingsSession1));
 
@@ -120,7 +121,7 @@ public class TrainingsSessionServiceTest {
     }
 
     @Test
-    void testCheckIsOwnTrainingsSessionNotFound(){
+    void testCheckIsOwnTrainingsSessionNotFound() {
         // Arrange
         when(trainingsSessionRepository.findById(5)).thenReturn(Optional.empty());
 
@@ -132,7 +133,7 @@ public class TrainingsSessionServiceTest {
     }
 
     @Test
-    void testCheckIsOwnTrainingsSessionSuccess(){
+    void testCheckIsOwnTrainingsSessionSuccess() {
         // Arrange
         when(trainingsSessionRepository.findById(1)).thenReturn(Optional.of(trainingsSession1));
 
@@ -144,7 +145,7 @@ public class TrainingsSessionServiceTest {
     }
 
     @Test
-    void testAddTrainingsSessionSuccess(){
+    void testAddTrainingsSessionSuccess() {
         // Act
         trainingsSessionService.addTrainingsSession(trainingsSession1);
 
@@ -153,7 +154,7 @@ public class TrainingsSessionServiceTest {
     }
 
     @Test
-    void testUpdateTrainingsSessionSuccess(){
+    void testUpdateTrainingsSessionSuccess() {
         // Act
         trainingsSessionService.updateTrainingsSession(trainingsSession1);
 
@@ -162,7 +163,7 @@ public class TrainingsSessionServiceTest {
     }
 
     @Test
-    void testDeleteTrainingsSessionById(){
+    void testDeleteTrainingsSessionById() {
         // Act
         trainingsSessionService.deleteTrainingsSessionById(trainingsSession1.getTrainingsSessionId());
 
