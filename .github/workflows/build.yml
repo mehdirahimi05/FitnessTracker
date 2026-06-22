@@ -95,7 +95,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       # Step 10: Docker Image zu Docker Hub pushen
-      # Image ist dann oeffentlich verfuegbar auf Docker Hub
-      # andere koennen es mit: docker pull username/fitness-tracker:latest laden
+      # Image ist dann öffentlich verfügbar auf Docker Hub
+      # andere können es mit: docker pull username/fitness-tracker:latest laden
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/fitness-tracker:latest

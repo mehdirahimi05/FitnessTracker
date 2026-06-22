@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fitness-tracker-service
+spec:
+  type: NodePort       # von außen erreichbar
+  selector:
+    app: fitness-tracker
+  ports:
+    - port: 8080
+      targetPort: 8080
