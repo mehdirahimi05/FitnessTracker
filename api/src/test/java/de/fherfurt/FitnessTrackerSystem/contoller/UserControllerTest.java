@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = FitnessTrackerApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -199,11 +201,19 @@ public class UserControllerTest {
         User user = new User(0, "mehdi", "pass123", UserRole.USER, null);
         String json = objectMapper.writeValueAsString(user);
 
-        // SignUp
-        mockMvc.perform(post("/api/users/register")
+        // SignUp -> get id
+        String registerResponse = mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk());
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // read the registerResponse
+        User registeredUser = objectMapper.readValue(registerResponse, User.class);
+
+        // change it to an int
+        int id = registeredUser.getUserId();
 
         // Login → get Token
         String token = mockMvc.perform(post("/api/users/login")
@@ -214,7 +224,7 @@ public class UserControllerTest {
                 .getContentAsString();  // read the Respond Body as a String
 
         // Request with Token
-        mockMvc.perform(get("/api/users/1")
+        mockMvc.perform(get("/api/users/" + id)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
