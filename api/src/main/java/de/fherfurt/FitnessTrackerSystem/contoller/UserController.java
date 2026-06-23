@@ -22,28 +22,28 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUser());
+        return ResponseEntity.ok(userService.getAllUser());  // 200 -> ok
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> signUpUser(@RequestBody User user) {
         return userService.signUpUser(user)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+                .map(ResponseEntity::ok)  // 200 -> ok
+                .orElse(ResponseEntity.badRequest().build());  // 400 -> badRequest
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> logInUser(@RequestBody User user) {
         return userService.logIn(user.getUserName(), user.getPassWord())
-                .map(u -> ResponseEntity.ok(jwtService.generateToken(u.getUserName())))
+                .map(user1 -> ResponseEntity.ok(jwtService.generateToken(user1.getUserName())))
                 .orElse(ResponseEntity.status(401).build());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
         return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)  // 200 -> ok
+                .orElse(ResponseEntity.notFound().build());  // 404 -> notFound
     }
 
     @PutMapping

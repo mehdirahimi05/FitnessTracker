@@ -1,9 +1,8 @@
-package de.fherfurt.de.FitnessTracker.services;
+package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.User;
 import de.fherfurt.FitnessTrackerSystem.models.UserRole;
 import de.fherfurt.FitnessTrackerSystem.repositories.IUserRepository;
-import de.fherfurt.FitnessTrackerSystem.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,8 +30,8 @@ public class UserServiceTest {
     @InjectMocks
     UserService userService;
 
-    private User mehdi = new User(1, "mehdi", "pass123", UserRole.USER, null);
-    private User ammar = new User(2, "ammar", "pass456", UserRole.USER, null);
+    private final User mehdi = new User(1, "mehdi", "pass123", UserRole.USER, null);
+    private final User ammar = new User(2, "ammar", "pass456", UserRole.USER, null);
 
     /**
      * verifies that no User was found

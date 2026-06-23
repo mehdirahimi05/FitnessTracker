@@ -1,8 +1,7 @@
-package de.fherfurt.de.FitnessTracker.services;
+package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.repositories.IExerciseRepository;
-import de.fherfurt.FitnessTrackerSystem.services.ExerciseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

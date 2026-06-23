@@ -35,8 +35,8 @@ public class UserService implements IUserService {
         }
         // Password hashed before save it
         newUser.setPassWord(passwordEncoder.encode(newUser.getPassWord()));
-        userRepository.save(newUser);
-        return Optional.of(newUser);
+        User savedUser = userRepository.save(newUser);
+        return Optional.of(savedUser);
     }
 
     @Override
