@@ -30,9 +30,9 @@ public class ActivityTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addActivityType(@RequestBody ActivityType activityType) {
+    public ResponseEntity<ActivityType> addActivityType(@RequestBody ActivityType activityType) {
         activityTypeService.addActivityType(activityType);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(activityType);
     }
 
     @PutMapping

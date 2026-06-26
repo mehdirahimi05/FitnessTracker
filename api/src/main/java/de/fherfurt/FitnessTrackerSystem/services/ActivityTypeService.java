@@ -35,8 +35,8 @@ public class ActivityTypeService implements IActivityTypeService {
     }
 
     @Override
-    public void addActivityType(ActivityType activityType) {
-        activityTypeRepository.save(activityType);
+    public ActivityType addActivityType(ActivityType activityType) {
+        return activityTypeRepository.save(activityType);
     }
 
     @Override

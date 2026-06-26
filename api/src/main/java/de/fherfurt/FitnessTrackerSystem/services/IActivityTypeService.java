@@ -12,7 +12,7 @@ public interface IActivityTypeService {
 
     boolean checkIsOwnActivityType(int activityTypeId);
 
-    void addActivityType(ActivityType activityType);
+    ActivityType addActivityType(ActivityType activityType);
 
     void updateActivityType(ActivityType activityType);
 
