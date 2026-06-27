@@ -37,8 +37,8 @@ public class WorkoutPlanService implements IWorkoutPlanService {
     }
 
     @Override
-    public void addWorkoutPlan(WorkoutPlan workoutPlan) {
-        workoutPlanRepository.save(workoutPlan);
+    public WorkoutPlan addWorkoutPlan(WorkoutPlan workoutPlan) {
+        return workoutPlanRepository.save(workoutPlan);
     }
 
     @Override

@@ -31,9 +31,9 @@ public class WorkoutPlanController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addWorkoutPlan(@RequestBody WorkoutPlan workoutPlan) {
+    public ResponseEntity<WorkoutPlan> addWorkoutPlan(@RequestBody WorkoutPlan workoutPlan) {
         workoutPlanService.addWorkoutPlan(workoutPlan);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(workoutPlan);
     }
 
     @PutMapping

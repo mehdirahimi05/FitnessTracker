@@ -12,7 +12,7 @@ public interface IExerciseService {
 
     boolean checkIsOwnExercise(int exerciseId);
 
-    void addExercise(Exercise exercise);
+    Exercise addExercise(Exercise exercise);
 
     void updateExercise(Exercise exercise);
 

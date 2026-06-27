@@ -15,7 +15,7 @@ public interface INutritionService {
 
     boolean checkIsOwnNutrition(int nutritionId);
 
-    void addNutrition(Nutrition newNutrition);
+    Nutrition addNutrition(Nutrition newNutrition);
 
     void updateNutrition(Nutrition updatedNutrition);
 

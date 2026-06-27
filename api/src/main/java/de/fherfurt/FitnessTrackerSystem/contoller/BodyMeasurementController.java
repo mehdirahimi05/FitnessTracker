@@ -34,9 +34,9 @@ public class BodyMeasurementController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addBodyMeasurement(@RequestBody BodyMeasurement bodyMeasurement) {
+    public ResponseEntity<BodyMeasurement> addBodyMeasurement(@RequestBody BodyMeasurement bodyMeasurement) {
         bodyMeasurementService.addBodyMeasurement(bodyMeasurement);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(bodyMeasurement);
     }
 
     @PutMapping

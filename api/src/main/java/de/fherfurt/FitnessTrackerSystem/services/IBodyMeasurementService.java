@@ -14,7 +14,7 @@ public interface IBodyMeasurementService {
 
     boolean checkIsOwnBodyMeasurement(int bodyMeasurementId);
 
-    void addBodyMeasurement(BodyMeasurement bodyMeasurement);
+    BodyMeasurement addBodyMeasurement(BodyMeasurement bodyMeasurement);
 
     void updateBodyMeasurement(BodyMeasurement bodyMeasurement);
 

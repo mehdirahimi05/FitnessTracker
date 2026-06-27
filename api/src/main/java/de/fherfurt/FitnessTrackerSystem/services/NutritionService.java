@@ -38,8 +38,8 @@ public class NutritionService implements INutritionService {
     }
 
     @Override
-    public void addNutrition(Nutrition newNutrition) {
-        nutritionRepository.save(newNutrition);
+    public Nutrition addNutrition(Nutrition newNutrition) {
+        return nutritionRepository.save(newNutrition);
     }
 
     @Override

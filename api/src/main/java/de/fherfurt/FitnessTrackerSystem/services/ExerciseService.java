@@ -35,8 +35,8 @@ public class ExerciseService implements IExerciseService {
     }
 
     @Override
-    public void addExercise(Exercise exercise) {
-        exerciseRepository.save(exercise);
+    public Exercise addExercise(Exercise exercise) {
+        return exerciseRepository.save(exercise);
     }
 
     @Override

@@ -36,9 +36,9 @@ public class TrainingsSessionController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addTrainingsSession(@RequestBody TrainingsSession trainingsSession) {
+    public ResponseEntity<TrainingsSession> addTrainingsSession(@RequestBody TrainingsSession trainingsSession) {
         trainingsSessionService.addTrainingsSession(trainingsSession);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(trainingsSession);
     }
 
     @PutMapping

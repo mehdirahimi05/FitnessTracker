@@ -29,9 +29,9 @@ public class ExerciseController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addExercise(@RequestBody Exercise exercise) {
+    public ResponseEntity<Exercise> addExercise(@RequestBody Exercise exercise) {
         exerciseService.addExercise(exercise);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(exercise);
     }
 
     @PutMapping

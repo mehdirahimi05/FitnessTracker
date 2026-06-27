@@ -35,9 +35,9 @@ public class NutritionController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addNutrition(@RequestBody Nutrition nutrition) {
+    public ResponseEntity<Nutrition> addNutrition(@RequestBody Nutrition nutrition) {
         nutritionService.addNutrition(nutrition);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(201).body(nutrition);
     }
 
     @PutMapping

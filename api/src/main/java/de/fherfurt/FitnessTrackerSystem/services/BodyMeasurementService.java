@@ -38,8 +38,8 @@ public class BodyMeasurementService implements IBodyMeasurementService {
     }
 
     @Override
-    public void addBodyMeasurement(BodyMeasurement bodyMeasurement) {
-        bodyMeasurementRepository.save(bodyMeasurement);
+    public BodyMeasurement addBodyMeasurement(BodyMeasurement bodyMeasurement) {
+        return bodyMeasurementRepository.save(bodyMeasurement);
     }
 
     @Override

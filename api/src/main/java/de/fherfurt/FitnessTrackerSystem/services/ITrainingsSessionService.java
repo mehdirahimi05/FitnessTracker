@@ -16,7 +16,7 @@ public interface ITrainingsSessionService {
 
     boolean checkIsOwnTrainingsSession(int trainingsSessionId);
 
-    void addTrainingsSession(TrainingsSession newTrainingsSession);
+    TrainingsSession addTrainingsSession(TrainingsSession newTrainingsSession);
 
     void updateTrainingsSession(TrainingsSession updatedTrainingsSession);
 

@@ -38,8 +38,8 @@ public class TrainingsSessionService implements ITrainingsSessionService {
     }
 
     @Override
-    public void addTrainingsSession(TrainingsSession newTrainingsSession) {
-        trainingsSessionRepository.save(newTrainingsSession);
+    public TrainingsSession addTrainingsSession(TrainingsSession newTrainingsSession) {
+        return trainingsSessionRepository.save(newTrainingsSession);
     }
 
     @Override

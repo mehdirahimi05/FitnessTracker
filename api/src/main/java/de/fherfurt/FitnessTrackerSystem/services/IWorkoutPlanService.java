@@ -14,7 +14,7 @@ public interface IWorkoutPlanService {
 
     boolean checkIsOwnWorkoutPlan(int workoutPlanId);
 
-    void addWorkoutPlan(WorkoutPlan workoutPlan);
+    WorkoutPlan addWorkoutPlan(WorkoutPlan workoutPlan);
 
     void updateWorkoutPlan(WorkoutPlan workoutPlan);
 
