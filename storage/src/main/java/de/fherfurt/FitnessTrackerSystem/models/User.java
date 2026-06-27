@@ -27,6 +27,7 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "userId")
 @Entity
 @Table(name = "users")
 public class User {

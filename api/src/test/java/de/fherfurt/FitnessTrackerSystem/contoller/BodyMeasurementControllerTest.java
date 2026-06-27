@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fherfurt.FitnessTrackerSystem.FitnessTrackerApplication;
 import de.fherfurt.FitnessTrackerSystem.models.BodyMeasurement;
 import de.fherfurt.FitnessTrackerSystem.models.User;
-import de.fherfurt.FitnessTrackerSystem.models.UserRole;
 import de.fherfurt.FitnessTrackerSystem.repositories.IBodyMeasurementRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = FitnessTrackerApplication.class)
@@ -140,6 +140,12 @@ public class BodyMeasurementControllerTest {
                         .content(json2)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isCreated());
+
+        // Request with token
+        mockMvc.perform(get("/api/body_measurement")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
     }
 
     @Test
@@ -152,9 +158,11 @@ public class BodyMeasurementControllerTest {
     void testGetBodyMeasurementByIdWithToken() throws Exception {
         // Arrange
         String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
         BodyMeasurement bodyMeasurement = new BodyMeasurement(
                 0,
-                new User(1, "mehdi", "pass123", UserRole.USER, null),
+                user,
                 80,
                 1.80f,
                 22,
@@ -273,5 +281,245 @@ public class BodyMeasurementControllerTest {
         mockMvc.perform(delete("/api/activity_type/" + id)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testCalculateBmiSuccess() throws Exception{
+        // Arrange
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        BodyMeasurement bodyMeasurement = new BodyMeasurement(
+                0,
+                user,
+                80,
+                1.80f,
+                22,
+                LocalDate.of(2026, 01, 01)
+        );
+        String json = objectMapper.writeValueAsString(bodyMeasurement);
+
+        //  Add ActivityType
+        String addResponse = mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .header("Authorization", "Bearer " + token))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // Request with token -> calculate bmi
+        mockMvc.perform(get("/api/body_measurement/bmi")
+                .param("weight", "80")
+                .param("height", "1.80")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetLatestBodyMeasurementSuccess() throws Exception {
+        // Arrange
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        BodyMeasurement bodyMeasurement1 = new BodyMeasurement(
+                0,
+                user,
+                80,
+                1.80f,
+                22,
+                LocalDate.of(2026, 01, 01)
+        );
+        String json1 = objectMapper.writeValueAsString(bodyMeasurement1);
+
+        BodyMeasurement bodyMeasurement2 = new BodyMeasurement(
+                0,
+                user,
+                78,
+                1.80f,
+                21,
+                LocalDate.of(2026, 01, 14)
+        );
+        String json2 = objectMapper.writeValueAsString(bodyMeasurement2);
+
+        //  Add bodyMeasurement1
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json1)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        //  Add bodyMeasurement2
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json2)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        // Request with token -> latest bm
+        mockMvc.perform(get("/api/body_measurement/latest")
+                .param("userId", String.valueOf(user.getUserId()))
+                .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetLatestBodyMeasurementNotExists() throws Exception{
+        // Arrange but no adding bm to the db
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        // Request with token -> latest bm
+        mockMvc.perform(get("/api/body_measurement/latest")
+                        .param("userId", String.valueOf(user.getUserId()))
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetBodyMeasurementHistorySuccess() throws Exception {
+        // Arrange
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        BodyMeasurement bodyMeasurement1 = new BodyMeasurement(
+                0,
+                user,
+                80,
+                1.80f,
+                22,
+                LocalDate.of(2026, 01, 01)
+        );
+        String json1 = objectMapper.writeValueAsString(bodyMeasurement1);
+
+        BodyMeasurement bodyMeasurement2 = new BodyMeasurement(
+                0,
+                user,
+                78,
+                1.80f,
+                21,
+                LocalDate.of(2026, 01, 14)
+        );
+        String json2 = objectMapper.writeValueAsString(bodyMeasurement2);
+
+        //  Add bodyMeasurement1
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json1)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        //  Add bodyMeasurement2
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json2)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        // Request with token -> bm history
+        mockMvc.perform(get("/api/body_measurement/history")
+                        .param("userId", String.valueOf(user.getUserId()))
+                        .param("startDate", "2026-01-01")
+                        .param("endDate", "2026-01-14")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetWeightProgressSuccess() throws Exception{
+        // Arrange
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        BodyMeasurement bodyMeasurement1 = new BodyMeasurement(
+                0,
+                user,
+                80,
+                1.80f,
+                22,
+                LocalDate.of(2026, 01, 01)
+        );
+        String json1 = objectMapper.writeValueAsString(bodyMeasurement1);
+
+        BodyMeasurement bodyMeasurement2 = new BodyMeasurement(
+                0,
+                user,
+                78,
+                1.80f,
+                21,
+                LocalDate.of(2026, 01, 14)
+        );
+        String json2 = objectMapper.writeValueAsString(bodyMeasurement2);
+
+        //  Add bodyMeasurement1
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json1)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        //  Add bodyMeasurement2
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json2)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        // Request with token -> bm history
+        mockMvc.perform(get("/api/body_measurement/weight-progress")
+                        .param("userId", String.valueOf(user.getUserId()))
+                        .param("startDate", "2026-01-01")
+                        .param("endDate", "2026-01-14")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetBodyFatPercentageProgress() throws Exception {
+        // Arrange
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        BodyMeasurement bodyMeasurement1 = new BodyMeasurement(
+                0,
+                user,
+                80,
+                1.80f,
+                22,
+                LocalDate.of(2026, 01, 01)
+        );
+        String json1 = objectMapper.writeValueAsString(bodyMeasurement1);
+
+        BodyMeasurement bodyMeasurement2 = new BodyMeasurement(
+                0,
+                user,
+                78,
+                1.80f,
+                21,
+                LocalDate.of(2026, 01, 14)
+        );
+        String json2 = objectMapper.writeValueAsString(bodyMeasurement2);
+
+        //  Add bodyMeasurement1
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json1)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        //  Add bodyMeasurement2
+        mockMvc.perform(post("/api/body_measurement")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json2)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        // Request with token -> bm history
+        mockMvc.perform(get("/api/body_measurement/fat-progress")
+                        .param("userId", String.valueOf(user.getUserId()))
+                        .param("startDate", "2026-01-01")
+                        .param("endDate", "2026-01-14")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
     }
 }

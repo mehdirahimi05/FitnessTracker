@@ -70,7 +70,7 @@ public class BodyMeasurementService implements IBodyMeasurementService {
                 .sorted(Comparator.comparing(BodyMeasurement::getMeasuredAt).reversed())
                 .toList();
         if (filterBodyMeasurement.isEmpty()) {
-            throw new IllegalStateException("does not exist");
+            return Optional.empty();
         }
         return Optional.of(filterBodyMeasurement.get(0));
     }
