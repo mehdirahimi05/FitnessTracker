@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = FitnessTrackerApplication.class)
@@ -148,6 +149,12 @@ public class NutritionControllerTest {
                         .content(json2)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isCreated());
+
+        // Request with token
+        mockMvc.perform(get("/api/nutrition")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
     }
 
     @Test
@@ -288,5 +295,38 @@ public class NutritionControllerTest {
         mockMvc.perform(delete("/api/nutrition/" + id)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testGetDailyNutritionSummary() throws Exception{
+        // Arrange
+        String token = testHelper.getToken();
+        User user = testHelper.getRegisteredUser();
+
+        Nutrition nutrition = new Nutrition(
+                0,
+                user,
+                500,
+                30,
+                60,
+                15,
+                MealType.BREAKFAST,
+                LocalDate.of(2026, 1, 1)
+        );
+        String json = objectMapper.writeValueAsString(nutrition);
+
+        // Add Nutrition
+        mockMvc.perform(post("/api/nutrition")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isCreated());
+
+        // Request with Token -> getDailyNutritionSummary
+        mockMvc.perform(get("/api/nutrition/nutrition_summary")
+                        .param("userId", String.valueOf(user.getUserId()))
+                        .param("date", "2026-01-01")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
     }
 }
