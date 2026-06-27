@@ -192,14 +192,16 @@ public class BodyMeasurementServiceTest {
         });
     }
 
-    /**
-     * verifies that a IllegalStateException was thrown if the filter is empty
-     */
     @Test
     void testGetLatestBodyMeasurementIsEmpty() {
-        assertThrows(IllegalStateException.class, () -> {
-            bodyMeasurementService.getLatestBodyMeasurement(mehdi);
-        });
+        // Arrange
+        when(bodyMeasurementRepository.findAll()).thenReturn(List.of());
+
+        // Act
+        Optional<BodyMeasurement> result = bodyMeasurementService.getLatestBodyMeasurement(mehdi);
+
+        // Assert
+        assertTrue(result.isEmpty());
     }
 
     /**
