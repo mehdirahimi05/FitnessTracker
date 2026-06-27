@@ -2,8 +2,8 @@ package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fherfurt.FitnessTrackerSystem.FitnessTrackerApplication;
-import de.fherfurt.FitnessTrackerSystem.models.ActivityType;
-import de.fherfurt.FitnessTrackerSystem.repositories.IActivityTypeRepository;
+import de.fherfurt.FitnessTrackerSystem.models.Exercise;
+import de.fherfurt.FitnessTrackerSystem.repositories.IExerciseRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class ActivityTypeControllerTest {
+public class ExerciseControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -30,7 +32,7 @@ public class ActivityTypeControllerTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    private IActivityTypeRepository activityTypeRepository;
+    private IExerciseRepository exerciseRepository;
 
     private TestHelper testHelper;
 
@@ -40,132 +42,96 @@ public class ActivityTypeControllerTest {
     }
 
     @Test
-    void testAddActivityTypeSuccess() throws Exception {
+    void testAddExerciseSuccess() throws Exception {
         // Arrange
         String token = testHelper.getToken();
 
-        ActivityType activityType = new ActivityType(0, "Kraftsport");
-        String json = objectMapper.writeValueAsString(activityType);
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String json = objectMapper.writeValueAsString(exercise);
 
-        // Add ActivityType
-        mockMvc.perform(post("/api/activity_type")
+        // Add Exercise
+        mockMvc.perform(post("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isCreated());
     }
 
-
     @Test
-    void testGetActivityTypeWithoutToken() throws Exception {
-        mockMvc.perform(get("/api/activity_type"))
+    void testGetExerciseWithoutToken() throws Exception {
+        mockMvc.perform(get("/api/exercise"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    void testGetActivitytypeWithToken() throws Exception {
+    void testGetExerciseWithToken() throws Exception {
         // Arrange
         String token = testHelper.getToken();
 
-        ActivityType activityType = new ActivityType(0, "Kraftsport");
-        String json = objectMapper.writeValueAsString(activityType);
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String json = objectMapper.writeValueAsString(exercise);
 
-        // Add ActivityType
-        mockMvc.perform(post("/api/activity_type")
+        // Add Exercise
+        mockMvc.perform(post("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isCreated());
 
         // Request with token
-        mockMvc.perform(get("/api/activity_type")
+        mockMvc.perform(get("/api/exercise")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void testGetAllActivityTypesWithToken() throws Exception {
+    void testGetAllExercisesWithToken() throws Exception {
         // Arrange
         String token = testHelper.getToken();
 
-        ActivityType activityType1 = new ActivityType(0, "Kraftsport");
-        String json1 = objectMapper.writeValueAsString(activityType1);
+        Exercise exercise1 = new Exercise(0, "Bench Press", List.of());
+        String json1 = objectMapper.writeValueAsString(exercise1);
 
-        ActivityType activityType2 = new ActivityType(0, "Boxen");
-        String json2 = objectMapper.writeValueAsString(activityType2);
+        Exercise exercise2 = new Exercise(0, "Squat", List.of());
+        String json2 = objectMapper.writeValueAsString(exercise2);
 
-        //  Add ActivityType 1
-        mockMvc.perform(post("/api/activity_type")
+        // Add Exercise 1
+        mockMvc.perform(post("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json1)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isCreated());
 
-        //  Add ActivityType 2
-        mockMvc.perform(post("/api/activity_type")
+        // Add Exercise 2
+        mockMvc.perform(post("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json2)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isCreated());
 
         // Request with token
-        mockMvc.perform(get("/api/activity_type")
+        mockMvc.perform(get("/api/exercise")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
     }
 
     @Test
-    void testGetActivityTypeByIdWithoutToken() throws Exception {
-        mockMvc.perform(get("/api/activity_type/1"))
+    void testGetExerciseByIdWithoutToken() throws Exception {
+        mockMvc.perform(get("/api/exercise/1"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    void testGetActivityTypeByIdWithToken() throws Exception {
+    void testGetExerciseByIdWithToken() throws Exception {
         // Arrange
         String token = testHelper.getToken();
 
-        ActivityType activityType = new ActivityType(0, "Kraftsport");
-        String json = objectMapper.writeValueAsString(activityType);
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String json = objectMapper.writeValueAsString(exercise);
 
-        //  Add ActivityType
-        String addResponse = mockMvc.perform(post("/api/activity_type")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                        .header("Authorization", "Bearer " + token))
-                        .andReturn()
-                        .getResponse()
-                        .getContentAsString();
-
-        // read the addResponse
-        ActivityType addedActivityType = objectMapper.readValue(addResponse, ActivityType.class);
-
-        // change it to an int
-        int id = addedActivityType.getActivityTypeId();
-
-        // Request with token
-        mockMvc.perform(get("/api/activity_type/" + id)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testUpdateActivityTypeWithoutToken() throws Exception {
-        mockMvc.perform(put("/api/activity_type"))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    void testUpdateActivityTypeWithToken() throws Exception {
-        // Arrange
-        String token = testHelper.getToken();
-
-        ActivityType activityType = new ActivityType(0, "Kraftsport");
-        String json = objectMapper.writeValueAsString(activityType);
-
-        //  Add ActivityType
-        String addResponse = mockMvc.perform(post("/api/activity_type")
+        // Add Exercise
+        String addResponse = mockMvc.perform(post("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                         .header("Authorization", "Bearer " + token))
@@ -174,16 +140,51 @@ public class ActivityTypeControllerTest {
                 .getContentAsString();
 
         // read the addResponse
-        ActivityType addedActivityType = objectMapper.readValue(addResponse, ActivityType.class);
+        Exercise addedExercise = objectMapper.readValue(addResponse, Exercise.class);
 
-        // update the ActivityType name
-        addedActivityType.setName("Laufen");
+        // change it to an int
+        int id = addedExercise.getExerciseId();
 
-        // write the new addedActivityType
-        String updateJson = objectMapper.writeValueAsString(activityType);
+        // Request with token
+        mockMvc.perform(get("/api/exercise/" + id)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testUpdateExerciseWithoutToken() throws Exception {
+        mockMvc.perform(put("/api/exercise"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testUpdateExerciseWithToken() throws Exception {
+        // Arrange
+        String token = testHelper.getToken();
+
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String json = objectMapper.writeValueAsString(exercise);
+
+        // Add Exercise
+        String addResponse = mockMvc.perform(post("/api/exercise")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .header("Authorization", "Bearer " + token))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // read the addResponse
+        Exercise addedExercise = objectMapper.readValue(addResponse, Exercise.class);
+
+        // update the exercise name
+        addedExercise.setExerciseName("Deadlift");
+
+        // write the new addedExercise
+        String updateJson = objectMapper.writeValueAsString(addedExercise);
 
         // Request with Token
-        mockMvc.perform(put("/api/activity_type")
+        mockMvc.perform(put("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateJson)
                         .header("Authorization", "Bearer " + token))
@@ -191,21 +192,21 @@ public class ActivityTypeControllerTest {
     }
 
     @Test
-    void testDeleteActivityTypeByIdWithoutToken() throws Exception {
-        mockMvc.perform(delete("/api/activity_type"))
+    void testDeleteExerciseByIdWithoutToken() throws Exception {
+        mockMvc.perform(delete("/api/exercise"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    void testDeleteActivityTypeByIdWithToken() throws Exception {
+    void testDeleteExerciseByIdWithToken() throws Exception {
         // Arrange
         String token = testHelper.getToken();
 
-        ActivityType activityType = new ActivityType(0, "Kraftsport");
-        String json = objectMapper.writeValueAsString(activityType);
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String json = objectMapper.writeValueAsString(exercise);
 
-        //  Add ActivityType
-        String addResponse = mockMvc.perform(post("/api/activity_type")
+        // Add Exercise
+        String addResponse = mockMvc.perform(post("/api/exercise")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                         .header("Authorization", "Bearer " + token))
@@ -214,13 +215,13 @@ public class ActivityTypeControllerTest {
                 .getContentAsString();
 
         // read the addResponse
-        ActivityType addedActivityType = objectMapper.readValue(addResponse, ActivityType.class);
+        Exercise addedExercise = objectMapper.readValue(addResponse, Exercise.class);
 
         // change it to an int
-        int id = addedActivityType.getActivityTypeId();
+        int id = addedExercise.getExerciseId();
 
         // Request with Token
-        mockMvc.perform(delete("/api/activity_type/" + id)
+        mockMvc.perform(delete("/api/exercise/" + id)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
     }

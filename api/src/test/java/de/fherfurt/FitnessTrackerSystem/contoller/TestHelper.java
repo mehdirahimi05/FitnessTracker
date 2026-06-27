@@ -7,37 +7,39 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TestHelper {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
+    private User registeredUser;  // saved User after register
 
-    public TestHelper (MockMvc mockMvc, ObjectMapper objectMapper){
+    public TestHelper(MockMvc mockMvc, ObjectMapper objectMapper) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
     }
 
-    // Help methode only for the ControllerTest classes
+    // signup User and get token —
     public String getToken() throws Exception {
-        // Arrange
         User user = new User(0, "mehdi", "pass123", UserRole.USER, null);
         String json = objectMapper.writeValueAsString(user);
 
-        // SignUp
-        mockMvc.perform(post("/api/users/register")
+        // Register → User mit ID speichern
+        String registerResponse = mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk());
+                .andReturn().getResponse().getContentAsString();
 
-        // Login → get Token
-        String token = mockMvc.perform(post("/api/users/login")
+        this.registeredUser = objectMapper.readValue(registerResponse, User.class);
+
+        // Login → Token holen
+        return mockMvc.perform(post("/api/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andReturn()            // Return the Mvc Object
-                .getResponse()          // get the HTTP Request
-                .getContentAsString();  // read the Respond Body as a String
+                .andReturn().getResponse().getContentAsString();
+    }
 
-        return token;
+    // returns the registeredUser after the signup
+    public User getRegisteredUser() {
+        return registeredUser;
     }
 }
