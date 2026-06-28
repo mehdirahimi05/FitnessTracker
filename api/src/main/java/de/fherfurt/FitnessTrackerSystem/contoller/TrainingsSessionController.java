@@ -53,11 +53,8 @@ public class TrainingsSessionController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/most-active")
-    public ResponseEntity<User> getMostActiveUserByAmountOfTrainingsSessions(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate
-    ) {
+    @GetMapping("/most_active")
+    public ResponseEntity<User> getMostActiveUserByAmountOfTrainingsSessions(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
         return ResponseEntity.ok(
                 trainingsSessionService.getMostActiveUserByAmountOfTrainingsSessions(startDate, endDate)
         );
