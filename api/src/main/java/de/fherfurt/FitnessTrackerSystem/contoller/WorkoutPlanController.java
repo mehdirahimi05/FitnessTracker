@@ -48,7 +48,7 @@ public class WorkoutPlanController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/add-exercise")
+    @PostMapping("/add_exercise")
     public ResponseEntity<WorkoutPlanExercise> addExerciseToWorkoutPlan(
             @RequestBody AddExerciseRequest request) {
         return ResponseEntity.ok(workoutPlanService.addExerciseToWorkoutPlan(

@@ -2,6 +2,8 @@ package de.fherfurt.FitnessTrackerSystem.contoller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fherfurt.FitnessTrackerSystem.FitnessTrackerApplication;
+import de.fherfurt.FitnessTrackerSystem.contoller.request.AddExerciseRequest;
+import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
 import de.fherfurt.FitnessTrackerSystem.repositories.IWorkoutPlanRepository;
 import jakarta.transaction.Transactional;
@@ -222,6 +224,107 @@ public class WorkoutPlanControllerTest {
 
         // Request with Token
         mockMvc.perform(delete("/api/workout_plan/" + id)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testAddExerciseToWorkoutPlanSuccess() throws Exception {
+        // Arrange
+        String token = testHelper.getToken();
+
+        // Add workoutPlan to db and read the value
+        WorkoutPlan workoutPlan = new WorkoutPlan(0, "Push Day", List.of());
+        String wpJson = objectMapper.writeValueAsString(workoutPlan);
+
+        String wpResponse = mockMvc.perform(post("/api/workout_plan")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(wpJson)
+                        .header("Authorization", "Bearer " + token))
+                .andReturn().getResponse().getContentAsString();
+
+        WorkoutPlan addedWorkoutPlan = objectMapper.readValue(wpResponse, WorkoutPlan.class);
+
+        // Add exercise to db and read the value
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String exJson = objectMapper.writeValueAsString(exercise);
+
+        String exResponse = mockMvc.perform(post("/api/exercise")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(exJson)
+                        .header("Authorization", "Bearer " + token))
+                .andReturn().getResponse().getContentAsString();
+
+        Exercise addedExercise = objectMapper.readValue(exResponse, Exercise.class);
+
+        // build AddExerciseRequest
+        AddExerciseRequest request = new AddExerciseRequest();
+        request.setWorkoutPlan(addedWorkoutPlan);
+        request.setExercise(addedExercise);
+        request.setSets(3);
+        request.setRepetitions(10);
+
+        String json = objectMapper.writeValueAsString(request);
+
+        // Request with token -> addExerciseToWorkoutPlan
+        mockMvc.perform(post("/api/workout_plan/add_exercise")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testRemoveExerciseFromWorkoutPlanSuccess() throws Exception {
+        // Arrange
+        String token = testHelper.getToken();
+
+        // Add workoutPlan to db and read the value
+        WorkoutPlan workoutPlan = new WorkoutPlan(0, "Push Day", List.of());
+        String wpJson = objectMapper.writeValueAsString(workoutPlan);
+
+        String wpResponse = mockMvc.perform(post("/api/workout_plan")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(wpJson)
+                        .header("Authorization", "Bearer " + token))
+                .andReturn().getResponse().getContentAsString();
+
+        WorkoutPlan addedWorkoutPlan = objectMapper.readValue(wpResponse, WorkoutPlan.class);
+
+        // Add exercise to db and read the value
+        Exercise exercise = new Exercise(0, "Bench Press", List.of());
+        String exJson = objectMapper.writeValueAsString(exercise);
+
+        String exResponse = mockMvc.perform(post("/api/exercise")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(exJson)
+                        .header("Authorization", "Bearer " + token))
+                .andReturn().getResponse().getContentAsString();
+
+        Exercise addedExercise = objectMapper.readValue(exResponse, Exercise.class);
+
+        // build AddExerciseRequest
+        AddExerciseRequest request = new AddExerciseRequest();
+        request.setWorkoutPlan(addedWorkoutPlan);
+        request.setExercise(addedExercise);
+        request.setSets(3);
+        request.setRepetitions(10);
+
+        String json = objectMapper.writeValueAsString(request);
+
+        // Request with token -> addExerciseToWorkoutPlan
+        mockMvc.perform(post("/api/workout_plan/add_exercise")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+
+        // change the values to  int
+        int workoutPlanId = addedWorkoutPlan.getWorkoutPlanId();
+        int exerciseId = addedExercise.getExerciseId();
+
+        // Request with token -> removeExerciseFromWorkoutPlan
+        mockMvc.perform(delete("/api/workout_plan/" + workoutPlanId + "/exercise/" + exerciseId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
     }

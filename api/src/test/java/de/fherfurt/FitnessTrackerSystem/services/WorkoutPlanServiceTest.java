@@ -2,6 +2,7 @@ package de.fherfurt.FitnessTrackerSystem.services;
 
 import de.fherfurt.FitnessTrackerSystem.models.Exercise;
 import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlan;
+import de.fherfurt.FitnessTrackerSystem.models.WorkoutPlanExercise;
 import de.fherfurt.FitnessTrackerSystem.repositories.IWorkoutPlanRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -185,8 +186,9 @@ public class WorkoutPlanServiceTest {
         when(workoutPlanRepository.save(any(WorkoutPlan.class))).thenReturn(workoutPlan1);
 
         // Act
-        workoutPlanService.addExerciseToWorkoutPlan(workoutPlan1, exercise1, 3, 6);
-        workoutPlanService.removeExerciseFromWorkoutPlan(workoutPlan1, 1);
+
+        WorkoutPlanExercise addedWorkoutPlanExercise = workoutPlanService.addExerciseToWorkoutPlan(workoutPlan1, exercise1, 3, 6);
+        workoutPlanService.removeExerciseFromWorkoutPlan(workoutPlan1, addedWorkoutPlanExercise.getWorkoutPlanExerciseId());
 
         // Assert
         assertEquals(0, workoutPlan1.getExercises().size());

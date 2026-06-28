@@ -56,7 +56,7 @@ public class WorkoutPlanService implements IWorkoutPlanService {
         if (workoutPlan == null || exercise == null) {
             throw new IllegalArgumentException("can not be null");
         }
-        int id = workoutPlan.getExercises().size() + 1;
+        int id = workoutPlan.getExercises().size();
         WorkoutPlanExercise newExercise = new WorkoutPlanExercise(id, exercise, sets, repetitions);
         workoutPlan.getExercises().add(newExercise);
         workoutPlanRepository.save(workoutPlan);
