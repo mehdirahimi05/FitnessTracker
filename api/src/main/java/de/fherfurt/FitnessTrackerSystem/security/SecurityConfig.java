@@ -25,9 +25,10 @@ public class SecurityConfig {
     }
 
     @Bean
+    @SuppressWarnings("java:S4502")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // CSRF deactivated
+                 // CSRF disabled intentionally - JWT is used
                 .csrf(csrf -> csrf.disable())
 
                 // which Endpoints are open, which are secured
