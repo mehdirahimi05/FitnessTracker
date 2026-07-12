@@ -16,7 +16,7 @@ jobs:
 
     steps:
       # Step 1: Code aus dem Repository holen
-      # fetch-depth: 0 deaktiviert Shallow Clones fuer bessere SonarQube Analyse
+      # fetch-depth: 0 deaktiviert Shallow Clones für bessere SonarQube Analyse
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -29,7 +29,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # Step 3: SonarQube Cache (spart Zeit beim naechsten Run)
+      # Step 3: SonarQube Cache (spart Zeit beim nächsten Run)
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -37,7 +37,7 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      # Step 4: Maven Dependencies cachen (spart Zeit beim naechsten Run)
+      # Step 4: Maven Dependencies cachen (spart Zeit beim nächsten Run)
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
@@ -45,8 +45,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      # Step 5: Projekt bauen, Tests ausfuehren und SonarQube Analyse starten
-      # mvn verify fuehrt aus: compile -> test -> checkstyle -> jacoco
+      # Step 5: Projekt bauen, Tests ausführen und SonarQube Analyse starten
+      # mvn verify führt aus: compile -> test -> checkstyle -> jacoco
       # sonar-maven-plugin schickt die Ergebnisse an den SonarQube Server
       - name: Build, Test and Analyze
         env:
