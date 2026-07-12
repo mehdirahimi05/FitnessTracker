@@ -1,6 +1,5 @@
 package de.fherfurt.FitnessTrackerSystem.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -54,7 +53,6 @@ public class User {
      * <p><b>Important:</b> Never store or assign a plain-text password here.
      * Always hash the value before passing it to this field (e.g. via BCrypt).</p>
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passWord;
 
     /**

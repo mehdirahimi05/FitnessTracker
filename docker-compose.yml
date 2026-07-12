@@ -16,6 +16,7 @@ services:
   # FitnessTracker App Container
   app:
     build: .
+    image: fitnesstracker-app:1.0.0
     container_name: fitness-tracker-app
     ports:
       - "8080:8080"
