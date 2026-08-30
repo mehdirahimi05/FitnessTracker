@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: mehdi2005/fitness-tracker
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+postgresql:
+  image: postgres:16-alpine
+  database: fitness_tracker
+  username: devops
+  password: password
+  port: 5432

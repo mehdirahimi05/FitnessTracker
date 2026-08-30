@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+  labels:
+    app: {{ .Release.Name }}-app
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-app
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-app
+    spec:
+      containers:
+          - name: api
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            ports:
+              - containerPort: {{ .Values.service.port }}
+            env:
+              - name: DB_HOST
+                value: "db"
+              - name: DB_PORT
+                value: "{{ .Values.postgresql.port }}"
+              - name: DB_NAME
+                value: "{{ .Values.postgresql.database }}"
+              - name: DB_USER
+                value: "{{ .Values.postgresql.username }}"
+              - name: DB_PASSWORD
+                value: "{{ .Values.postgresql.password }}"
+              - name: JWT_SECRET
+                value: "fitness-tracker-secret-key-minimum-256-bit-long-string"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-app
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+  selector:
+    app: {{ .Release.Name }}-app

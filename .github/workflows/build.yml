@@ -132,10 +132,10 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/fitness-tracker:latest
 
   # ==========================================
-  # JOB 4: Continuous Deployment (Release)
+  # JOB 4: Continuous Deployment (Kubernetes & Helm Release)
   # ==========================================
   deploy:
-    name: Deploy to Server
+    name: Release on Kubernetes Cluster (Helm)
     runs-on: ubuntu-latest
     needs: docker
     if: github.ref == 'refs/heads/main'
@@ -144,15 +144,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Deployment via Docker Compose auf Zielhost per SSH
-      - name: Deploy via SSH to Host
-        uses: appleboy/ssh-action@v1.0.3
+      # Startet ein vollwertiges Kubernetes-Cluster direkt in GitHub Actions
+      - name: Create KinD (Kubernetes in Docker) Cluster
+        uses: helm/kind-action@v1.10.0
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            cd /opt/fitness-tracker || mkdir -p /opt/fitness-tracker && cd /opt/fitness-tracker
-            docker compose down
-            docker pull ${{ secrets.DOCKER_USERNAME }}/fitness-tracker:latest
-            docker compose up -d
+          cluster_name: kind-cluster
+
+      # Installiert Helm CLI
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      # Linting des Helm-Charts (Syntax-Prüfung)
+      - name: Lint Helm Chart
+        run: helm lint ./helm/fitness-tracker
+
+      # Release auf das Cluster mit optionaler Versionsangabe des frisch gebauten Images
+      - name: Deploy Helm Chart to Kubernetes
+        run: |
+          VERSION=${{ github.sha }}
+          helm upgrade --install fitness-tracker ./helm/fitness-tracker \
+            --set image.tag=$VERSION \
+            --wait \
+            --timeout 120s
+
+      # Status der Pods und Services nach dem Rollout anzeigen
+      - name: Verify Kubernetes Deployment
+        run: |
+          kubectl get pods
+          kubectl get services
