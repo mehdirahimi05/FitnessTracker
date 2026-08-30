@@ -1,6 +1,4 @@
 services:
-
-  # PostgreSQL database Container
   db:
     image: postgres:16-alpine
     container_name: fitness-tracker-db
@@ -13,19 +11,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # FitnessTracker App Container
   app:
     build: .
-    image: fitnesstracker-app:1.0.0
+    image: fitnesstracker-app:latest
     container_name: fitness-tracker-app
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/fitness_tracker
-      SPRING_DATASOURCE_USERNAME: devops
-      SPRING_DATASOURCE_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: fitness_tracker
+      DB_USER: devops
+      DB_PASSWORD: password
       JWT_SECRET: fitness-tracker-secret-key-minimum-256-bit-long-string
-      JWT_EXPIRATION: 86400000
     depends_on:
       - db
 
