@@ -21,7 +21,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/fitness_tracker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/fitness_tracker
       SPRING_DATASOURCE_USERNAME: devops
       SPRING_DATASOURCE_PASSWORD: password
       JWT_SECRET: fitness-tracker-secret-key-minimum-256-bit-long-string
