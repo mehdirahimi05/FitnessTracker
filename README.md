@@ -1,96 +1,59 @@
 <div align="center">
 
-# 🏋️ FitnessTracker
+# 🏋️ FitnessTracker System
 
-**A self-built fitness backend — because every existing app was either too expensive or too bloated.**
+**Modulare Spring Boot 3 & PostgreSQL Backend-Architektur mit vollständiger DevOps-Automatisierung: CI/CD Pipeline via GitHub Actions, SonarQube-Qualitätsanalyse, Multi-Stage Docker-Builds und Continuous Deployment auf Kubernetes mittels Helm-Chart.**
 
-Track your workouts, nutrition, body measurements and training plans in one place.
-
-![Java](https://img.shields.io/badge/Java_21-ED8B00?style=flat&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.4-6DB33F?style=flat&logo=spring&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat&logo=postgresql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
-![CI](https://img.shields.io/badge/CI/CD-GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active_Development-brightgreen?style=flat)
+[![CI/CD Pipeline](https://github.com/mehdirahimi05/FitnessTracker/actions/workflows/build.yml/badge.svg)](https://github.com/mehdirahimi05/FitnessTracker/actions/workflows/build.yml)
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.0-6DB33F?style=flat&logo=spring&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker_Hub-mehdi2005-2496ED?style=flat&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-KinD_Cluster-326CE5?style=flat&logo=kubernetes&logoColor=white)
+![Helm](https://img.shields.io/badge/Helm-v3_Chart-0F1689?style=flat&logo=helm&logoColor=white)
 
 </div>
 
----
 
-## Features
+## 🔄 CI/CD Pipeline & Automatisierung
 
-- 🔐 **Auth** — Register, login, JWT authentication, role-based access (GUEST / USER / ADMIN)
-- 🏃 **Training Sessions** — Log workouts, filter by date/difficulty, track streaks
-- 🥗 **Nutrition** — Log meals by type, get daily summaries
-- 📋 **Workout Plans** — Build plans with exercises, sets and reps
-- 📏 **Body Measurements** — Track weight, height, body fat, BMI
-- 📊 **Daily Dashboard** — Full overview of training and nutrition for any day
+Die Pipeline ist in `.github/workflows/build.yml` definiert und gliedert sich in vier strikt getrennte, sequentielle Jobs:
 
----
+```text
+┌────────────────┐     ┌───────────────────────┐     ┌────────────────────────┐     ┌────────────────────────┐
+│  JOB 1: Build  │ ──► │ JOB 2: Test & Analyze │ ──► │  JOB 3: Dockerization  │ ──► │ JOB 4: Helm CD Release │
+│  & Checkstyle  │     │ (JUnit, JaCoCo, Sonar)│     │ (Build, Version & Push)│     │ (KinD Cluster & Smoke) │
+└────────────────┘     └───────────────────────┘     └────────────────────────┘     └────────────────────────┘
+```
 
-## Tech Stack
+1. **Job 1 (`build`):**
+    * Richtet JDK 21 (Temurin) ein und cacht Maven-Dependencies (`~/.m2`).
+    * Führt statische Codeanalyse via **Checkstyle** aus.
+    * Baut die JAR-Dateien beider Module und lädt sie als Artefakt hoch.
 
-| Layer     | Technology                        |
-|-----------|-----------------------------------|
-| Language  | Java 21                           |
-| Framework | Spring Boot 3.4                   |
-| ORM       | Spring Data JPA / Hibernate       |
-| Database  | PostgreSQL                        |
-| Security  | Spring Security + JWT (JJWT 0.12) |
-| Build     | Maven (Multi-Module)              |
-| Testing   | JUnit, Mockito, Spring Tests      |
-| Quality   | JaCoCo, SonarQube, Checkstyle     |
-| CI/CD     | GitHub Actions                    |
-| Container | Docker                            |
+2. **Job 2 (`test-and-analyze`):**
+    * Führt alle Unit- und Slice-Tests mit JUnit 5 und Mockito aus.
+    * Erstellt den Code-Coverage-Report via **JaCoCo**.
+    * Führt den Quality-Gate-Scan auf dem **SonarQube-Server** aus.
+
+3. **Job 3 (`docker`):**
+    * Multi-Stage-Docker-Build für ein minimales Runtime-Image.
+    * Login auf Docker Hub.
+    * Push mit Versionierung: `${{ github.sha }}` (exakter Commit-Hash) und `latest`.
+
+4. **Job 4 (`deploy`):**
+    * Startet ein **KinD (Kubernetes in Docker)** Test-Cluster direkt auf der CI-VM.
+    * Führt `helm lint` und `helm upgrade --install` mit dem versionierten Image-Tag aus.
+    * Führt Live-Verifikation via `kubectl rollout status` und HTTP-Health-Check durch.
 
 ---
 
 ## Installation
 
-### Prerequisites
-
-- Java 21
-- Maven
-- PostgreSQL
-- Docker (optional)
-
-### Option 1 — Docker (recommended)
-
 ```bash
 git clone https://github.com/mehdirahimi05/FitnessTracker.git
 cd FitnessTracker
-docker compose up
+docker compose up --build -d
 ```
 
-### Option 2 — Manual
-
-```bash
-git clone https://github.com/mehdirahimi05/FitnessTracker.git
-cd FitnessTracker
-```
-
-Configure `api/src/main/resources/application.properties`:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/fitness_tracker
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-jwt.secret=your-secret-key-minimum-256-bit
-jwt.expiration=86400000
-```
-
-```bash
-mvn clean install -DskipTests
-cd api
-mvn spring-boot:run
-```
-
-App runs on `http://localhost:8080`
-
----
-
-## Author
-
-**Mehdi Rahimi**  
-Angewandte Informatik, FH Erfurt — 4th Semester  
-[github.com/mehdirahimi05](https://github.com/mehdirahimi05)
+API läuft danach unter `http://localhost:8080`.
