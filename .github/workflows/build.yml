@@ -1,30 +1,35 @@
 name: FitnessTracker CI/CD Pipeline
 
+# Definiert, wann die Pipeline automatisch anspringt
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Ermöglicht das manuelle Starten der Pipeline per Klick in GitHub
   push:
-    branches: [ develop, main ]
+    branches: [ develop, main ] # Startet bei jedem direkten Git-Push auf develop oder main
   pull_request:
-    branches: [ develop, main ]
+    branches: [ develop, main ] # Startet automatisch, wenn ein PR gegen develop/main erstellt wird
 
 jobs:
-  # ==========================================
-  # JOB 1: Kompilieren, Linting & Artefakte
-  # ==========================================
+  # =========================================================================
+  # JOB 1: Build & Linting (Schnelles Feedback zur Code-Qualität)
+  # =========================================================================
   build:
     name: Build & Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Führt den Job auf einer frischen Ubuntu-VM von GitHub aus
 
     steps:
+      # Holt den aktuellen Quellcode aus dem GitHub-Repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Installiert Java 21 (Eclipse Temurin) auf dem CI-Runner
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      # Cacht heruntergeladene Maven-Plugins & JARs im Ordner ~/.m2
+      # Spart bei zukünftigen Durchläufen bis zu mehreren Minuten Downloadzeit
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
@@ -32,12 +37,16 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      # Kompiliert das Projekt und prüft Code-Style / Namenskonventionen via Checkstyle
+      # Bricht sofort ab, wenn Formatierungsfehler im Java-Code vorliegen
       - name: Compile and Lint (Checkstyle)
         run: mvn -B clean compile checkstyle:check
 
+      # Baut die ausführbaren .jar Dateien beider Module (storage + api) ohne Tests
       - name: Package JARs
         run: mvn -B package -DskipTests
 
+      # Speichert die gebauten JAR-Dateien für 7 Tage als Download-Artefakt in GitHub Actions
       - name: Upload JAR Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -47,19 +56,20 @@ jobs:
             api/target/*.jar
           retention-days: 7
 
-  # ==========================================
-  # JOB 2: Unit-Tests, Coverage & SonarQube
-  # ==========================================
+  # =========================================================================
+  # JOB 2: Test & Code Quality (Unit-Tests, Testabdeckung & SonarQube)
+  # =========================================================================
   test-and-analyze:
     name: Test & SonarQube Analysis
     runs-on: ubuntu-latest
-    needs: build
+    needs: build # Startet erst, wenn JOB 1 (Kompilierung & Linting) fehlerfrei durchlief
     permissions:
       contents: read
       checks: write
       pull-requests: write
 
     steps:
+      # Vollständiger Git-Clone (fetch-depth: 0), damit SonarQube Git-Blame & Historie analysieren kann
       - name: Checkout repository (Full clone for SonarQube)
         uses: actions/checkout@v4
         with:
@@ -78,6 +88,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      # Cacht interne SonarQube-Abhängigkeiten zur Beschleunigung der Analyse
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -85,6 +96,8 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
+      # Führt alle JUnit-Tests aus, generiert den JaCoCo-Coverage-Report
+      # und übermittelt alle Metriken an den SonarQube-Server
       - name: Run Tests, JaCoCo & SonarQube
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -94,6 +107,7 @@ jobs:
             -Dsonar.projectKey=FitnessTracker \
             -Dsonar.projectName='FitnessTracker'
 
+      # Lädt den HTML/XML Testabdeckungsbericht von JaCoCo als Artefakt hoch
       - name: Upload JaCoCo Coverage Report
         uses: actions/upload-artifact@v4
         with:
@@ -103,26 +117,30 @@ jobs:
             api/target/site/jacoco/
           retention-days: 7
 
-  # ==========================================
-  # JOB 3: Docker Build & Push (Versioning)
-  # ==========================================
+  # =========================================================================
+  # JOB 3: Containerisierung & Registry Push (Docker Hub Versioning)
+  # =========================================================================
   docker:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
-    needs: test-and-analyze
-    # Docker Push nur bei Push auf main/develop oder manuellem Trigger ausführen
+    needs: test-and-analyze # Startet erst, wenn alle Tests & SonarQube grün sind
+    # Verhindert Image-Pushes bei reinen Pull Requests (nur bei echtem Merge/Push)
     if: github.event_name != 'pull_request'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Loggt den CI-Runner bei Docker Hub ein unter Nutzung verschlüsselter GitHub Secrets
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
+      # Baut das Multi-Stage Dockerfile und taggt es zweifach:
+      # 1. Eindeutiger Git-Commit SHA (z.B. :f1e6159...) -> unveränderliche Version
+      # 2. :latest Tag -> für schnellen Abruf der jeweils neuesten Version
       - name: Build and Push Docker Images
         run: |
           VERSION=${{ github.sha }}
@@ -131,34 +149,35 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/fitness-tracker:$VERSION
           docker push ${{ secrets.DOCKER_USERNAME }}/fitness-tracker:latest
 
-  # ==========================================
-  # JOB 4: Continuous Deployment (Kubernetes & Helm Release)
-  # ==========================================
+  # =========================================================================
+  # JOB 4: Continuous Deployment (Release auf Kubernetes Cluster via Helm)
+  # =========================================================================
   deploy:
     name: Release on Kubernetes Cluster (Helm)
     runs-on: ubuntu-latest
-    needs: docker
-    if: github.ref == 'refs/heads/main'
+    needs: docker # Startet erst, nachdem das Docker-Image erfolgreich auf Docker Hub liegt
+    if: github.ref == 'refs/heads/main' # Deployments erfolgen ausschließlich vom produktiven main-Branch
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Startet ein vollwertiges Kubernetes-Cluster direkt in GitHub Actions
+      # Erstellt ein temporäres, echtes Kubernetes-Cluster (KinD = Kubernetes in Docker) im Runner
       - name: Create KinD (Kubernetes in Docker) Cluster
         uses: helm/kind-action@v1.10.0
         with:
           cluster_name: kind-cluster
 
-      # Installiert Helm CLI
+      # Richtet das Helm CLI-Tool auf dem Runner ein
       - name: Set up Helm
         uses: azure/setup-helm@v4
 
-      # Linting des Helm-Charts (Syntax-Prüfung)
+      # Statische Syntax- und Konfigurationsprüfung des Helm-Charts
       - name: Lint Helm Chart
         run: helm lint ./helm/fitness-tracker
 
-      # Release auf das Cluster mit optionaler Versionsangabe des frisch gebauten Images
+      # Führt den Rollout des Helm-Charts durch:
+      # Übergibt den exakten Image-Tag des aktuellen Commits und wartet bis zu 120s auf erfolgreichen Start
       - name: Deploy Helm Chart to Kubernetes
         run: |
           VERSION=${{ github.sha }}
@@ -167,8 +186,8 @@ jobs:
             --wait \
             --timeout 120s
 
-      # Status der Pods und Services nach dem Rollout anzeigen
+      # Statusüberprüfung: Gibt alle aktiven Pods und Netzwerk-Services im Kubernetes-Cluster aus
       - name: Verify Kubernetes Deployment
         run: |
-          kubectl get pods
+          kubectl get pods -o wide
           kubectl get services
