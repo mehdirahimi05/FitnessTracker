@@ -5,6 +5,16 @@
 
 </div>
 
+## Installation
+
+```bash
+git clone https://github.com/mehdirahimi05/FitnessTracker.git
+cd FitnessTracker
+docker compose up --build -d
+```
+
+API läuft danach unter `http://localhost:8080`.
+
 
 ## 🔄 CI/CD Pipeline & Automatisierung
 
@@ -39,12 +49,3 @@ Die Pipeline ist in `.github/workflows/build.yml` definiert und gliedert sich in
 
 ---
 
-## Installation
-
-```bash
-git clone https://github.com/mehdirahimi05/FitnessTracker.git
-cd FitnessTracker
-docker compose up --build -d
-```
-
-API läuft danach unter `http://localhost:8080`.
